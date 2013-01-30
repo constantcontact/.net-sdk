@@ -1,4 +1,4 @@
-Constant Contact IOS SDK
+Constant Contact .NET SDK
 =========================
 
 ## Installation
