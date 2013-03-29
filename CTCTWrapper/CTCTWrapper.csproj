@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{16AA0E4B-BA8F-49C3-8A9A-D3014C8F02D2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CTCT</RootNamespace>
+    <AssemblyName>CTCT</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\CTCT.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Auth\CtctOAuth2.cs" />
+    <Compile Include="Auth\ICtctOAuth2.cs" />
+    <Compile Include="Components\Activities\Activity.cs" />
+    <Compile Include="Components\Activities\ActivityError.cs" />
+    <Compile Include="Components\Activities\AddContacts.cs" />
+    <Compile Include="Components\Activities\AddContactsImportData.cs" />
+    <Compile Include="Components\Activities\ClearContactList.cs" />
+    <Compile Include="Components\Activities\ExportContacts.cs" />
+    <Compile Include="Components\Activities\RemoveContact.cs" />
+    <Compile Include="Components\Contacts\SentContactList.cs" />
+    <Compile Include="Components\Contacts\VerifiedEmailAddress.cs" />
+    <Compile Include="Components\EmailCampaigns\ClickThroughDetails.cs" />
+    <Compile Include="Components\EmailCampaigns\EmailCampaign.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\Contacts\Address.cs" />
+    <Compile Include="Components\Contacts\Contact.cs" />
+    <Compile Include="Components\Contacts\ContactList.cs" />
+    <Compile Include="Components\Contacts\CustomField.cs" />
+    <Compile Include="Components\Contacts\EmailAddress.cs" />
+    <Compile Include="Components\Contacts\Note.cs" />
+    <Compile Include="Components\EmailCampaigns\MessageFooter.cs" />
+    <Compile Include="Components\EmailCampaigns\Schedule.cs" />
+    <Compile Include="Components\EmailCampaigns\TestSend.cs" />
+    <Compile Include="Components\ResultSet.cs" />
+    <Compile Include="Components\Tracking\BaseActivity.cs" />
+    <Compile Include="Components\Tracking\BounceActivity.cs" />
+    <Compile Include="Components\Tracking\ClickActivity.cs" />
+    <Compile Include="Components\Tracking\ForwardActivity.cs" />
+    <Compile Include="Components\Tracking\OpenActivity.cs" />
+    <Compile Include="Components\Tracking\OptOutActivity.cs" />
+    <Compile Include="Components\Tracking\SendActivity.cs" />
+    <Compile Include="Components\Tracking\TrackingActivity.cs" />
+    <Compile Include="Components\Tracking\TrackingSummary.cs" />
+    <Compile Include="ConstantContact.cs" />
+    <Compile Include="Exceptions\CtctException.cs" />
+    <Compile Include="Exceptions\IllegalArgumentException.cs" />
+    <Compile Include="Exceptions\OAuth2Exception.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\ActivityService.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\CampaignScheduleService.cs" />
+    <Compile Include="Services\CampaignTrackingService.cs" />
+    <Compile Include="Services\ContactTrackingService.cs" />
+    <Compile Include="Services\EmailCampaignService.cs" />
+    <Compile Include="Services\ContactService.cs" />
+    <Compile Include="Services\Interfaces\IAccountService.cs" />
+    <Compile Include="Services\Interfaces\IContactTrackingService.cs" />
+    <Compile Include="Services\Interfaces\ICampaignTrackingService.cs" />
+    <Compile Include="Services\Interfaces\IActivityService.cs" />
+    <Compile Include="Services\Interfaces\IBaseService.cs" />
+    <Compile Include="Services\Interfaces\ICampaignScheduleService.cs" />
+    <Compile Include="Services\Interfaces\IEmailCampaignService.cs" />
+    <Compile Include="Services\Interfaces\IContactService.cs" />
+    <Compile Include="Services\Interfaces\IListService.cs" />
+    <Compile Include="Services\ListService.cs" />
+    <Compile Include="Util\Config.cs" />
+    <Compile Include="Util\CUrlRequestError.cs" />
+    <Compile Include="Util\CUrlResponse.cs" />
+    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="Util\IRestClient.cs" />
+    <Compile Include="Util\RestClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
