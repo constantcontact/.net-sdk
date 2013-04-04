@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ConstantContact.NET.SDK</id>
+    <title>Constant Contact .NET SDK</title>
+    <version>0.1</version>
+    <authors>aguriuc</authors>
+    <owners>aguriuc</owners>
+    <licenseUrl>http://creativecommons.org/licenses/by/3.0/</licenseUrl>
+    <projectUrl>https://github.com/constantcontact/Constant-Contact-Dot-Net-Wrapper</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A wrapper around the ConstantContact API</description>
+    <releaseNotes>For release notes please visit the project on GitHub</releaseNotes>
+    <copyright></copyright>
+    <tags>Constant Contact</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>
