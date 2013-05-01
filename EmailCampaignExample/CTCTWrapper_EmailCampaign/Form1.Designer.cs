@@ -782,6 +782,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmEmailCampaign";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmEmailCampaign_FormClosing);
             this.Load += new System.EventHandler(this.frmEmailCampaign_Load);
             this.pnlCreateCampaign.ResumeLayout(false);
             this.pnlCreateCampaign.PerformLayout();
