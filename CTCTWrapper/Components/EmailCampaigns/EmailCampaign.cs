@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
-using System.Web.Script.Serialization;
 using CTCT.Components.Tracking;
 using CTCT.Components.Contacts;
 using CTCT.Util;
@@ -108,8 +105,8 @@ namespace CTCT.Components.EmailCampaigns
         /// </summary>
         public DateTime? NextRunDateDate
         {
-            get { return this.NextRunDateString.FromISO8601String(); }
-            set { this.NextRunDateString = value.ToISO8601String(); }
+            get { return NextRunDateString.FromISO8601String(); }
+            set { NextRunDateString = value.ToISO8601String(); }
         }
         /// <summary>
         /// Campaign status, string representation.
@@ -162,6 +159,11 @@ namespace CTCT.Components.EmailCampaigns
             get { return this.GreetingNameString.ToEnum<GreetingName>(); }
             set { this.GreetingNameString = value.ToString(); }
         }
+        /// <summary>
+        /// Gets or sets o non-expiring link to use for sharing a sent email campaign using social channels
+        /// </summary>
+        [DataMember(Name = "permalink_url", EmitDefaultValue = false)]
+        public string PermanentLink { get; set; }
         /// <summary>
         /// Gets or sets the greeting string.
         /// </summary>

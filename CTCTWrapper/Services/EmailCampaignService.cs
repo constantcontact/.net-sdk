@@ -21,11 +21,12 @@ namespace CTCT.Services
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit)
+        public IList<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince)
         {
             IList<EmailCampaign> campaigns = new List<EmailCampaign>();
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Campaigns, GetQueryParameters(new object[] { "status", status, "limit", limit }));
+            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Campaigns, GetQueryParameters(new object[] { "status", status, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) }));
             CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
 
             if (response.IsError)
