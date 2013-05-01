@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CTCT;
-using CTCT.Util;
 using CTCT.Components.Contacts;
-using CTCT.Auth;
-using CTCT.Services;
 using CTCT.Components;
-using System.Threading;
 using System.Globalization;
 using CTCT.Exceptions;
-using System.Collections;
+using System.Configuration;
 
 namespace CTCTWrapper_Contact
 {
@@ -23,7 +16,9 @@ namespace CTCTWrapper_Contact
     {
         #region Properties
 
-        ConstantContact ConstantContact = null;
+        ConstantContact _constantContact = null;
+        private string _apiKey = string.Empty;
+        private string _accessToken = string.Empty;
 
         #endregion Properties
 
@@ -32,14 +27,22 @@ namespace CTCTWrapper_Contact
         public frmContact()
         {
             InitializeComponent();
+            _apiKey = ConfigurationManager.AppSettings["APIKey"];
         }
 
         private void frmContact_Load(object sender, EventArgs e)
         {
             try
             {
+                string state = "ok";
+                _accessToken = OAuth.AuthenticateFromWinProgram(ref state);
+
+                if (string.IsNullOrEmpty(_accessToken)) {
+                    Application.Exit();
+                }
+
                 //initialize ConstantContact member
-                ConstantContact = new ConstantContact();
+                _constantContact = new ConstantContact(_apiKey, _accessToken);
             }
             catch (OAuth2Exception oauthEx)
             {
@@ -51,7 +54,7 @@ namespace CTCTWrapper_Contact
 
             #region Populate list of countries
 
-            List<RegionInfo> countries = new List<RegionInfo>();
+            var countries = new List<RegionInfo>();
             CultureInfo[] cinfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
             foreach (CultureInfo cul in cinfo)
             {
@@ -135,11 +138,11 @@ namespace CTCTWrapper_Contact
 
                     if (alreadyExists)
                     {
-                        result = ConstantContact.UpdateContact(contact, false);
+                        result = _constantContact.UpdateContact(contact, false);
                     }
                     else
                     {
-                        result = ConstantContact.AddContact(contact, false);
+                        result = _constantContact.AddContact(contact, false);
                     }
 
                     if (result != null)
@@ -204,7 +207,7 @@ namespace CTCTWrapper_Contact
         /// <returns></returns>
         private Contact GetContactByEmailAddress(string emailAddress)
         {
-            ResultSet<Contact> contacts = ConstantContact.GetContacts(emailAddress, 1);
+            ResultSet<Contact> contacts = _constantContact.GetContacts(emailAddress, 1, null);
 
             if (contacts != null)
             {
@@ -383,6 +386,11 @@ namespace CTCTWrapper_Contact
         }
 
         #endregion Private methods
+
+        private void frmContact_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 
     /// <summary>

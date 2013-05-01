@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CTCT;
-using CTCT.Util;
 using CTCT.Components.Contacts;
-using CTCT.Auth;
-using CTCT.Services;
-using CTCT.Components;
 using CTCT.Components.EmailCampaigns;
 using System.Globalization;
 using CTCT.Exceptions;
+using System.Configuration;
 
 namespace CTCTWrapper_EmailCampaign
 {
@@ -22,7 +16,9 @@ namespace CTCTWrapper_EmailCampaign
     {
         #region Properties
 
-        ConstantContact ConstantContact = null;
+        ConstantContact _constantContact = null;
+        private string _apiKey = string.Empty;
+        private string _accessToken = string.Empty;
 
         #endregion Properties
 
@@ -31,6 +27,7 @@ namespace CTCTWrapper_EmailCampaign
         public frmEmailCampaign()
         {
             InitializeComponent();
+            _apiKey = ConfigurationManager.AppSettings["APIKey"];
         }
 
         private void lblClose_Click(object sender, EventArgs e)
@@ -42,8 +39,16 @@ namespace CTCTWrapper_EmailCampaign
         {
             try
             {
+                string state = "ok";
+                _accessToken = OAuth.AuthenticateFromWinProgram(ref state);
+
+                if (string.IsNullOrEmpty(_accessToken))
+                {
+                    Application.Exit();
+                }
+
                 //initialize ConstantContact member
-                ConstantContact = new ConstantContact();
+                _constantContact = new ConstantContact(_apiKey, _accessToken);
             }
             catch (OAuth2Exception oauthEx)
             {
@@ -102,7 +107,7 @@ namespace CTCTWrapper_EmailCampaign
             {
                 EmailCampaign campaign = CreateCampaignFromInputs();
 
-                EmailCampaign savedCampaign = ConstantContact.AddCampaign(campaign);
+                EmailCampaign savedCampaign = _constantContact.AddCampaign(campaign);
 
                 if (savedCampaign != null)
                 {
@@ -120,7 +125,7 @@ namespace CTCTWrapper_EmailCampaign
                             schedule = new Schedule() { ScheduledDate = Convert.ToDateTime(txtScheduleDate.Text.Trim()) };
                         }
 
-                        Schedule savedSchedule = ConstantContact.AddSchedule(savedCampaign.Id, schedule);
+                        Schedule savedSchedule = _constantContact.AddSchedule(savedCampaign.Id, schedule);
 
                         if (savedSchedule != null)
                         {
@@ -236,7 +241,7 @@ namespace CTCTWrapper_EmailCampaign
         {
             try
             {
-                var lists = ConstantContact.GetLists();
+                var lists = _constantContact.GetLists(null);
 
                 if (lists != null)
                 {
@@ -262,7 +267,7 @@ namespace CTCTWrapper_EmailCampaign
         {
             List<ItemInfo> lstItems = new List<ItemInfo>();
             try {
-                var emails = ConstantContact.GetVerifiedEmailAddress();
+                var emails = _constantContact.GetVerifiedEmailAddress();
 
                 if (emails != null)
                 {
@@ -603,6 +608,11 @@ namespace CTCTWrapper_EmailCampaign
         }
 
         #endregion Private methods    
+
+        private void frmEmailCampaign_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 
     /// <summary>

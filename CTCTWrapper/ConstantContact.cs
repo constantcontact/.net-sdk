@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using CTCT.Auth;
 using CTCT.Components.Contacts;
 using CTCT.Exceptions;
 using CTCT.Services;
@@ -93,6 +92,7 @@ namespace CTCT
         /// Access token.
         /// </summary>
         private string _accessToken;
+
         /// <summary>
         /// api_key field
         /// </summary>
@@ -103,37 +103,40 @@ namespace CTCT
         #region Properties
 
         /// <summary>
-        /// Gets or sets the authorization class.
-        /// </summary>
-        protected virtual ICtctOAuth2 OAuth { get; set; }
-        /// <summary>
         /// Gets or sets the Contact service.
         /// </summary>
         protected virtual IContactService ContactService { get; set; }
+
         /// <summary>
         /// Gets or sets the List service.
         /// </summary>
         protected virtual IListService ListService { get; set; }
+
         /// <summary>
         /// Gets or sets the Activity service.
         /// </summary>
         protected virtual IActivityService ActivityService { get; set; }
+
         /// <summary>
         /// Gets or sets the Campaign Schedule service.
         /// </summary>
         protected virtual ICampaignScheduleService CampaignScheduleService { get; set; }
+
         /// <summary>
         /// Gets or sets the Campaign Tracking service.
         /// </summary>
         protected virtual ICampaignTrackingService CampaignTrackingService { get; set; }
+
         /// <summary>
         /// Gets or sets the Contact Tracking service.
         /// </summary>
         protected virtual IContactTrackingService ContactTrackingService { get; set; }
+
         /// <summary>
         /// Gets or sets the Email Campaign service.
         /// </summary>
         protected virtual IEmailCampaignService EmailCampaignService { get; set; }
+
         /// <summary>
         /// Gets or sets the Account service
         /// </summary>
@@ -162,29 +165,16 @@ namespace CTCT
         #region Constructor
 
         /// <summary>
-        /// Creates a new ConstantContact object and takes login information from configuration file
+        /// Creates a new ConstantContact object using provided apiKey and accessToken parameters
         /// </summary>
-        public ConstantContact()
+        /// <param name="apiKey">APIKey</param>
+        /// <param name="accessToken">access token</param>
+        public ConstantContact(string apiKey, string accessToken)
         {
             InitializeFields();
 
-            this.AccessToken = this.OAuth.GetAccessToken();
-            this.APIKey = ConfigurationManager.AppSettings["APIKey"];
-        }
-
-        /// <summary>
-        /// Creates a new ConstantContact object and uses provided parameters values as login information
-        /// </summary>
-        /// <param name="username">username</param>
-        /// <param name="password">password</param>
-        /// <param name="APIKey">APIKey</param>
-        /// <param name="redirectURL">redirect URL</param>
-        public ConstantContact(string username, string password, string APIKey, string redirectURL)
-        {
-            InitializeFields();
-
-            this.AccessToken = this.OAuth.GetAccessToken(username, password, APIKey, redirectURL);
-            this.APIKey = APIKey;
+            AccessToken = accessToken;
+            APIKey = apiKey;
         }
 
         #endregion
@@ -195,15 +185,14 @@ namespace CTCT
 
         private void InitializeFields()
         {
-            this.OAuth = new CtctOAuth2();
-            this.ContactService = new ContactService();
-            this.ListService = new ListService();
-            this.ActivityService = new ActivityService();
-            this.CampaignScheduleService = new CampaignScheduleService();
-            this.CampaignTrackingService = new CampaignTrackingService();
-            this.ContactTrackingService = new ContactTrackingService();
-            this.EmailCampaignService = new EmailCampaignService();
-            this.AccountService = new AccountService();
+            ContactService = new ContactService();
+            ListService = new ListService();
+            ActivityService = new ActivityService();
+            CampaignScheduleService = new CampaignScheduleService();
+            CampaignTrackingService = new CampaignTrackingService();
+            ContactTrackingService = new ContactTrackingService();
+            EmailCampaignService = new EmailCampaignService();
+            AccountService = new AccountService();
         }
 
         #endregion Private methods
@@ -215,29 +204,32 @@ namespace CTCT
         /// </summary>
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values, default 500.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string email, int? limit)
+        public ResultSet<Contact> GetContacts(string email, int? limit, DateTime? modifiedSince)
         {
-            return ContactService.GetContacts(this.AccessToken, this.APIKey, email, limit);
+            return ContactService.GetContacts(AccessToken, APIKey, email, limit, modifiedSince);
         }
 
         /// <summary>
         /// Get an array of contacts.
         /// </summary>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(Pagination pag)
+        public ResultSet<Contact> GetContacts(DateTime? modifiedSince, Pagination pag)
         {
-            return ContactService.GetContacts(this.AccessToken, this.APIKey, pag);
+            return ContactService.GetContacts(AccessToken, APIKey, modifiedSince, pag);
         }
 
         /// <summary>
         /// Get a set of contacts.
         /// </summary>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts()
+        public ResultSet<Contact> GetContacts(DateTime? modifiedSince)
         {
-            return ContactService.GetContacts(this.AccessToken, this.APIKey, null);
+            return ContactService.GetContacts(AccessToken, APIKey, modifiedSince, null);
         }
 
         /// <summary>
@@ -247,7 +239,7 @@ namespace CTCT
         /// <returns>Returns a contact.</returns>
         public Contact GetContact(string contactId)
         {
-            return ContactService.GetContact(this.AccessToken, this.APIKey, contactId);
+            return ContactService.GetContact(AccessToken, APIKey, contactId);
         }
 
         /// <summary>
@@ -258,7 +250,7 @@ namespace CTCT
         /// <returns>Returns the newly created contact.</returns>
         public Contact AddContact(Contact contact, bool actionByVisitor)
         {
-            return ContactService.AddContact(this.AccessToken, this.APIKey, contact, actionByVisitor);
+            return ContactService.AddContact(AccessToken, APIKey, contact, actionByVisitor);
         }
 
         /// <summary>
@@ -289,7 +281,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
 
-            return ContactService.DeleteContact(this.AccessToken, this.APIKey, contactId);
+            return ContactService.DeleteContact(AccessToken, APIKey, contactId);
         }
 
         /// <summary>
@@ -304,7 +296,7 @@ namespace CTCT
             {
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
-            return ContactService.DeleteContactFromLists(this.AccessToken, this.APIKey, contactId);
+            return ContactService.DeleteContactFromLists(AccessToken, APIKey, contactId);
         }
 
         /// <summary>
@@ -320,7 +312,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
 
-            return ContactService.DeleteContactFromLists(this.AccessToken, this.APIKey, contact.Id);
+            return ContactService.DeleteContactFromLists(AccessToken, APIKey, contact.Id);
         }
 
 
@@ -342,7 +334,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ContactService.DeleteContactFromList(this.AccessToken, this.APIKey, contact.Id, list.Id);
+            return ContactService.DeleteContactFromList(AccessToken, APIKey, contact.Id, list.Id);
         }
 
         /// <summary>
@@ -363,7 +355,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ContactService.DeleteContactFromList(this.AccessToken, this.APIKey, contactId, listId);
+            return ContactService.DeleteContactFromList(AccessToken, APIKey, contactId, listId);
         }
 
         /// <summary>
@@ -380,7 +372,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
 
-            return ContactService.UpdateContact(this.AccessToken, this.APIKey, contact, actionByVisitor);
+            return ContactService.UpdateContact(AccessToken, APIKey, contact, actionByVisitor);
         }
 
         #endregion
@@ -390,10 +382,11 @@ namespace CTCT
         /// <summary>
         /// Get lists.
         /// </summary>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns the list of lists where contact belong to.</returns>
-        public IList<ContactList> GetLists()
+        public IList<ContactList> GetLists(DateTime? modifiedSince)
         {
-            return ListService.GetLists(this.AccessToken, this.APIKey);
+            return ListService.GetLists(AccessToken, APIKey, modifiedSince);
         }
 
         /// <summary>
@@ -409,7 +402,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ListService.GetList(this.AccessToken, this.APIKey, listId);
+            return ListService.GetList(AccessToken, APIKey, listId);
         }
 
         /// <summary>
@@ -424,7 +417,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return this.ListService.UpdateList(this.AccessToken, this.APIKey, list);
+            return ListService.UpdateList(AccessToken, APIKey, list);
         }
 
         /// <summary>
@@ -434,7 +427,7 @@ namespace CTCT
         /// <returns>Returns the newly created list.</returns>
         public ContactList AddList(ContactList list)
         {
-            return ListService.AddList(this.AccessToken, this.APIKey, list);
+            return ListService.AddList(AccessToken, APIKey, list);
         }
 
         /// <summary>
@@ -449,18 +442,19 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return this.ListService.DeleteList(this.AccessToken, this.APIKey, listId);
+            return ListService.DeleteList(AccessToken, APIKey, listId);
         }
 
         /// <summary>
         /// Get contact that belong to a specific list.
         /// </summary>
         /// <param name="list">Contact list object.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns the list of contacts.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<Contact> GetContactsFromList(ContactList list)
+        public ResultSet<Contact> GetContactsFromList(ContactList list, DateTime? modifiedSince)
         {
-            return this.GetContactsFromList(list, null);
+            return GetContactsFromList(list, modifiedSince);
         }
 
         /// <summary>
@@ -468,27 +462,29 @@ namespace CTCT
         /// </summary>
         /// <param name="list">Contact list object.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns the list of contacts.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<Contact> GetContactsFromList(ContactList list, int? limit)
+        public ResultSet<Contact> GetContactsFromList(ContactList list, int? limit, DateTime? modifiedSince)
         {
             if (list == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ListService.GetContactsFromList(this.AccessToken, this.APIKey, list.Id, limit);
+            return ListService.GetContactsFromList(AccessToken, APIKey, list.Id, limit, modifiedSince);
         }
 
         /// <summary>
         /// Get contact that belong to a specific list.
         /// </summary>
         /// <param name="listId">Contact list id.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns a list of contacts.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<Contact> GetContactsFromList(string listId)
+        public ResultSet<Contact> GetContactsFromList(string listId, DateTime? modifiedSince)
         {
-            return this.GetContactsFromList(listId, (int?)null);
+            return GetContactsFromList(listId, null, modifiedSince);
         }
 
         /// <summary>
@@ -496,26 +492,28 @@ namespace CTCT
         /// </summary>
         /// <param name="listId">Contact list id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns a list of contacts.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<Contact> GetContactsFromList(string listId, int? limit)
+        public ResultSet<Contact> GetContactsFromList(string listId, int? limit, DateTime? modifiedSince)
         {
             if (listId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ListService.GetContactsFromList(this.AccessToken, this.APIKey, listId, limit);
+            return ListService.GetContactsFromList(AccessToken, APIKey, listId, limit, modifiedSince);
         }
 
         /// <summary>
         /// Get contacts after pagination object received.
         /// </summary>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContactsFromList(Pagination pag)
+        public ResultSet<Contact> GetContactsFromList(DateTime? modifiedSince, Pagination pag)
         {
-            return this.ListService.GetContactsFromList(this.AccessToken, this.APIKey, pag);
+            return ListService.GetContactsFromList(AccessToken, APIKey, modifiedSince, pag);
         }
 
         #endregion
@@ -528,7 +526,7 @@ namespace CTCT
         /// <returns>Returns the list of activities.</returns>
         public IList<Activity> GetActivities()
         {
-            return this.ActivityService.GetActivities(this.AccessToken, this.APIKey);
+            return ActivityService.GetActivities(AccessToken, APIKey);
         }
 
         /// <summary>
@@ -544,7 +542,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
 
-            return this.ActivityService.GetActivity(this.AccessToken, this.APIKey, activityId);
+            return ActivityService.GetActivity(AccessToken, APIKey, activityId);
         }
 
         /// <summary>
@@ -560,7 +558,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
 
-            return this.ActivityService.CreateAddContactsActivity(this.AccessToken, this.APIKey, addContacts);
+            return ActivityService.CreateAddContactsActivity(AccessToken, APIKey, addContacts);
         }
 
 
@@ -577,7 +575,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
 
-            return this.ActivityService.AddClearListsActivity(this.AccessToken, this.APIKey, lists);
+            return ActivityService.AddClearListsActivity(AccessToken, APIKey, lists);
         }
 
         /// <summary>
@@ -593,7 +591,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
 
-            return this.ActivityService.AddExportContactsActivity(this.AccessToken, this.APIKey, exportContacts);
+            return ActivityService.AddExportContactsActivity(AccessToken, APIKey, exportContacts);
         }
 
         /// <summary>
@@ -610,7 +608,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
 
-            return this.ActivityService.AddRemoveContactsFromListsActivity(this.AccessToken, this.APIKey, emailAddresses, lists);
+            return ActivityService.AddRemoveContactsFromListsActivity(AccessToken, APIKey, emailAddresses, lists);
         }
 
         #endregion
@@ -631,7 +629,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
 
-            return this.CampaignScheduleService.AddSchedule(this.AccessToken, this.APIKey, campaignId, schedule);
+            return CampaignScheduleService.AddSchedule(AccessToken, APIKey, campaignId, schedule);
         }
 
         /// <summary>
@@ -647,7 +645,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
 
-            return this.CampaignScheduleService.GetSchedules(this.AccessToken, this.APIKey, campaignId);
+            return CampaignScheduleService.GetSchedules(AccessToken, APIKey, campaignId);
         }
 
         /// <summary>
@@ -664,7 +662,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
 
-            return this.CampaignScheduleService.GetSchedule(this.AccessToken, this.APIKey, campaignId, scheduleId);
+            return CampaignScheduleService.GetSchedule(AccessToken, APIKey, campaignId, scheduleId);
         }
 
         /// <summary>
@@ -681,7 +679,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
 
-            return this.CampaignScheduleService.AddSchedule(this.AccessToken, this.APIKey, campaignId, schedule);
+            return CampaignScheduleService.AddSchedule(AccessToken, APIKey, campaignId, schedule);
         }
 
         /// <summary>
@@ -698,7 +696,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
 
-            return this.CampaignScheduleService.DeleteSchedule(this.AccessToken, this.APIKey, campaignId, scheduleId);
+            return CampaignScheduleService.DeleteSchedule(AccessToken, APIKey, campaignId, scheduleId);
         }
 
         /// <summary>
@@ -715,7 +713,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
 
-            return this.CampaignScheduleService.SendTest(this.AccessToken, this.APIKey, campaignId, testSend);
+            return CampaignScheduleService.SendTest(AccessToken, APIKey, campaignId, testSend);
         }
 
         #endregion
@@ -735,7 +733,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetBounces(this.AccessToken, this.APIKey, campaignId, limit);
+            return CampaignTrackingService.GetBounces(AccessToken, APIKey, campaignId, limit);
         }
 
         /// <summary>
@@ -745,7 +743,7 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link BounceActivity.</returns>
         public ResultSet<BounceActivity> GetCampaignTrackingBounces(Pagination pag)
         {
-            return this.CampaignTrackingService.GetBounces(this.AccessToken, this.APIKey, pag);
+            return CampaignTrackingService.GetBounces(AccessToken, APIKey, pag);
         }
 
         /// <summary>
@@ -754,25 +752,28 @@ namespace CTCT
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="linkId">Specifies the link in the email campaign to retrieve click data for.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
-        public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, string linkId, int? limit)
+        public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, string linkId, int? limit,
+                                                                  DateTime? createdSince)
         {
             if (campaignId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetClicks(this.AccessToken, this.APIKey, campaignId, linkId, limit);
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, campaignId, linkId, limit, createdSince);
         }
 
         /// <summary>
         /// Get clicks for a given campaign.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
-        public ResultSet<ClickActivity> GetClicks(Pagination pag)
+        public ResultSet<ClickActivity> GetClicks(DateTime? createdSince, Pagination pag)
         {
-            return this.CampaignTrackingService.GetClicks(this.AccessToken, this.APIKey, pag);
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
@@ -780,51 +781,56 @@ namespace CTCT
         /// </summary>
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
-        public ResultSet<ForwardActivity> GetCampaignTrackingForwards(string campaignId, int? limit)
+        public ResultSet<ForwardActivity> GetCampaignTrackingForwards(string campaignId, int? limit,
+                                                                      DateTime? createdSince)
         {
             if (campaignId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetForwards(this.AccessToken, this.APIKey, campaignId, limit);
+            return CampaignTrackingService.GetForwards(AccessToken, APIKey, campaignId, limit, createdSince);
         }
 
         /// <summary>
         /// Get forwards for a given campaign.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
-        public ResultSet<ForwardActivity> GetCampaignTrackingForwards(Pagination pag)
+        public ResultSet<ForwardActivity> GetCampaignTrackingForwards(DateTime? createdSince, Pagination pag)
         {
-            return this.CampaignTrackingService.GetForwards(this.AccessToken, this.APIKey, pag);
+            return CampaignTrackingService.GetForwards(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
         /// Get opens for a given campaign.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <returns>ResultSet containing a results array of @link OpenActivity.</returns>
-        public ResultSet<OpenActivity> GetCampaignTrackingOpens(string campaignId, int? limit)
+        public ResultSet<OpenActivity> GetCampaignTrackingOpens(string campaignId, int? limit, DateTime? createdSince)
         {
             if (campaignId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetOpens(this.AccessToken, this.APIKey, campaignId, limit);
+            return CampaignTrackingService.GetOpens(AccessToken, APIKey, campaignId, limit, createdSince);
         }
 
         /// <summary>
         /// Get opens for a given campaign.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link OpenActivity.</returns>
-        public ResultSet<OpenActivity> GetCampaignTrackingOpens(Pagination pag)
+        public ResultSet<OpenActivity> GetCampaignTrackingOpens(DateTime? createdSince, Pagination pag)
         {
-            return this.CampaignTrackingService.GetOpens(this.AccessToken, this.APIKey, pag);
+            return CampaignTrackingService.GetOpens(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
@@ -832,25 +838,27 @@ namespace CTCT
         /// </summary>
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link SendActivity</returns>
-        public ResultSet<SendActivity> GetCampaignTrackingSends(string campaignId, int? limit)
+        public ResultSet<SendActivity> GetCampaignTrackingSends(string campaignId, int? limit, DateTime? createdSince)
         {
             if (campaignId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetSends(this.AccessToken, this.APIKey, campaignId, limit);
+            return CampaignTrackingService.GetSends(AccessToken, APIKey, campaignId, limit, createdSince);
         }
 
         /// <summary>
         /// Get sends for a given campaign.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link SendActivity</returns>
-        public ResultSet<SendActivity> GetCampaignTrackingSends(Pagination pag)
+        public ResultSet<SendActivity> GetCampaignTrackingSends(DateTime? createdSince, Pagination pag)
         {
-            return this.CampaignTrackingService.GetSends(this.AccessToken, this.APIKey, pag);
+            return CampaignTrackingService.GetSends(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
@@ -858,25 +866,28 @@ namespace CTCT
         /// </summary>
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link OptOutActivity.</returns>
-        public ResultSet<OptOutActivity> GetCampaignTrackingOptOuts(string campaignId, int? limit)
+        public ResultSet<OptOutActivity> GetCampaignTrackingOptOuts(string campaignId, int? limit,
+                                                                    DateTime? createdSince)
         {
             if (campaignId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetOptOuts(this.AccessToken, this.APIKey, campaignId, limit);
+            return CampaignTrackingService.GetOptOuts(AccessToken, APIKey, campaignId, limit, createdSince);
         }
 
         /// <summary>
         /// Get opt outs for a given campaign.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link OptOutActivity.</returns>
-        public ResultSet<OptOutActivity> GetCampaignTrackingOptOuts(Pagination pag)
+        public ResultSet<OptOutActivity> GetCampaignTrackingOptOuts(DateTime? createdSince, Pagination pag)
         {
-            return this.CampaignTrackingService.GetOptOuts(this.AccessToken, this.APIKey, pag);
+            return CampaignTrackingService.GetOptOuts(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
@@ -892,7 +903,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return this.CampaignTrackingService.GetSummary(this.AccessToken, this.APIKey, campaignId);
+            return CampaignTrackingService.GetSummary(AccessToken, APIKey, campaignId);
         }
 
         #endregion
@@ -907,7 +918,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<BounceActivity> GetContactTrackingBounces(string contactId)
         {
-            return this.GetContactTrackingBounces(contactId, null);
+            return GetContactTrackingBounces(contactId, null);
         }
 
         /// <summary>
@@ -924,7 +935,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetBounces(this.AccessToken, this.APIKey, contactId, limit);
+            return ContactTrackingService.GetBounces(AccessToken, APIKey, contactId, limit);
         }
 
         /// <summary>
@@ -934,18 +945,19 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link BounceActivity</returns>
         public ResultSet<BounceActivity> GetContactTrackingBounces(Pagination pag)
         {
-            return this.ContactTrackingService.GetBounces(this.AccessToken, this.APIKey, pag);
+            return ContactTrackingService.GetBounces(AccessToken, APIKey, pag);
         }
 
         /// <summary>
         /// Get clicks for a given contact.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<ClickActivity> GetContactTrackingClicks(string contactId)
+        public ResultSet<ClickActivity> GetContactTrackingClicks(string contactId, DateTime? createdSince)
         {
-            return this.GetContactTrackingClicks(contactId, null);
+            return GetContactTrackingClicks(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -953,37 +965,40 @@ namespace CTCT
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<ClickActivity> GetContactTrackingClicks(string contactId, int? limit)
+        public ResultSet<ClickActivity> GetContactTrackingClicks(string contactId, int? limit, DateTime? createdSince)
         {
             if (contactId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetClicks(this.AccessToken, this.APIKey, contactId, limit);
+            return ContactTrackingService.GetClicks(AccessToken, APIKey, contactId, limit, createdSince);
         }
 
         /// <summary>
         /// Get clicks for a given contact.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity</returns>
-        public ResultSet<ClickActivity> GetContactTrackingClicks(Pagination pag)
+        public ResultSet<ClickActivity> GetContactTrackingClicks(DateTime? createdSince, Pagination pag)
         {
-            return this.ContactTrackingService.GetClicks(this.AccessToken, this.APIKey, pag);
+            return ContactTrackingService.GetClicks(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
         /// Get forwards for a given contact.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId)
+        public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId, DateTime? createdSince)
         {
-            return this.GetContactTrackingForwards(contactId, null);
+            return GetContactTrackingForwards(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -991,37 +1006,41 @@ namespace CTCT
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId, int? limit)
+        public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId, int? limit,
+                                                                     DateTime? createdSince)
         {
             if (contactId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetForwards(this.AccessToken, this.APIKey, contactId, limit);
+            return ContactTrackingService.GetForwards(AccessToken, APIKey, contactId, limit, createdSince);
         }
 
         /// <summary>
         /// Get forwards for a given contact.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
-        public ResultSet<ForwardActivity> GetContactTrackingForwards(Pagination pag)
+        public ResultSet<ForwardActivity> GetContactTrackingForwards(DateTime? createdSince, Pagination pag)
         {
-            return this.ContactTrackingService.GetForwards(this.AccessToken, this.APIKey, pag);
+            return ContactTrackingService.GetForwards(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
         /// Get opens for a given contact.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link OpenActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<OpenActivity> GetContactTrackingOpens(string contactId)
+        public ResultSet<OpenActivity> GetContactTrackingOpens(string contactId, DateTime? createdSince)
         {
-            return this.GetContactTrackingOpens(contactId, null);
+            return GetContactTrackingOpens(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1029,37 +1048,40 @@ namespace CTCT
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link OpenActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<OpenActivity> GetContactTrackingOpens(string contactId, int? limit)
+        public ResultSet<OpenActivity> GetContactTrackingOpens(string contactId, int? limit, DateTime? createdSince)
         {
             if (contactId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetOpens(this.AccessToken, this.APIKey, contactId, limit);
+            return ContactTrackingService.GetOpens(AccessToken, APIKey, contactId, limit, createdSince);
         }
 
         /// <summary>
         /// Get opens for a given contact.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link OpenActivity.</returns>
-        public ResultSet<OpenActivity> GetContactTrackingOpens(Pagination pag)
+        public ResultSet<OpenActivity> GetContactTrackingOpens(DateTime? createdSince, Pagination pag)
         {
-            return this.ContactTrackingService.GetOpens(this.AccessToken, this.APIKey, pag);
+            return ContactTrackingService.GetOpens(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
         /// Get sends for a given contact.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link SendActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<SendActivity> GetContactTrackingSends(string contactId)
+        public ResultSet<SendActivity> GetContactTrackingSends(string contactId, DateTime? createdSince)
         {
-            return this.GetContactTrackingSends(contactId, null);
+            return GetContactTrackingSends(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1067,37 +1089,40 @@ namespace CTCT
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link SendActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<SendActivity> GetContactTrackingSends(string contactId, int? limit)
+        public ResultSet<SendActivity> GetContactTrackingSends(string contactId, int? limit, DateTime? createdSince)
         {
             if (contactId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetSends(this.AccessToken, this.APIKey, contactId, limit);
+            return ContactTrackingService.GetSends(AccessToken, APIKey, contactId, limit, createdSince);
         }
 
         /// <summary>
         /// Get sends for a given contact.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link SendActivity.</returns>
-        public ResultSet<SendActivity> GetContactTrackingSends(Pagination pag)
+        public ResultSet<SendActivity> GetContactTrackingSends(DateTime? createdSince, Pagination pag)
         {
-            return this.ContactTrackingService.GetSends(this.AccessToken, this.APIKey, pag);
+            return ContactTrackingService.GetSends(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
         /// Get opt outs for a given contact.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link OptOutActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<OptOutActivity> GetContactTrackingOptOuts(string contactId)
+        public ResultSet<OptOutActivity> GetContactTrackingOptOuts(string contactId, DateTime? createdSince)
         {
-            return this.GetContactTrackingOptOuts(contactId, null);
+            return GetContactTrackingOptOuts(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1105,26 +1130,28 @@ namespace CTCT
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link OptOutActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<OptOutActivity> GetContactTrackingOptOuts(string contactId, int? limit)
+        public ResultSet<OptOutActivity> GetContactTrackingOptOuts(string contactId, int? limit, DateTime? createdSince)
         {
             if (contactId == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetOptOuts(this.AccessToken, this.APIKey, contactId, limit);
+            return ContactTrackingService.GetOptOuts(AccessToken, APIKey, contactId, limit, createdSince);
         }
 
         /// <summary>
         /// Get opt outs for a given contact.
         /// </summary>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link OptOutActivity.</returns>
-        public ResultSet<OptOutActivity> GetContactTrackingOptOuts(Pagination pag)
+        public ResultSet<OptOutActivity> GetContactTrackingOptOuts(DateTime? createdSince, Pagination pag)
         {
-            return this.ContactTrackingService.GetOptOuts(this.AccessToken, this.APIKey, pag);
+            return ContactTrackingService.GetOptOuts(AccessToken, APIKey, createdSince, pag);
         }
 
         /// <summary>
@@ -1140,7 +1167,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
 
-            return this.ContactTrackingService.GetSummary(this.AccessToken, this.APIKey, contactId);
+            return ContactTrackingService.GetSummary(AccessToken, APIKey, contactId);
         }
 
         #endregion
@@ -1150,20 +1177,22 @@ namespace CTCT
         /// <summary>
         /// Get a set of campaigns.
         /// </summary>
+        /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns()
+        public IList<EmailCampaign> GetCampaigns(DateTime? modifiedSince)
         {
-            return GetCampaigns(null, null);
+            return GetCampaigns(null, null, modifiedSince);
         }
 
         /// <summary>
         /// Get a set of campaigns.
         /// </summary>
         /// <param name="status">Returns list of email campaigns with specified status.</param>
+        /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(CampaignStatus status)
+        public IList<EmailCampaign> GetCampaigns(CampaignStatus status, DateTime? modifiedSince)
         {
-            return GetCampaigns(status, null);
+            return GetCampaigns(status, null, modifiedSince);
         }
 
         /// <summary>
@@ -1171,10 +1200,11 @@ namespace CTCT
         /// </summary>
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit)
+        public IList<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit, DateTime? modifiedSince)
         {
-            return this.EmailCampaignService.GetCampaigns(this.AccessToken, this.APIKey, status, limit);
+            return EmailCampaignService.GetCampaigns(AccessToken, APIKey, status, limit, modifiedSince);
         }
 
         /// <summary>
@@ -1190,7 +1220,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.EmailCampaignOrId);
             }
 
-            return this.EmailCampaignService.GetCampaign(this.AccessToken, this.APIKey, campaignId);
+            return EmailCampaignService.GetCampaign(AccessToken, APIKey, campaignId);
         }
 
         /// <summary>
@@ -1206,7 +1236,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.EmailCampaignOrId);
             }
 
-            return this.EmailCampaignService.AddCampaign(this.AccessToken, this.APIKey, campaign);
+            return EmailCampaignService.AddCampaign(AccessToken, APIKey, campaign);
         }
 
         /// <summary>
@@ -1222,7 +1252,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.EmailCampaignOrId);
             }
 
-            return this.EmailCampaignService.DeleteCampaign(this.AccessToken, this.APIKey, campaignId);
+            return EmailCampaignService.DeleteCampaign(AccessToken, APIKey, campaignId);
         }
 
         /// <summary>
@@ -1238,7 +1268,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.EmailCampaignOrId);
             }
 
-            return this.EmailCampaignService.UpdateCampaign(this.AccessToken, this.APIKey, campaign);
+            return EmailCampaignService.UpdateCampaign(AccessToken, APIKey, campaign);
         }
 
         #endregion
@@ -1251,7 +1281,7 @@ namespace CTCT
         /// <returns>list of all verified account owner's email addresses</returns>
         public IList<VerifiedEmailAddress> GetVerifiedEmailAddress()
         {
-            return AccountService.GetVerifiedEmailAddress(this.AccessToken, this.APIKey);
+            return AccountService.GetVerifiedEmailAddress(AccessToken, APIKey);
         }
 
         #endregion Account service

@@ -165,41 +165,6 @@ namespace CTCT.Util
         }
 
         /// <summary>
-        /// OAuth2 Authorization related configuration options.
-        /// </summary>
-        public struct Auth
-        {
-            /// <summary>
-            /// Authentication base URL.
-            /// </summary>
-            public const string BaseUrl = "https://oauth2.constantcontact.com/oauth2/";
-            /// <summary>
-            /// Query code.
-            /// </summary>
-            public const string ResponseTypeCode = "code";
-            /// <summary>
-            /// Query token.
-            /// </summary>
-            public const string ResponseTypeToken = "token";
-            /// <summary>
-            /// Query authorization type.
-            /// </summary>
-            public const string AuthorizationCodeGrantType = "authorization_code";
-            /// <summary>
-            /// Authorization endpoint.
-            /// </summary>
-            public const string AuthorizationEndpoint = "oauth/siteowner/authorize";
-            /// <summary>
-            /// Token endpoint.
-            /// </summary>
-            public const string TokenEndpoint = "oauth/token";
-            /// <summary>
-            /// Request host.
-            /// </summary>
-            public const string Host = "oauth2.constantcontact.com";
-        }
-
-        /// <summary>
         /// Column names used with bulk activities.
         /// </summary>
         public struct ActivitiesColumns

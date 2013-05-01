@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Text;
+using System.Globalization;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CTCT;
-using CTCT.Util;
 using CTCT.Components.Contacts;
 using System.Net;
-using System.IO;
-using System.Web;
-using Moq;
-using Moq.Protected;
-using CTCT.Auth;
-using CTCT.Services;
 using CTCT.Components.Activities;
 using CTCT.Components.EmailCampaigns;
 using CTCT.Components.Tracking;
@@ -29,7 +21,9 @@ namespace CTCTWrapper.UnitTest
     {
         #region Private Constants
 
-        private const string CUSTOMER_EMAIL = "verified_email_address@...";
+        private const string CustomerEmail = "verified_email_address@...";
+        private const string ApiKey = "apiKey";
+        private const string AccessToken = "accessToken";
 
         #endregion Private Constants
 
@@ -38,7 +32,7 @@ namespace CTCTWrapper.UnitTest
             
         }
 
-        private TestContext testContextInstance;
+        private TestContext _testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -48,11 +42,11 @@ namespace CTCTWrapper.UnitTest
         {
             get
             {
-                return testContextInstance;
+                return _testContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                _testContextInstance = value;
             }
         }
 
@@ -79,7 +73,7 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveVerifiedEmailAddressTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
             var list = cc.GetVerifiedEmailAddress();
 
             Assert.IsNotNull(list);
@@ -93,13 +87,13 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveAddContactTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            Contact contact = new Contact();
-            contact.EmailAddresses.Add(new EmailAddress() { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
-            contact.Lists.Add(new ContactList() { Id = "1", Status = Status.Active });
+            var contact = new Contact();
+            contact.EmailAddresses.Add(new EmailAddress { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
+            contact.Lists.Add(new ContactList { Id = "1", Status = Status.Active });
 
-            Contact nc = cc.AddContact(contact, false);
+            var nc = cc.AddContact(contact, false);
             Assert.IsNotNull(nc);
             Assert.IsNotNull(nc.Id);
         }
@@ -107,11 +101,11 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveGetContactTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            Contact contact = new Contact();
-            contact.EmailAddresses.Add(new EmailAddress() { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
-            contact.Lists.Add(new ContactList() { Id = "1", Status = Status.Active });
+            var contact = new Contact();
+            contact.EmailAddresses.Add(new EmailAddress { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
+            contact.Lists.Add(new ContactList { Id = "1", Status = Status.Active });
 
             Contact nc = cc.AddContact(contact, false);
             Assert.IsNotNull(nc);
@@ -126,13 +120,13 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveUpdateContactTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            Contact contact = new Contact();
-            contact.EmailAddresses.Add(new EmailAddress() { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
-            contact.Lists.Add(new ContactList() { Id = "1", Status = Status.Active });
+            var contact = new Contact();
+            contact.EmailAddresses.Add(new EmailAddress { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
+            contact.Lists.Add(new ContactList { Id = "1", Status = Status.Active });
 
-            Contact nc = cc.AddContact(contact, false);
+            var nc = cc.AddContact(contact, false);
             Assert.IsNotNull(nc);
             Assert.IsNotNull(nc.Id);
 
@@ -148,11 +142,11 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveDeleteContactTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            Contact contact = new Contact();
-            contact.EmailAddresses.Add(new EmailAddress() { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
-            contact.Lists.Add(new ContactList() { Id = "1", Status = Status.Active });
+            var contact = new Contact();
+            contact.EmailAddresses.Add(new EmailAddress { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
+            contact.Lists.Add(new ContactList { Id = "1", Status = Status.Active });
 
             Contact nc = cc.AddContact(contact, false);
             Assert.IsNotNull(nc);
@@ -165,9 +159,9 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveGetAllContacts()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            var result = cc.GetContacts();
+            var result = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Results);
             Assert.AreNotEqual(0, result.Results.Count);
@@ -176,17 +170,17 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveGetContactByEmail()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            Contact contact = new Contact();
-            contact.EmailAddresses.Add(new EmailAddress() { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
-            contact.Lists.Add(new ContactList() { Id = "1", Status = Status.Active });
+            var contact = new Contact();
+            contact.EmailAddresses.Add(new EmailAddress { EmailAddr = String.Format("{0}@email.com", Guid.NewGuid()), ConfirmStatus = ConfirmStatus.NoConfirmationRequired, Status = Status.Active });
+            contact.Lists.Add(new ContactList { Id = "1", Status = Status.Active });
 
             Contact nc = cc.AddContact(contact, false);
             Assert.IsNotNull(nc);
             Assert.IsNotNull(nc.Id);
 
-            var result = cc.GetContacts(nc.EmailAddresses[0].EmailAddr, 1);
+            var result = cc.GetContacts(nc.EmailAddresses[0].EmailAddr, 1, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Results);
             Assert.AreEqual(1, result.Results.Count);
@@ -199,9 +193,9 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveAddContactListTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ContactList contactList = new ContactList() { 
+            ContactList contactList = new ContactList { 
                 Name = string.Format("List {0}", Guid.NewGuid()),
                 Status = Status.Active
             };
@@ -215,17 +209,17 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveGetContactFromListTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            IList<ContactList> lists = cc.GetLists();
+            IList<ContactList> lists = cc.GetLists(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(lists);
             Assert.AreNotEqual(0, lists.Count);
 
-            ResultSet<Contact> contacts = cc.GetContactsFromList(lists[0].Id);
+            ResultSet<Contact> contacts = cc.GetContactsFromList(lists[0].Id, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
 
-            contacts = cc.GetContactsFromList(lists[0].Id, 3);
+            contacts = cc.GetContactsFromList(lists[0].Id, 3, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Meta);
             Assert.IsNotNull(contacts.Meta.Pagination);
@@ -233,7 +227,7 @@ namespace CTCTWrapper.UnitTest
             Assert.IsNotNull(contacts.Results);
             Assert.AreEqual(3, contacts.Results.Count);
 
-            contacts = cc.GetContactsFromList(contacts.Meta.Pagination);
+            contacts = cc.GetContactsFromList(DateTime.Now.AddMonths(-1), contacts.Meta.Pagination);
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Meta);
             Assert.IsNotNull(contacts.Meta.Pagination);
@@ -245,10 +239,10 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveUpdateContactListTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ContactList contactList = new ContactList()
-            {
+            var contactList = new ContactList
+                {
                 Name = string.Format("List {0}", Guid.NewGuid()),
                 Status = Status.Active
             };
@@ -269,9 +263,9 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveDeleteContactListTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ContactList contactList = new ContactList()
+            var contactList = new ContactList
             {
                 Name = string.Format("List {0}", Guid.NewGuid()),
                 Status = Status.Active
@@ -284,7 +278,7 @@ namespace CTCTWrapper.UnitTest
 
             result.Name = string.Format("List - {0}", Guid.NewGuid());
 
-            var deleted = cc.DeleteList(result.Id.ToString());
+            var deleted = cc.DeleteList(result.Id.ToString(CultureInfo.InvariantCulture));
             Assert.IsTrue(deleted);
         }
 
@@ -295,15 +289,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveAddEmailCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -311,7 +305,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -327,7 +321,7 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
@@ -337,15 +331,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveGetEmailCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -353,7 +347,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -369,7 +363,7 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
@@ -383,15 +377,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveUpdateEmailCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -399,7 +393,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -415,7 +409,7 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
@@ -431,15 +425,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveDeleteEmailCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -447,7 +441,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -463,7 +457,7 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
@@ -480,15 +474,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveScheduleCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            EmailCampaign camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -496,7 +490,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -512,14 +506,14 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now.AddMonths(1);
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
@@ -528,15 +522,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveGetScheduledCampaignsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -544,7 +538,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -560,14 +554,14 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now.AddMonths(1);
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
@@ -581,15 +575,15 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveUpdateFailedForScheduledCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -597,7 +591,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -613,14 +607,14 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now.AddMonths(1);
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
@@ -634,15 +628,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveDeleteScheduleForCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -650,7 +644,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -666,19 +660,19 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now.AddMonths(1);
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            var result = cc.DeleteSchedule(camp.Id, schedule.Id.ToString());
+            var result = cc.DeleteSchedule(camp.Id, schedule.Id.ToString(CultureInfo.InvariantCulture));
 
             Assert.IsTrue(result);
         }
@@ -687,15 +681,15 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveScheduleAnAlreadyScheduledCampaignTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -703,7 +697,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -719,20 +713,20 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now.AddMonths(1);
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             DateTime schDateAgain = DateTime.Now.AddMonths(2);
-            Schedule scheduleAgain = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDateAgain });
+            Schedule scheduleAgain = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDateAgain });
             Assert.IsNull(scheduleAgain);
         }
 
@@ -743,15 +737,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveCampaignTrackingGetSummaryTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -759,7 +753,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -775,7 +769,7 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
@@ -790,15 +784,15 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetNotSentForTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+           var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -806,7 +800,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -822,7 +816,7 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
@@ -837,15 +831,15 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetSendNowForTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -853,7 +847,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -869,14 +863,14 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
-            DateTime schDate = DateTime.Now;
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            var schDate = DateTime.Now;
+            var schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
@@ -890,22 +884,22 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetClicksTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+           var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -921,19 +915,19 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now.AddDays(1);
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            ResultSet<ClickActivity> result = cc.GetCampaignTrackingClicks(camp.Id, "1", null);
+            ResultSet<ClickActivity> result = cc.GetCampaignTrackingClicks(camp.Id, "1", null, DateTime.Now.AddMonths(-1));
 
             Assert.IsNotNull(result);
         }
@@ -942,22 +936,22 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetForwardsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+           var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -973,19 +967,19 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now;
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            ResultSet<ForwardActivity> result = cc.GetCampaignTrackingForwards(camp.Id, null);
+            ResultSet<ForwardActivity> result = cc.GetCampaignTrackingForwards(camp.Id, null, DateTime.Now.AddMonths(-1));
 
             Assert.IsNotNull(result);
         }
@@ -994,22 +988,22 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetOpensTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+           var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -1025,19 +1019,19 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now;
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            ResultSet<OpenActivity> result = cc.GetCampaignTrackingOpens(camp.Id, null);
+            ResultSet<OpenActivity> result = cc.GetCampaignTrackingOpens(camp.Id, null, DateTime.Now.AddMonths(-1));
 
             Assert.IsNotNull(result);
         }
@@ -1046,22 +1040,22 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetSendsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+           var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -1077,19 +1071,19 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now;
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            ResultSet<SendActivity> result = cc.GetCampaignTrackingSends(camp.Id, null);
+            ResultSet<SendActivity> result = cc.GetCampaignTrackingSends(camp.Id, null, DateTime.Now.AddMonths(-1));
 
             Assert.IsNotNull(result);
         }
@@ -1098,22 +1092,22 @@ namespace CTCTWrapper.UnitTest
         [ExpectedException(typeof(CtctException))]
         public void LiveCampaignTrackingGetOptOutsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -1129,19 +1123,19 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
             DateTime schDate = DateTime.Now;
-            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule() { ScheduledDate = schDate });
+            Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            ResultSet<OptOutActivity> result = cc.GetCampaignTrackingOptOuts(camp.Id, null);
+            ResultSet<OptOutActivity> result = cc.GetCampaignTrackingOptOuts(camp.Id, null, DateTime.Now.AddMonths(-1));
 
             Assert.IsNotNull(result);
         }
@@ -1153,15 +1147,15 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveEmailCampaignTestSendTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            EmailCampaign camp = new EmailCampaign()
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
                 FromName = "my company",
-                FromEmail = CUSTOMER_EMAIL,
-                ReplyToEmail = CUSTOMER_EMAIL,
+                FromEmail = CustomerEmail,
+                ReplyToEmail = CustomerEmail,
                 Name = "campaign_" + DateTime.Now.ToString("yyMMddHHmmss"),
                 TextContent = "email campaign text content",
                 GreetingString = "Dear ",
@@ -1169,7 +1163,7 @@ namespace CTCTWrapper.UnitTest
                 Status = CampaignStatus.DRAFT,
                 EmailContentFormat = CampaignEmailFormat.HTML,
                 StyleSheet = "",
-                MessageFooter = new MessageFooter()
+                MessageFooter = new MessageFooter
                 {
                     OrganizationName = "my organization",
                     AddressLine1 = "123 Mapple Street",
@@ -1185,16 +1179,16 @@ namespace CTCTWrapper.UnitTest
                     SubscribeLinkText = "subscribe link"
                 }
                 ,
-                Lists = new List<SentContactList>() { new SentContactList() { Id = "1" } }
+                Lists = new List<SentContactList> { new SentContactList { Id = "1" } }
             };
             camp = cc.AddCampaign(camp);
             Assert.IsNotNull(camp);
             Assert.IsNotNull(camp.Id);
 
-            TestSend test = new TestSend() { 
+            var test = new TestSend { 
                 Format = EmailFormat.HTML_AND_TEXT.ToString(),
                 PersonalMessage = "This is a test send of the email campaign message.",
-                EmailAddresses = new List<string> { CUSTOMER_EMAIL }
+                EmailAddresses = new List<string> { CustomerEmail }
             };
 
             var testSend = cc.SendTest(camp.Id, test);
@@ -1210,9 +1204,9 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveContactTrackingSummaryTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
@@ -1223,7 +1217,7 @@ namespace CTCTWrapper.UnitTest
             //Assert.AreNotEqual(0, summary.Opens);
             //Assert.AreNotEqual(0, summary.Sends);
 
-            IList<EmailCampaign> camps = cc.GetCampaigns();
+            IList<EmailCampaign> camps = cc.GetCampaigns(DateTime.Now.AddMonths(-1));
             summary = cc.GetCampaignTrackingSummary(camps[1].Id);
             //Assert.AreNotEqual(0, summary.Forwards);
             //Assert.AreNotEqual(0, summary.Opens);
@@ -1234,22 +1228,22 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveContactTrackingClicksTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
-            ResultSet<ClickActivity> ca = cc.GetContactTrackingClicks(contacts.Results[0].Id);
+            ResultSet<ClickActivity> ca = cc.GetContactTrackingClicks(contacts.Results[0].Id, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(ca);
         }
 
         [TestMethod]
         public void LiveContactTrackingBouncesTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
@@ -1260,56 +1254,56 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveContactTrackingForwardsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
 
-            ResultSet<ForwardActivity> fa = cc.GetContactTrackingForwards(contacts.Results[0].Id);
+            ResultSet<ForwardActivity> fa = cc.GetContactTrackingForwards(contacts.Results[0].Id, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(fa);
         }
 
         [TestMethod]
         public void LiveContactTrackingOpensTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
 
-            ResultSet<OpenActivity> a = cc.GetContactTrackingOpens(contacts.Results[0].Id);
+            ResultSet<OpenActivity> a = cc.GetContactTrackingOpens(contacts.Results[0].Id, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(a);
         }
 
         [TestMethod]
         public void LiveContactTrackingSendsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
 
-            ResultSet<SendActivity> a = cc.GetContactTrackingSends(contacts.Results[0].Id);
+            ResultSet<SendActivity> a = cc.GetContactTrackingSends(contacts.Results[0].Id, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(a);
         }
 
         [TestMethod]
         public void LiveContactTrackingUnsubscribesTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
 
-            ResultSet<Contact> contacts = cc.GetContacts();
+            ResultSet<Contact> contacts = cc.GetContacts(DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(contacts);
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
 
-            ResultSet<OptOutActivity> a = cc.GetContactTrackingOptOuts(contacts.Results[0].Id);
+            ResultSet<OptOutActivity> a = cc.GetContactTrackingOptOuts(contacts.Results[0].Id, DateTime.Now.AddMonths(-1));
             Assert.IsNotNull(a);
         } 
 
@@ -1320,30 +1314,30 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveActivityAddContactTest()
         {
-            ConstantContact cc = new ConstantContact();
-            AddContacts add = new AddContacts(
-                new List<AddContactsImportData>(){
-                    new AddContactsImportData(){
-                        EmailAddresses = new List<string>(){ String.Format("{0}@example.com", Guid.NewGuid()) }
+            var cc = new ConstantContact(ApiKey, AccessToken);
+            var add = new AddContacts(
+                new List<AddContactsImportData>{
+                    new AddContactsImportData{
+                        EmailAddresses = new List<string>{ String.Format("{0}@example.com", Guid.NewGuid()) }
                     }
                 },
-                new List<string>() { "1" },
+                new List<string> { "1" },
                 null
                 );
-            Activity act = cc.CreateAddContactsActivity(add);
+            var act = cc.CreateAddContactsActivity(add);
             Assert.IsNotNull(act);
         }
 
         [TestMethod]
         public void LiveActivityRemoveContactTest()
         {
-            ConstantContact cc = new ConstantContact();
-            var emailAddresses = new List<string>(){ String.Format("{0}@example.com", Guid.NewGuid()) };
-            var lists = new List<string>() { "2" };
+            var cc = new ConstantContact(ApiKey, AccessToken);
+            var emailAddresses = new List<string>{ String.Format("{0}@example.com", Guid.NewGuid()) };
+            var lists = new List<string> { "2" };
 
-            AddContacts add = new AddContacts(
-                new List<AddContactsImportData>(){
-                    new AddContactsImportData(){
+            var add = new AddContacts(
+                new List<AddContactsImportData>{
+                    new AddContactsImportData{
                         EmailAddresses = emailAddresses
                     }
                 },
@@ -1362,13 +1356,13 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveActivityClearListTest()
         {
-            ConstantContact cc = new ConstantContact();
-            var emailAddresses = new List<string>() { String.Format("{0}@example.com", Guid.NewGuid()) };
-            var lists = new List<string>() { "2" };
+            var cc = new ConstantContact(ApiKey, AccessToken);
+            var emailAddresses = new List<string> { String.Format("{0}@example.com", Guid.NewGuid()) };
+            var lists = new List<string> { "2" };
 
-            AddContacts add = new AddContacts(
-                new List<AddContactsImportData>(){
-                    new AddContactsImportData(){
+            var add = new AddContacts(
+                new List<AddContactsImportData>{
+                    new AddContactsImportData{
                         EmailAddresses = emailAddresses
                     }
                 },
@@ -1387,7 +1381,7 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveActivityExportContactsTest()
         {
-            ConstantContact cc = new ConstantContact();
+            var cc = new ConstantContact(ApiKey, AccessToken);
             var lists = new List<string>() { "1" };
 
             ExportContacts export = new ExportContacts();
@@ -1403,14 +1397,14 @@ namespace CTCTWrapper.UnitTest
         [TestMethod]
         public void LiveActivityGetSummaryReportTest()
         {
-            ConstantContact cc = new ConstantContact();
-            AddContacts add = new AddContacts(
-                new List<AddContactsImportData>(){
-                    new AddContactsImportData(){
-                        EmailAddresses = new List<string>(){ String.Format("{0}@example.com", Guid.NewGuid()) }
+            var cc = new ConstantContact(ApiKey, AccessToken);
+            var add = new AddContacts(
+                new List<AddContactsImportData>{
+                    new AddContactsImportData{
+                        EmailAddresses = new List<string>{ String.Format("{0}@example.com", Guid.NewGuid()) }
                     }
                 },
-                new List<string>() { "1" },
+                new List<string> { "1" },
                 null
                 );
             Activity act = cc.CreateAddContactsActivity(add);
@@ -1428,5 +1422,15 @@ namespace CTCTWrapper.UnitTest
 
         #endregion
 
+        #region Authentication
+
+        [TestMethod]
+        public void LiveAuthenticationTest()
+        {
+            string state = "ok";
+            var accessToken = OAuth.AuthenticateFromWinProgram(ref state);            
+        }
+
+        #endregion
     }
 }

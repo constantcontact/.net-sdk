@@ -518,6 +518,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmContact";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmContact_FormClosing);
             this.Load += new System.EventHandler(this.frmContact_Load);
             this.pnlContactInformation.ResumeLayout(false);
             this.pnlContactInformation.PerformLayout();

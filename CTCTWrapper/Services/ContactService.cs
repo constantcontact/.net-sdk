@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using CTCT.Components.Contacts;
 using CTCT.Util;
-using System.Web.Script.Serialization;
 using CTCT.Components;
 using CTCT.Exceptions;
 
@@ -22,10 +18,11 @@ namespace CTCT.Services
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit)
+        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince)
         {
-            return GetContacts(accessToken, apiKey, email, limit, null);
+            return GetContacts(accessToken, apiKey, email, limit, modifiedSince, null);
         }
 
         /// <summary>
@@ -33,11 +30,12 @@ namespace CTCT.Services
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
         /// <param name="apiKey">The API key for the application</param>
+        /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, Pagination pag)
+        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, DateTime? modifiedSince, Pagination pag)
         {
-            return GetContacts(accessToken, apiKey, null, null, pag);
+            return GetContacts(accessToken, apiKey, null, null, modifiedSince, pag);
         }
 
         /// <summary>
@@ -47,16 +45,17 @@ namespace CTCT.Services
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values.</param>
+        /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        private ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, Pagination pag)
+        private ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince, Pagination pag)
         {
             ResultSet<Contact> results = null;
             // Construct access URL
-            string url = (pag == null) ? Config.ConstructUrl(Config.Endpoints.Contacts, null, new object[] { "email", email, "limit", limit }) : pag.GetNextUrl();
+            string url = (pag == null) ? Config.ConstructUrl(Config.Endpoints.Contacts, null, new object[] { "email", email, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) }) : pag.GetNextUrl();
             // Get REST response
             CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
+            
             if (response.IsError)
             {
                 throw new CtctException(response.GetErrorMessage());

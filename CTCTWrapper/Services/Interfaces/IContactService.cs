@@ -1,6 +1,5 @@
 ﻿using System;
 using CTCT.Components.Contacts;
-using System.Collections.Generic;
 using CTCT.Components;
 namespace CTCT.Services
 {
@@ -16,17 +15,19 @@ namespace CTCT.Services
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values.</param>
+        /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
         /// <returns>Returns a list of contacts.</returns>
-        ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit);
+        ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince);
 
         /// <summary>
         /// Get an array of contacts.
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
         /// <param name="apiKey">The API key for the application</param>
+        /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        ResultSet<Contact> GetContacts(string accessToken, string apiKey, Pagination pag);
+        ResultSet<Contact> GetContacts(string accessToken, string apiKey, DateTime? modifiedSince, Pagination pag);
 
         /// <summary>
         /// Get contact details for a specific contact.
