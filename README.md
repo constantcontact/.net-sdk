@@ -11,10 +11,6 @@ In order to use the Constant Contact SDK you have to follow these steps:
 
 `<add key="APIKey" value="APIkey"/>`
 <br>
-`<add key="Password" value="password"/>`
-<br>
-`<add key="Username" value="username"/>`
-<br>
 `<add key="RedirectURL" value="RedirectURL"/>`
 
 ## Usage
@@ -23,19 +19,23 @@ In order to use the Constant Contact SDK you have to follow these steps:
 
  `using CTCT; `
 <br>
- `using CTCT.Util;` 
+ `using CTCT.Components;` 
 <br>
 `using CTCT.Components.Contacts;`
 <br>
-`using CTCT.Auth;`
+`using CTCT.Components.EmailCampaigns;`
 <br>
-`using CTCT.Services;`  
+`using CTCT.Exceptions;;`  
 
-2) Create a ConstantContact object
+2) Get the access token (supports only windows forms at this point but the flow is the same for webform)
 
-`ConstantContact constantContact = new ConstantContact(); `                                                                                     
+`_accessToken = OAuth.AuthenticateFromWinProgram(ref state); ` 
+
+3) Create a ConstantContact object
+
+`ConstantContact constantContact = new ConstantContact(_apiKey, _accessToken); `                                                                                     
                   
-3) Use the functions of the SDK using the created object.   
+4) Use the functions of the SDK using the created object.   
              
 ######Example for getting an contact
 
