@@ -27,11 +27,11 @@ In order to use the Constant Contact SDK you have to follow these steps:
 <br>
 `using CTCT.Exceptions;;`  
 
-2) Get the access token with the built-in authentication form (supports only windows forms at this point but the flow is the same for webform).  You can also retrieve (or hard code) your access token from elsewhere here.
+2) Get the access token with the built-in authentication form (supports only windows forms at this point but the flow is the same for webform).  You can also retrieve (or hard code) your access token here.
 
 `_accessToken = OAuth.AuthenticateFromWinProgram(ref state); ` 
 <br>
-OR
+Or
 <br>
 `_accessToken = "accessTokenValue"; ` 
 <br>
