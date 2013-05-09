@@ -42,7 +42,7 @@ Or
                   
 4) Use the functions of the SDK using the created object.   
              
-######Example for getting an contact
+######Example for getting a contact
 
 `Contact contact = constantContact.GetContact(int contactId);`                                                      
 
