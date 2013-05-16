@@ -36,18 +36,27 @@ In order to use the Constant Contact SDK you have to follow these steps:
 2.2) For web forms (this is just an example, the login actions is done at a button click)
 
 `protected void Page_Load(object sender, EventArgs e)`
+<br>
 `{`
+<br>
 `	var code = HttpContext.Current.Request.QueryString["code"];`
-``
+<br>
 `	if (!string.IsNullOrWhiteSpace(code))`
+<br>
 `	{`
+<br>
 `		_accessToken = OAuth.GetAccessTokenByCodeForWebApplication(HttpContext.Current, code);`
+<br>
 `	}`
+<br>
 `}`
-``
+<br>
 `protected void ButtonLogin_Click(object sender, EventArgs e)`
+<br>
 `{`
+<br>
 `	OAuth.AuthorizeFromWebApplication(HttpContext.Current, "ok");`
+<br>
 `}`
 
 
