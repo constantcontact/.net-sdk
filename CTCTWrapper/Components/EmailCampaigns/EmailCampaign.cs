@@ -144,7 +144,7 @@ namespace CTCT.Components.EmailCampaigns
         /// <summary>
         /// Gets or sets the greeting.
         /// </summary>
-        [DataMember(Name = "greetings_salutations", EmitDefaultValue = false)]
+        [DataMember(Name = "greeting_salutations", EmitDefaultValue = false)]
         public string GreetingSalutations { get; set; }
         /// <summary>
         /// Greeting name, string representation.
