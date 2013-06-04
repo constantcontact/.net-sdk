@@ -879,6 +879,21 @@ namespace CTCTWrapper.UnitTest
 
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        // NOTE: the ExpectedException annotation is present because the tests actually fail when the campaign 
+        //  isn't in sent state. This essentially means these tests are almost useless :(
+        [ExpectedException(typeof(CtctException))]
+        public void LiveCampaignTrackingGetAllClicksTest()
+        {
+            var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var camp = CreateTestCampaign(cc);
+
+            ResultSet<ClickActivity> result = cc.GetCampaignTrackingClicks(camp.Id, null, DateTime.Now.AddMonths(-1));
+
+            Assert.IsNotNull(result);
+        }
         
         [TestMethod]
         [ExpectedException(typeof(CtctException))]
@@ -886,7 +901,16 @@ namespace CTCTWrapper.UnitTest
         {
             var cc = new ConstantContact(ApiKey, AccessToken);
 
-           var camp = new EmailCampaign
+            var camp = CreateTestCampaign(cc);
+
+            ResultSet<ClickActivity> result = cc.GetCampaignTrackingClicks(camp.Id, "1", null, DateTime.Now.AddMonths(-1));
+
+            Assert.IsNotNull(result);
+        }
+
+        private EmailCampaign CreateTestCampaign(ConstantContact cc)
+        {
+            var camp = new EmailCampaign
             {
                 EmailContent = "<html><body>EMAIL CONTENT.</body></html>",
                 Subject = "campaign subject",
@@ -927,9 +951,7 @@ namespace CTCTWrapper.UnitTest
             Assert.AreNotEqual(0, schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            ResultSet<ClickActivity> result = cc.GetCampaignTrackingClicks(camp.Id, "1", null, DateTime.Now.AddMonths(-1));
-
-            Assert.IsNotNull(result);
+            return camp;
         }
 
         [TestMethod]

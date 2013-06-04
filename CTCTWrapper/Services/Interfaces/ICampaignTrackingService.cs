@@ -45,6 +45,17 @@ namespace CTCT.Services
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
         /// <param name="apiKey">The API key for the application</param>
+        /// <param name="campaignId">Campaign id.</param>
+        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
+        /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
+        ResultSet<ClickActivity> GetClicks(string accessToken, string apiKey, string campaignId, int? limit, DateTime? createdSince);
+
+        /// <summary>
+        /// Get clicks for a given campaign.
+        /// </summary>
+        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
+        /// <param name="apiKey">The API key for the application</param>
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
