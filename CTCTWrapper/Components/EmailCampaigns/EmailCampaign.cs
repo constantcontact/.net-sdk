@@ -203,6 +203,11 @@ namespace CTCT.Components.EmailCampaigns
         [DataMember(Name = "tracking_summary", EmitDefaultValue = false)]
         public TrackingSummary TrackingSummary { get; set; }
         /// <summary>
+        /// Click through details for each link in this email campaign.
+        /// </summary>
+        [DataMember(Name = "click_through_details", EmitDefaultValue=false)]
+        public IList<ClickThroughDetails> ClickThroughDetails { get; set; }
+        /// <summary>
         /// Gets or sets the message footer.
         /// </summary>
         [DataMember(Name = "message_footer")]
