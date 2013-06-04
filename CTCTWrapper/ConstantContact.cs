@@ -750,12 +750,28 @@ namespace CTCT
         /// Get clicks for a given campaign.
         /// </summary>
         /// <param name="campaignId">Campaign id.</param>
+        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
+        /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
+        public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, int? limit, DateTime? createdSince)
+        {
+            if (campaignId == null)
+            {
+                throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
+            }
+
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, campaignId, limit, createdSince);
+        }
+
+        /// <summary>
+        /// Get clicks for a specific link in a campaign.
+        /// </summary>
+        /// <param name="campaignId">Campaign id.</param>
         /// <param name="linkId">Specifies the link in the email campaign to retrieve click data for.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
-        public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, string linkId, int? limit,
-                                                                  DateTime? createdSince)
+        public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, string linkId, int? limit, DateTime? createdSince)
         {
             if (campaignId == null)
             {

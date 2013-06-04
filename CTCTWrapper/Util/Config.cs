@@ -105,7 +105,11 @@ namespace CTCT.Util
             /// <summary>
             /// Campaign tracking clicks.
             /// </summary>
-            public const string CampaignTrackingClicks = "emailmarketing/campaigns/{0}/tracking/clicks/{1}";
+            public const string CampaignTrackingClicks = "emailmarketing/campaigns/{0}/tracking/clicks";
+            /// <summary>
+            /// Campaign tracking clicks for a specific link.
+            /// </summary>
+            public const string CampaignTrackingClicksForLink = "emailmarketing/campaigns/{0}/tracking/clicks/{1}";
             /// <summary>
             /// Campaign tracking forwards.
             /// </summary>
