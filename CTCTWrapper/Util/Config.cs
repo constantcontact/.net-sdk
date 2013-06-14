@@ -355,6 +355,10 @@ namespace CTCT.Util
             /// EmailCampaign or id error.
             /// </summary>
             public const string EmailCampaignOrId = "Only an interger or EmailCampaign are allowed for this method.";
+            /// <summary>
+            /// Update contact without ID error.
+            /// </summary>
+            public const string UpdateId = "You must provide a contact ID in order to update a contact.";
         }
 
         /// <summary>

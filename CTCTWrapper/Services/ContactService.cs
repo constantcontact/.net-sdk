@@ -195,6 +195,10 @@ namespace CTCT.Services
         public Contact UpdateContact(string accessToken, string apiKey, Contact contact, bool actionByVisitor)
         {
             Contact updateContact = null;
+            if (contact.Id == null)
+            {
+                throw new CtctException(Config.Errors.UpdateId);
+            }
             string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Contact, contact.Id), actionByVisitor ? String.Format("?action_by={0}", ActionBy.ActionByVisitor) : null);
             string json = contact.ToJSON();
             CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
