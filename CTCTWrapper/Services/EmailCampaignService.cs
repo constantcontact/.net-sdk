@@ -22,11 +22,11 @@ namespace CTCT.Services
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
-        /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince)
+        /// <returns>Returns a ResultSet of campaigns.</returns>
+        public ResultSet<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince, Pagination pag)
         {
-            IList<EmailCampaign> campaigns = new List<EmailCampaign>();
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Campaigns, GetQueryParameters(new object[] { "status", status, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) }));
+            ResultSet<EmailCampaign> results = null;
+            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Campaigns, GetQueryParameters(new object[] { "status", status, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) })) : pag.GetNextUrl();
             CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
 
             if (response.IsError)
@@ -36,11 +36,10 @@ namespace CTCT.Services
 
             if (response.HasData)
             {
-                ResultSet<EmailCampaign> res = response.Get<ResultSet<EmailCampaign>>();
-                campaigns = res.Results;
+                results = response.Get<ResultSet<EmailCampaign>>();
             }
 
-            return campaigns;
+            return results;
         }
 
         /// <summary>

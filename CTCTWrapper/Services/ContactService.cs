@@ -124,7 +124,7 @@ namespace CTCT.Services
         }
 
         /// <summary>
-        /// Delete contact details for a specific contact.
+        /// Unsubscribe a specific contact.
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
         /// <param name="apiKey">The API key for the application</param>

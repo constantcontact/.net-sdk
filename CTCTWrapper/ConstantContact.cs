@@ -254,7 +254,7 @@ namespace CTCT
         }
 
         /// <summary>
-        /// Sets an individual contact to 'REMOVED' status.
+        /// Sets an individual contact to 'Unsubscribed' status.
         /// </summary>
         /// <param name="contact">Contact object.</param>
         /// <returns>Returns true if operation succeeded.</returns>
@@ -269,7 +269,7 @@ namespace CTCT
         }
 
         /// <summary>
-        /// Sets an individual contact to 'REMOVED' status.
+        /// Sets an individual contact to 'Unsubscribed' status.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <returns>Returns true if operation succeeded.</returns>
@@ -285,7 +285,7 @@ namespace CTCT
         }
 
         /// <summary>
-        /// Delete a contact from all contact lists.
+        /// Delete a contact from all contact lists. Sets them to 'Removed' status.
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <returns>Returns true if operation succeeded.</returns>
@@ -1177,11 +1177,21 @@ namespace CTCT
         /// <summary>
         /// Get a set of campaigns.
         /// </summary>
+        /// <param name="pagination">Select the next page of campaigns from a pagination</param>
+        /// <returns>Returns a list of campaigns.</returns>
+        public ResultSet<EmailCampaign> GetCampaigns(Pagination pagination)
+        {
+            return GetCampaigns(null, null, null, pagination);
+        }
+
+        /// <summary>
+        /// Get a set of campaigns.
+        /// </summary>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(DateTime? modifiedSince)
+        public ResultSet<EmailCampaign> GetCampaigns(DateTime? modifiedSince)
         {
-            return GetCampaigns(null, null, modifiedSince);
+            return GetCampaigns(null, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -1190,9 +1200,9 @@ namespace CTCT
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(CampaignStatus status, DateTime? modifiedSince)
+        public ResultSet<EmailCampaign> GetCampaigns(CampaignStatus status, DateTime? modifiedSince)
         {
-            return GetCampaigns(status, null, modifiedSince);
+            return GetCampaigns(status, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -1202,9 +1212,9 @@ namespace CTCT
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
-        public IList<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit, DateTime? modifiedSince)
+        public ResultSet<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit, DateTime? modifiedSince, Pagination pagination)
         {
-            return EmailCampaignService.GetCampaigns(AccessToken, APIKey, status, limit, modifiedSince);
+            return EmailCampaignService.GetCampaigns(AccessToken, APIKey, status, limit, modifiedSince, pagination);
         }
 
         /// <summary>
