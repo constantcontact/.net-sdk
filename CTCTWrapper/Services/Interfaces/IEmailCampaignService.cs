@@ -18,6 +18,18 @@ namespace CTCT.Services
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a list of campaigns.</returns>
+        ResultSet<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince);
+        
+        /// <summary>
+        /// Get a set of campaigns.
+        /// </summary>
+        /// <param name="accessToken">Access token.</param>
+        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="status">Returns list of email campaigns with specified status.</param>
+        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
+        /// <param name="pag">Pagination object returned by a previous call to GetCampaigns</param>
+        /// <returns>Returns a list of campaigns.</returns>
         ResultSet<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince, Pagination pag);
 
         /// <summary>

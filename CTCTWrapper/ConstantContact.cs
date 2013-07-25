@@ -1211,6 +1211,7 @@ namespace CTCT
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
+        /// <param name="pagination">Pagination object supplied by a previous call to GetCampaigns when another page is present</param>
         /// <returns>Returns a list of campaigns.</returns>
         public ResultSet<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit, DateTime? modifiedSince, Pagination pagination)
         {
