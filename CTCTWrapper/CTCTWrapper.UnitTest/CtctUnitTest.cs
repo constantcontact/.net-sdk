@@ -1239,8 +1239,8 @@ namespace CTCTWrapper.UnitTest
             //Assert.AreNotEqual(0, summary.Opens);
             //Assert.AreNotEqual(0, summary.Sends);
 
-            IList<EmailCampaign> camps = cc.GetCampaigns(DateTime.Now.AddMonths(-1));
-            summary = cc.GetCampaignTrackingSummary(camps[1].Id);
+            ResultSet<EmailCampaign> camps = cc.GetCampaigns(DateTime.Now.AddMonths(-1));
+            summary = cc.GetCampaignTrackingSummary(camps.Results[1].Id);
             //Assert.AreNotEqual(0, summary.Forwards);
             //Assert.AreNotEqual(0, summary.Opens);
             //Assert.AreNotEqual(0, summary.Sends);
