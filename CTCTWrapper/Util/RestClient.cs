@@ -90,7 +90,10 @@ namespace CTCT.Util
             {
                 // Convert the request contents to a byte array and include it
                 byte[] requestBodyBytes = System.Text.Encoding.UTF8.GetBytes(data);
-                request.GetRequestStream().Write(requestBodyBytes, 0, requestBodyBytes.Length);
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(requestBodyBytes, 0, requestBodyBytes.Length);
+                }
             }
 
             // Now try to send the request
