@@ -118,11 +118,11 @@ namespace CTCTWrapper_EmailCampaign
                     {
                         if (rbnSendNow.Checked)
                         {
-                            schedule = new Schedule() { ScheduledDate = DateTime.Now };
+                            schedule = new Schedule() { ScheduledDate = DateTime.Now.AddMinutes(20).ToUniversalTime() };
                         }
                         else
                         {
-                            schedule = new Schedule() { ScheduledDate = Convert.ToDateTime(txtScheduleDate.Text.Trim()) };
+                            schedule = new Schedule() { ScheduledDate = Convert.ToDateTime(txtScheduleDate.Text.Trim()).ToUniversalTime() };
                         }
 
                         Schedule savedSchedule = _constantContact.AddSchedule(savedCampaign.Id, schedule);
@@ -612,6 +612,11 @@ namespace CTCTWrapper_EmailCampaign
         private void frmEmailCampaign_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

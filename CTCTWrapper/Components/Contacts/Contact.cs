@@ -118,7 +118,7 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the lists.
         /// </summary>
         [DataMember(Name = "lists")]
-        public IList<ContactList> Lists { get; private set; }
+        public List<ContactList> Lists { get; private set; }
         /// <summary>
         /// Gets or sets the source details.
         /// </summary>

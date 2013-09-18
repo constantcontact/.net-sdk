@@ -94,6 +94,7 @@
             this.lblCreateCampaign = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblClose = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.pnlCreateCampaign.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -104,6 +105,7 @@
             this.pnlCreateCampaign.AutoScroll = true;
             this.pnlCreateCampaign.BackColor = System.Drawing.SystemColors.Window;
             this.pnlCreateCampaign.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnlCreateCampaign.Controls.Add(this.textBox1);
             this.pnlCreateCampaign.Controls.Add(this.label4);
             this.pnlCreateCampaign.Controls.Add(this.label3);
             this.pnlCreateCampaign.Controls.Add(this.label2);
@@ -224,7 +226,7 @@
             this.lblExplanation.Size = new System.Drawing.Size(562, 13);
             this.lblExplanation.TabIndex = 25;
             this.lblExplanation.Text = "* Set your email status to Draft, or Schedule a date and time to send it. If you\'" +
-    "re ready to send it now, select Send Now.";
+                "re ready to send it now, select Send Now.";
             // 
             // panel2
             // 
@@ -330,9 +332,9 @@
             this.lblEmailContent.AutoSize = true;
             this.lblEmailContent.Location = new System.Drawing.Point(20, 250);
             this.lblEmailContent.Name = "lblEmailContent";
-            this.lblEmailContent.Size = new System.Drawing.Size(74, 13);
+            this.lblEmailContent.Size = new System.Drawing.Size(98, 26);
             this.lblEmailContent.TabIndex = 19;
-            this.lblEmailContent.Text = "Email content:";
+            this.lblEmailContent.Text = "Email content:\r\n(Must be valid html)";
             // 
             // panel1
             // 
@@ -769,6 +771,18 @@
             this.lblClose.Text = "X";
             this.lblClose.Click += new System.EventHandler(this.lblClose_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox1.Location = new System.Drawing.Point(358, 141);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(261, 33);
+            this.textBox1.TabIndex = 33;
+            this.textBox1.Text = "To verify more email addresses in your account, login and go to \"My Settings>>Ver" +
+                "ify Addresses\"";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // frmEmailCampaign
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -862,6 +876,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.ComboBox cbState;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
