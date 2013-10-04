@@ -103,7 +103,7 @@ namespace CTCT.Services
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
-        public ResultSet<ClickActivity> GetClicks(string accessToken, string apiKey, DateTime? createdSince, Pagination pag)
+        public ResultSet<ClickActivity> GetClicks(string accessToken, string apiKey, Pagination pag)
         {
             return GetClicks(accessToken, apiKey, pag.GetNextUrl());
         }

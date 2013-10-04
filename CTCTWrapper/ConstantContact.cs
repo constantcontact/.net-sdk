@@ -781,6 +781,11 @@ namespace CTCT
             return CampaignTrackingService.GetClicks(AccessToken, APIKey, campaignId, linkId, limit, createdSince);
         }
 
+        public ResultSet<ClickActivity> GetCampaignTrackingClicks(Pagination pag)
+        {
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, pag);
+        }
+
         /// <summary>
         /// Get clicks for a given campaign.
         /// </summary>

@@ -59,7 +59,7 @@ namespace CTCT.Services
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
-        ResultSet<ClickActivity> GetClicks(string accessToken, string apiKey, DateTime? createdSince, Pagination pag);
+        ResultSet<ClickActivity> GetClicks(string accessToken, string apiKey, Pagination pag);
 
         /// <summary>
         /// Get forwards for a given campaign.
