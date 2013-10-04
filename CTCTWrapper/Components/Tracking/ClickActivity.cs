@@ -17,7 +17,7 @@ namespace CTCT.Components.Tracking
         /// Gets or sets the link identification.
         /// </summary>
         [DataMember(Name="link_id")]
-        public int LinkId { get; set; }
+        public string LinkId { get; set; }
         /// <summary>
         /// Gets or sets the click date.
         /// </summary>
