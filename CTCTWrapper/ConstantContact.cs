@@ -781,15 +781,20 @@ namespace CTCT
             return CampaignTrackingService.GetClicks(AccessToken, APIKey, campaignId, linkId, limit, createdSince);
         }
 
+        public ResultSet<ClickActivity> GetCampaignTrackingClicks(Pagination pag)
+        {
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, pag);
+        }
+
         /// <summary>
         /// Get clicks for a given campaign.
         /// </summary>
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
-        public ResultSet<ClickActivity> GetClicks(DateTime? createdSince, Pagination pag)
+        public ResultSet<ClickActivity> GetClicks(Pagination pag)
         {
-            return CampaignTrackingService.GetClicks(AccessToken, APIKey, createdSince, pag);
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, pag);
         }
 
         /// <summary>
