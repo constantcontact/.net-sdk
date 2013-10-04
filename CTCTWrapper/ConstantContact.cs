@@ -794,7 +794,7 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
         public ResultSet<ClickActivity> GetClicks(DateTime? createdSince, Pagination pag)
         {
-            return CampaignTrackingService.GetClicks(AccessToken, APIKey, createdSince, pag);
+            return CampaignTrackingService.GetClicks(AccessToken, APIKey, pag);
         }
 
         /// <summary>
