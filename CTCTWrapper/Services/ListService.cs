@@ -26,7 +26,7 @@ namespace CTCT.Services
         public IList<ContactList> GetLists(string accessToken, string apiKey, DateTime? modifiedSince)
         {
             IList<ContactList> lists = new List<ContactList>();
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Lists);
+            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Lists, GetQueryParameters(new object[] { "modified_since", Extensions.ToISO8601String(modifiedSince) }));
             CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
 
             if (response.IsError)
