@@ -1,4 +1,4 @@
-Constant Contact .NET SDK A
+Constant Contact .NET SDK AAA
 =========================
 
 ## Installation
