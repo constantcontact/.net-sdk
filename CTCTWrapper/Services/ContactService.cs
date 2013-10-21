@@ -19,10 +19,11 @@ namespace CTCT.Services
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values.</param>
         /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
+		/// <param name="status">Filter results by contact status</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince)
+        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince, ContactStatus? status)
         {
-            return GetContacts(accessToken, apiKey, email, limit, modifiedSince, null);
+            return GetContacts(accessToken, apiKey, email, limit, modifiedSince, status, null);
         }
 
         /// <summary>
@@ -35,10 +36,10 @@ namespace CTCT.Services
         /// <returns>Returns a list of contacts.</returns>
         public ResultSet<Contact> GetContacts(string accessToken, string apiKey, DateTime? modifiedSince, Pagination pag)
         {
-            return GetContacts(accessToken, apiKey, null, null, modifiedSince, pag);
+            return GetContacts(accessToken, apiKey, null, null, modifiedSince, null, pag);
         }
 
-        /// <summary>
+		/// <summary>
         /// Get an array of contacts.
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
@@ -46,13 +47,14 @@ namespace CTCT.Services
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values.</param>
         /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
+		/// <param name="status">Match the exact contact status.</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        private ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince, Pagination pag)
+        private ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince, ContactStatus? status, Pagination pag)
         {
             ResultSet<Contact> results = null;
             // Construct access URL
-            string url = (pag == null) ? Config.ConstructUrl(Config.Endpoints.Contacts, null, new object[] { "email", email, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) }) : pag.GetNextUrl();
+            string url = (pag == null) ? Config.ConstructUrl(Config.Endpoints.Contacts, null, new object[] { "email", email, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince), "status", status }) : pag.GetNextUrl();
             // Get REST response
             CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
             

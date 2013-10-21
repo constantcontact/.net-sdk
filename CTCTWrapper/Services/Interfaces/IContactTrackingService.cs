@@ -9,6 +9,38 @@ namespace CTCT.Services
     /// </summary>
     public interface IContactTrackingService
     {
+		/// <summary>
+		/// Get all activities for a given contact.
+		/// </summary>
+		/// <param name="accessToken">Constant Contact OAuth2 access token.</param>
+        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="contactId">Contact id.</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+		/// <param name="createdSince">Filter for activities created since the supplied date in the collection</param>
+		/// <returns>ResultSet containing a results array of @link ContactActivity</returns>
+		ResultSet<ContactActivity> GetActivities(string accessToken, string apiKey, string contactId, int? limit, DateTime? createdSince);
+
+		/// <summary>
+		/// Get all activities for a given contact.
+		/// </summary>
+		/// <param name="accessToken">Constant Contact OAuth2 access token.</param>
+        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="contactId">Contact id.</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+		/// <param name="createdSince">Filter for activities created since the supplied date in the collection</param>	 
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>ResultSet containing a results array of @link ContactActivity</returns>
+		ResultSet<ContactActivity> GetActivities(string accessToken, string apiKey, string contactId, int? limit, DateTime? createdSince, Pagination pag);
+
+		/// <summary>
+        /// Get activities by email campaign for a given contact.
+        /// </summary>
+        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
+        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="contactId">Contact id.</param>
+        /// <returns>ResultSet containing a results array of @link TrackingSummary</returns>
+        ResultSet<TrackingSummary> GetEmailCampaignActivities(string accessToken, string apiKey, string contactId);
+
         /// <summary>
         /// Get bounces for a given contact.
         /// </summary>

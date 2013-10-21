@@ -81,6 +81,7 @@
     <Compile Include="Components\Tracking\BaseActivity.cs" />
     <Compile Include="Components\Tracking\BounceActivity.cs" />
     <Compile Include="Components\Tracking\ClickActivity.cs" />
+    <Compile Include="Components\Tracking\ContactActivity.cs" />
     <Compile Include="Components\Tracking\ForwardActivity.cs" />
     <Compile Include="Components\Tracking\OpenActivity.cs" />
     <Compile Include="Components\Tracking\OptOutActivity.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Util\CUrlResponse.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\IRestClient.cs" />
+    <Compile Include="Util\MultipartBuilder.cs" />
     <Compile Include="Util\RestClient.cs" />
   </ItemGroup>
   <ItemGroup>
