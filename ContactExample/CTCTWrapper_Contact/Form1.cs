@@ -207,7 +207,7 @@ namespace CTCTWrapper_Contact
         /// <returns></returns>
         private Contact GetContactByEmailAddress(string emailAddress)
         {
-            ResultSet<Contact> contacts = _constantContact.GetContacts(emailAddress, 1, null);
+            ResultSet<Contact> contacts = _constantContact.GetContacts(emailAddress, 1, null, null);
 
             if (contacts != null)
             {
