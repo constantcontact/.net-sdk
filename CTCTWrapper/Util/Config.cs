@@ -130,6 +130,14 @@ namespace CTCT.Util
             /// Campaign tracking link.
             /// </summary>
             public const string CampaignTrackingLink = "emailmarketing/campaigns/{0}/tracking/clicks/{1}";
+			/// <summary>
+			/// Contact tracking activities.
+			/// </summary>
+			public const string ContactTrackingActivities = "contacts/{0}/tracking";
+			/// <summary>
+			/// Contact tracking activities by email campaign.
+			/// </summary>
+			public const string ContactTrackingEmailCampaignActivities = "contacts/{0}/tracking/reports/summaryByCampaign";
             /// <summary>
             /// Contact tracking summary.
             /// </summary>
@@ -359,6 +367,18 @@ namespace CTCT.Util
             /// Update contact without ID error.
             /// </summary>
             public const string UpdateId = "You must provide a contact ID in order to update a contact.";
+			/// <summary>
+			/// FileName null error.
+			/// </summary>
+			public const string FileNameNull = "You must provide a FileName parameter for this method.";
+			/// <summary>
+			/// File null error.
+			/// </summary>
+			public const string FileNull = "You must provide a File parameter for this method.";
+			/// <summary>
+			/// File type invalid error.
+			/// </summary>
+			public const string FileTypeInvalid = "File type is invalid. The valid types are txt, csv, xls and xlsx.";
         }
 
         /// <summary>

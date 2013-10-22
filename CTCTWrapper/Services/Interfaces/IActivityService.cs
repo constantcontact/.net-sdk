@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CTCT.Components.Activities;
+using CTCT.Util;
+using System.IO;
 
 namespace CTCT.Services
 {
@@ -37,7 +39,6 @@ namespace CTCT.Services
         /// <returns>Returns an Activity object.</returns>
         Activity CreateAddContactsActivity(string accessToken, string apiKey, AddContacts addContacts);
 
-
         /// <summary>
         /// Create a Clear Lists Activity.
         /// </summary>
@@ -65,5 +66,27 @@ namespace CTCT.Services
         /// <param name="lists">List of id's.</param>
         /// <returns>Returns an Activity object.</returns>
         Activity AddRemoveContactsFromListsActivity(string accessToken, string apiKey, IList<string> emailAddresses, IList<string> lists);
+
+		/// <summary>
+		/// Create an Add Contacts Multipart Activity.
+		/// </summary>
+		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
+        /// <param name="apiKey">The API key for the application</param>
+		/// <param name="fileName">The file name to be imported</param>
+		/// <param name="fileContent">The file content to be imported</param>
+		/// <param name="lists">Array of list's id</param>
+		/// <returns>Returns an Activity object.</returns>
+		Activity AddContactstMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists);
+
+		/// <summary>
+		/// Create a Remove Contacts Multipart Activity.
+		/// </summary>
+		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
+        /// <param name="apiKey">The API key for the application</param>
+		/// <param name="fileName">The file name to be imported</param>
+		/// <param name="fileContent">The file content to be imported</param>
+		/// <param name="lists">Array of list's id</param>
+		/// <returns>Returns an Activity object.</returns>
+		Activity RemoveContactsMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists);
     }
 }

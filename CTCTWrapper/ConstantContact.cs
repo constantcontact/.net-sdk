@@ -11,6 +11,8 @@ using CTCT.Components.EmailCampaigns;
 using CTCT.Components;
 using CTCT.Components.Tracking;
 using System.Configuration;
+using System.IO;
+using System.Text;
 
 #endregion
 
@@ -205,10 +207,11 @@ namespace CTCT
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values, default 500.</param>
         /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
+		/// <param name="status">Match the exact contact status</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string email, int? limit, DateTime? modifiedSince)
+        public ResultSet<Contact> GetContacts(string email, int? limit, DateTime? modifiedSince, ContactStatus? status)
         {
-            return ContactService.GetContacts(AccessToken, APIKey, email, limit, modifiedSince);
+            return ContactService.GetContacts(AccessToken, APIKey, email, limit, modifiedSince, status);
         }
 
         /// <summary>
@@ -239,6 +242,11 @@ namespace CTCT
         /// <returns>Returns a contact.</returns>
         public Contact GetContact(string contactId)
         {
+			if (string.IsNullOrEmpty(contactId))
+			{
+			    throw new IllegalArgumentException(Config.Errors.ContactOrId);
+			}
+
             return ContactService.GetContact(AccessToken, APIKey, contactId);
         }
 
@@ -250,6 +258,11 @@ namespace CTCT
         /// <returns>Returns the newly created contact.</returns>
         public Contact AddContact(Contact contact, bool actionByVisitor)
         {
+			if (contact == null)
+            {
+                throw new IllegalArgumentException(Config.Errors.ContactOrId);
+            }
+
             return ContactService.AddContact(AccessToken, APIKey, contact, actionByVisitor);
         }
 
@@ -265,6 +278,7 @@ namespace CTCT
             {
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
+
             return DeleteContact(contact.Id);
         }
 
@@ -276,7 +290,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public bool DeleteContact(string contactId)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
@@ -284,22 +298,7 @@ namespace CTCT
             return ContactService.DeleteContact(AccessToken, APIKey, contactId);
         }
 
-        /// <summary>
-        /// Delete a contact from all contact lists. Sets them to 'Removed' status.
-        /// </summary>
-        /// <param name="contactId">Contact id.</param>
-        /// <returns>Returns true if operation succeeded.</returns>
-        /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public bool DeleteContactFromLists(string contactId)
-        {
-            if (contactId == null)
-            {
-                throw new IllegalArgumentException(Config.Errors.ContactOrId);
-            }
-            return ContactService.DeleteContactFromLists(AccessToken, APIKey, contactId);
-        }
-
-        /// <summary>
+		/// <summary>
         /// Delete a contact from all contact lists.
         /// </summary>
         /// <param name="contact">Contact object.</param>
@@ -312,9 +311,24 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
 
-            return ContactService.DeleteContactFromLists(AccessToken, APIKey, contact.Id);
+            return DeleteContactFromLists(contact.Id);
         }
 
+        /// <summary>
+        /// Delete a contact from all contact lists. Sets them to 'Removed' status.
+        /// </summary>
+        /// <param name="contactId">Contact id.</param>
+        /// <returns>Returns true if operation succeeded.</returns>
+        /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
+        public bool DeleteContactFromLists(string contactId)
+        {
+            if (string.IsNullOrEmpty(contactId))
+            {
+                throw new IllegalArgumentException(Config.Errors.ContactOrId);
+            }
+
+            return ContactService.DeleteContactFromLists(AccessToken, APIKey, contactId);
+        }
 
         /// <summary>
         /// Delete a contact from all contact lists.
@@ -334,7 +348,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ContactService.DeleteContactFromList(AccessToken, APIKey, contact.Id, list.Id);
+            return DeleteContactFromList(contact.Id, list.Id);
         }
 
         /// <summary>
@@ -346,11 +360,11 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public bool DeleteContactFromList(string contactId, string listId)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
-            if (listId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
@@ -397,7 +411,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ContactList GetList(string listId)
         {
-            if (listId == null)
+            if (string.IsNullOrEmpty(listId))
             {
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
@@ -427,6 +441,11 @@ namespace CTCT
         /// <returns>Returns the newly created list.</returns>
         public ContactList AddList(ContactList list)
         {
+			if (list == null)
+            {
+                throw new IllegalArgumentException(Config.Errors.ListOrId);
+            }
+
             return ListService.AddList(AccessToken, APIKey, list);
         }
 
@@ -454,7 +473,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(ContactList list, DateTime? modifiedSince)
         {
-            return GetContactsFromList(list, modifiedSince);
+            return GetContactsFromList(list.Id, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -467,12 +486,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(ContactList list, int? limit, DateTime? modifiedSince)
         {
-            if (list == null)
-            {
-                throw new IllegalArgumentException(Config.Errors.ListOrId);
-            }
-
-            return ListService.GetContactsFromList(AccessToken, APIKey, list.Id, limit, modifiedSince);
+            return GetContactsFromList(list.Id, limit, modifiedSince, null);
         }
 
         /// <summary>
@@ -484,7 +498,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(string listId, DateTime? modifiedSince)
         {
-            return GetContactsFromList(listId, null, modifiedSince);
+            return GetContactsFromList(listId, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -497,24 +511,27 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(string listId, int? limit, DateTime? modifiedSince)
         {
-            if (listId == null)
+            return GetContactsFromList(listId, limit, modifiedSince, null);
+        }
+
+		/// <summary>
+        /// Get contact that belong to a specific list.
+        /// </summary>
+        /// <param name="listId">Contact list id.</param>
+        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
+		/// /// <param name="pag">Pagination object.</param>
+        /// <returns>Returns a list of contacts.</returns>
+        /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
+		public ResultSet<Contact> GetContactsFromList(string listId, int? limit, DateTime? modifiedSince, Pagination pag)
+		{
+			if (string.IsNullOrEmpty(listId))
             {
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return ListService.GetContactsFromList(AccessToken, APIKey, listId, limit, modifiedSince);
-        }
-
-        /// <summary>
-        /// Get contacts after pagination object received.
-        /// </summary>
-        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
-        /// <param name="pag">Pagination object.</param>
-        /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContactsFromList(DateTime? modifiedSince, Pagination pag)
-        {
-            return ListService.GetContactsFromList(AccessToken, APIKey, modifiedSince, pag);
-        }
+            return ListService.GetContactsFromList(AccessToken, APIKey, listId, limit, modifiedSince, pag);
+		}
 
         #endregion
 
@@ -537,7 +554,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public Activity GetActivity(string activityId)
         {
-            if (activityId == null)
+            if (string.IsNullOrEmpty(activityId))
             {
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
@@ -561,7 +578,6 @@ namespace CTCT
             return ActivityService.CreateAddContactsActivity(AccessToken, APIKey, addContacts);
         }
 
-
         /// <summary>
         /// Create a Clear Lists Activity.
         /// </summary>
@@ -570,7 +586,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public Activity AddClearListsActivity(IList<string> lists)
         {
-            if (lists == null)
+            if (lists == null || lists.Count.Equals(0))
             {
                 throw new IllegalArgumentException(Config.Errors.ActivityOrId);
             }
@@ -611,6 +627,76 @@ namespace CTCT
             return ActivityService.AddRemoveContactsFromListsActivity(AccessToken, APIKey, emailAddresses, lists);
         }
 
+		/// <summary>
+		/// Create an Add Contacts Multipart Activity
+		/// </summary>
+		/// <param name="fileName">The name of the file</param>
+		/// <param name="fileContent">The contents of the file</param>
+		/// <param name="lists">List of contact list Ids to add the contacts to</param>
+		/// <returns>Returns an Activity object.</returns>
+		public Activity AddContactsMultipartActivity(string fileName, byte[] fileContent, IList<string> lists)
+		{
+			if(string.IsNullOrEmpty(fileName))
+			{
+				throw new IllegalArgumentException(Config.Errors.FileNameNull);
+			}
+
+			var extension = Path.GetExtension(fileName).ToLowerInvariant();
+			string[] fileTypes = new string[4] { ".txt", ".csv", ".xls", ".xlsx" };
+
+			if (!((IList<string>)fileTypes).Contains(extension))
+			{
+			    throw new IllegalArgumentException(Config.Errors.FileTypeInvalid);
+			}
+
+			if(fileContent == null)
+			{
+				throw new IllegalArgumentException(Config.Errors.FileNull);
+			}
+
+			if(lists == null || lists.Count.Equals(0))
+			{
+				throw new IllegalArgumentException(Config.Errors.ActivityOrId);
+			}
+
+			return ActivityService.AddContactstMultipartActivity(AccessToken, APIKey, fileName, fileContent, lists);
+		}
+
+		/// <summary>
+		/// Create a Remove Contacts Multipart Activity
+		/// </summary>
+		/// <param name="fileName">The name of the file</param>
+		/// <param name="fileContent">The contents of the file</param>
+		/// <param name="lists">List of contact list Ids to add to remove the contacts to</param>
+		/// <returns>Returns an Activity object.</returns>
+		public Activity RemoveContactsMultipartActivity(string fileName, byte[] fileContent, IList<string> lists)
+		{
+			if(string.IsNullOrEmpty(fileName))
+			{
+				throw new IllegalArgumentException(Config.Errors.FileNameNull);
+			}
+
+			var extension = Path.GetExtension(fileName).ToLowerInvariant();
+			string[] fileTypes = new string[4] { ".txt", ".csv", ".xls", ".xlsx" };
+
+			if (!((IList<string>)fileTypes).Contains(extension))
+			{
+			    throw new IllegalArgumentException(Config.Errors.FileTypeInvalid);
+			}
+
+			if(fileContent == null)
+			{
+				throw new IllegalArgumentException(Config.Errors.FileNull);
+			}
+
+			if(lists == null || lists.Count.Equals(0))
+			{
+				throw new IllegalArgumentException(Config.Errors.ActivityOrId);
+			}
+
+			return ActivityService.RemoveContactsMultipartActivity(AccessToken, APIKey, fileName, fileContent, lists);
+		}
+
         #endregion
 
         #region CampaignSchedule service
@@ -624,7 +710,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public Schedule AddSchedule(string campaignId, Schedule schedule)
         {
-            if (campaignId == null || schedule == null)
+            if (string.IsNullOrEmpty(campaignId) || schedule == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
@@ -640,7 +726,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public IList<Schedule> GetSchedules(string campaignId)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
@@ -657,7 +743,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public Schedule GetSchedule(string campaignId, string scheduleId)
         {
-            if (campaignId == null || scheduleId == null)
+            if (string.IsNullOrEmpty(campaignId) || string.IsNullOrEmpty(scheduleId))
             {
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
@@ -674,7 +760,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public Schedule UpdateSchedule(string campaignId, Schedule schedule)
         {
-            if (campaignId == null || schedule == null)
+            if (string.IsNullOrEmpty(campaignId) || schedule == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
@@ -691,7 +777,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public bool DeleteSchedule(string campaignId, string scheduleId)
         {
-            if (campaignId == null || scheduleId == null)
+            if (string.IsNullOrEmpty(campaignId) || string.IsNullOrEmpty(scheduleId))
             {
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
@@ -708,7 +794,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public TestSend SendTest(string campaignId, TestSend testSend)
         {
-            if (campaignId == null || testSend == null)
+            if (string.IsNullOrEmpty(campaignId) || testSend == null)
             {
                 throw new IllegalArgumentException(Config.Errors.ScheduleOrId);
             }
@@ -725,15 +811,16 @@ namespace CTCT
         /// </summary>
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+		/// <param name="createdSince">Filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link BounceActivity.</returns>
-        public ResultSet<BounceActivity> GetCampaignTrackingBounces(string campaignId, int? limit)
+        public ResultSet<BounceActivity> GetCampaignTrackingBounces(string campaignId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
 
-            return CampaignTrackingService.GetBounces(AccessToken, APIKey, campaignId, limit);
+            return CampaignTrackingService.GetBounces(AccessToken, APIKey, campaignId, limit, createdSince);
         }
 
         /// <summary>
@@ -755,7 +842,7 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
         public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -773,7 +860,7 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
         public ResultSet<ClickActivity> GetCampaignTrackingClicks(string campaignId, string linkId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -781,6 +868,11 @@ namespace CTCT
             return CampaignTrackingService.GetClicks(AccessToken, APIKey, campaignId, linkId, limit, createdSince);
         }
 
+		/// <summary>
+		/// Get clicks for a specific link in a campaign.
+		/// </summary>
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
         public ResultSet<ClickActivity> GetCampaignTrackingClicks(Pagination pag)
         {
             return CampaignTrackingService.GetClicks(AccessToken, APIKey, pag);
@@ -789,7 +881,6 @@ namespace CTCT
         /// <summary>
         /// Get clicks for a given campaign.
         /// </summary>
-        /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>ResultSet containing a results array of @link ClickActivity.</returns>
         public ResultSet<ClickActivity> GetClicks(Pagination pag)
@@ -804,10 +895,9 @@ namespace CTCT
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
-        public ResultSet<ForwardActivity> GetCampaignTrackingForwards(string campaignId, int? limit,
-                                                                      DateTime? createdSince)
+        public ResultSet<ForwardActivity> GetCampaignTrackingForwards(string campaignId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -835,7 +925,7 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link OpenActivity.</returns>
         public ResultSet<OpenActivity> GetCampaignTrackingOpens(string campaignId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -863,7 +953,7 @@ namespace CTCT
         /// <returns>ResultSet containing a results array of @link SendActivity</returns>
         public ResultSet<SendActivity> GetCampaignTrackingSends(string campaignId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -889,10 +979,9 @@ namespace CTCT
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link OptOutActivity.</returns>
-        public ResultSet<OptOutActivity> GetCampaignTrackingOptOuts(string campaignId, int? limit,
-                                                                    DateTime? createdSince)
+        public ResultSet<OptOutActivity> GetCampaignTrackingOptOuts(string campaignId, int? limit, DateTime? createdSince)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -919,7 +1008,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public TrackingSummary GetCampaignTrackingSummary(string campaignId)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.CampaignTrackingOrId);
             }
@@ -929,7 +1018,71 @@ namespace CTCT
 
         #endregion
 
-        #region ContractTracking service
+        #region ContactTracking service
+
+		/// <summary>
+		/// Get all activities for a given contact.
+		/// </summary>
+        /// <param name="contactId">Contact id.</param>
+		/// <returns>ResultSet containing a results array of @link ContactActivity.</returns>
+		/// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
+		public ResultSet<ContactActivity> GetContactTrackingActivities(string contactId)
+		{
+			return GetContactTrackingActivities(contactId, null, null);
+		}
+
+		/// <summary>
+		/// Get all activities for a given contact.
+		/// </summary>
+        /// <param name="contactId">Contact id.</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+		/// <param name="createdSince">Filter for activities created since the supplied date in the collection</param>
+		/// <returns>ResultSet containing a results array of @link ContactActivity.</returns>
+		/// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
+		public ResultSet<ContactActivity> GetContactTrackingActivities(string contactId, int? limit, DateTime? createdSince)
+		{
+			if (string.IsNullOrEmpty(contactId))
+			{
+			    throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
+			}
+
+		    return ContactTrackingService.GetActivities(AccessToken, APIKey, contactId, limit, createdSince);
+		}
+
+		/// <summary>
+		/// Get all activities for a given contact.
+		/// </summary>
+        /// <param name="contactId">Contact id.</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
+		/// <param name="createdSince">Filter for activities created since the supplied date in the collection</param>	 
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>ResultSet containing a results array of @link ContactActivity.</returns>
+		/// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
+		public ResultSet<ContactActivity> GetContactTrackingActivities(string contactId, int? limit, DateTime? createdSince, Pagination pag)
+		{
+			if (string.IsNullOrEmpty(contactId))
+            {
+                throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
+            }
+
+			return ContactTrackingService.GetActivities(AccessToken, APIKey, contactId, limit, createdSince, pag);
+		}
+
+		/// <summary>
+        /// Get activities by email campaign for a given contact.
+        /// </summary>
+        /// <param name="contactId">Contact id.</param>
+        /// <returns>ResultSet containing a results array of @link TrackingSummary.</returns>
+		/// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
+        public ResultSet<TrackingSummary> GetContactTrackingEmailCampaignActivities(string contactId)
+		{
+			if (string.IsNullOrEmpty(contactId))
+            {
+                throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
+            }
+
+			return ContactTrackingService.GetEmailCampaignActivities(AccessToken, APIKey, contactId);
+		}
 
         /// <summary>
         /// Get bounces for a given contact.
@@ -951,7 +1104,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<BounceActivity> GetContactTrackingBounces(string contactId, int? limit)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -991,7 +1144,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<ClickActivity> GetContactTrackingClicks(string contactId, int? limit, DateTime? createdSince)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -1030,10 +1183,9 @@ namespace CTCT
         /// <param name="createdSince">filter for activities created since the supplied date in the collection</param>
         /// <returns>ResultSet containing a results array of @link ForwardActivity.</returns>
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
-        public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId, int? limit,
-                                                                     DateTime? createdSince)
+        public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId, int? limit, DateTime? createdSince)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -1074,7 +1226,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<OpenActivity> GetContactTrackingOpens(string contactId, int? limit, DateTime? createdSince)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -1115,7 +1267,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<SendActivity> GetContactTrackingSends(string contactId, int? limit, DateTime? createdSince)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -1156,7 +1308,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<OptOutActivity> GetContactTrackingOptOuts(string contactId, int? limit, DateTime? createdSince)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -1183,7 +1335,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public TrackingSummary GetContactTrackingSummary(string contactId)
         {
-            if (contactId == null)
+            if (string.IsNullOrEmpty(contactId))
             {
                 throw new IllegalArgumentException(Config.Errors.ContactTrackingOrId);
             }
@@ -1247,7 +1399,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public EmailCampaign GetCampaign(string campaignId)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.EmailCampaignOrId);
             }
@@ -1279,7 +1431,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public bool DeleteCampaign(string campaignId)
         {
-            if (campaignId == null)
+            if (string.IsNullOrEmpty(campaignId))
             {
                 throw new IllegalArgumentException(Config.Errors.EmailCampaignOrId);
             }

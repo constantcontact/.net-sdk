@@ -138,6 +138,29 @@ namespace CTCT.Components.Contacts
         }
     }
 
+	/// <summary>
+	/// Contact status enumeration
+	/// </summary>
+	public enum ContactStatus
+	{
+		 /// <summary>
+        /// Active.
+        /// </summary>
+        ACTIVE,
+        /// <summary>
+        /// Unconfirmed.
+        /// </summary>
+        UNCONFIRMED,
+        /// <summary>
+        /// Output.
+        /// </summary>
+        OPTOUT,
+        /// <summary>
+        /// Removed.
+        /// </summary>
+        REMOVED
+	}
+
     /// <summary>
     /// ActionBy structure.
     /// </summary>
