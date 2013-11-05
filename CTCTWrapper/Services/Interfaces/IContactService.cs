@@ -67,7 +67,7 @@ namespace CTCT.Services
         /// <returns>Returns true if operation succeeded.</returns>
         bool DeleteContactFromLists(string accessToken, string apiKey, string contactId);
         
-            /// <summary>
+        /// <summary>
         /// Delete a contact from a specific contact list.
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token</param>

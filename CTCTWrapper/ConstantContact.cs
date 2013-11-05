@@ -13,6 +13,7 @@ using CTCT.Components.Tracking;
 using System.Configuration;
 using System.IO;
 using System.Text;
+using CTCT.Components.MyLibrary;
 
 #endregion
 
@@ -90,15 +91,15 @@ namespace CTCT
     {
         #region Fields
 
-        /// <summary>
-        /// Access token.
+		/// <summary>
+        /// Gets or sets the AccessToken
         /// </summary>
-        private string _accessToken;
+        private string AccessToken { get; set; }
 
         /// <summary>
-        /// api_key field
+        /// Gets or sets the api_key
         /// </summary>
-        private string _apiKey;
+        private string APIKey { get; set; }
 
         #endregion
 
@@ -144,23 +145,10 @@ namespace CTCT
         /// </summary>
         protected virtual IAccountService AccountService { get; set; }
 
-        /// <summary>
-        /// Gets or sets the AccessToken
-        /// </summary>
-        private string AccessToken
-        {
-            get { return _accessToken; }
-            set { _accessToken = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the api_key
-        /// </summary>
-        private string APIKey
-        {
-            get { return _apiKey; }
-            set { _apiKey = value; }
-        }
+		/// <summary>
+		/// Gets or sets the MyLibrary service
+		/// </summary>
+		protected virtual IMyLibraryService MyLibraryService { get; set; }
 
         #endregion
 
@@ -173,31 +161,32 @@ namespace CTCT
         /// <param name="accessToken">access token</param>
         public ConstantContact(string apiKey, string accessToken)
         {
-            InitializeFields();
+            this.InitializeFields();
 
-            AccessToken = accessToken;
-            APIKey = apiKey;
+            this.AccessToken = accessToken;
+            this.APIKey = apiKey;
+        }
+
+        #endregion
+
+		#region Private methods
+
+        private void InitializeFields()
+        {
+            this.ContactService = new ContactService();
+            this.ListService = new ListService();
+            this.ActivityService = new ActivityService();
+            this.CampaignScheduleService = new CampaignScheduleService();
+            this.CampaignTrackingService = new CampaignTrackingService();
+            this.ContactTrackingService = new ContactTrackingService();
+            this.EmailCampaignService = new EmailCampaignService();
+            this.AccountService = new AccountService();
+			this.MyLibraryService = new MyLibraryService();
         }
 
         #endregion
 
         #region Public methods
-
-        #region Private methods
-
-        private void InitializeFields()
-        {
-            ContactService = new ContactService();
-            ListService = new ListService();
-            ActivityService = new ActivityService();
-            CampaignScheduleService = new CampaignScheduleService();
-            CampaignTrackingService = new CampaignTrackingService();
-            ContactTrackingService = new ContactTrackingService();
-            EmailCampaignService = new EmailCampaignService();
-            AccountService = new AccountService();
-        }
-
-        #endregion Private methods
 
         #region Contact service
 
@@ -279,7 +268,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
 
-            return DeleteContact(contact.Id);
+            return this.DeleteContact(contact.Id);
         }
 
         /// <summary>
@@ -311,7 +300,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ContactOrId);
             }
 
-            return DeleteContactFromLists(contact.Id);
+            return this.DeleteContactFromLists(contact.Id);
         }
 
         /// <summary>
@@ -348,7 +337,7 @@ namespace CTCT
                 throw new IllegalArgumentException(Config.Errors.ListOrId);
             }
 
-            return DeleteContactFromList(contact.Id, list.Id);
+            return this.DeleteContactFromList(contact.Id, list.Id);
         }
 
         /// <summary>
@@ -473,7 +462,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(ContactList list, DateTime? modifiedSince)
         {
-            return GetContactsFromList(list.Id, null, modifiedSince, null);
+            return this.GetContactsFromList(list.Id, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -486,7 +475,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(ContactList list, int? limit, DateTime? modifiedSince)
         {
-            return GetContactsFromList(list.Id, limit, modifiedSince, null);
+            return this.GetContactsFromList(list.Id, limit, modifiedSince, null);
         }
 
         /// <summary>
@@ -498,7 +487,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(string listId, DateTime? modifiedSince)
         {
-            return GetContactsFromList(listId, null, modifiedSince, null);
+            return this.GetContactsFromList(listId, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -511,7 +500,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<Contact> GetContactsFromList(string listId, int? limit, DateTime? modifiedSince)
         {
-            return GetContactsFromList(listId, limit, modifiedSince, null);
+            return this.GetContactsFromList(listId, limit, modifiedSince, null);
         }
 
 		/// <summary>
@@ -1028,7 +1017,7 @@ namespace CTCT
 		/// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
 		public ResultSet<ContactActivity> GetContactTrackingActivities(string contactId)
 		{
-			return GetContactTrackingActivities(contactId, null, null);
+			return this.GetContactTrackingActivities(contactId, null, null);
 		}
 
 		/// <summary>
@@ -1092,7 +1081,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<BounceActivity> GetContactTrackingBounces(string contactId)
         {
-            return GetContactTrackingBounces(contactId, null);
+            return this.GetContactTrackingBounces(contactId, null);
         }
 
         /// <summary>
@@ -1131,7 +1120,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<ClickActivity> GetContactTrackingClicks(string contactId, DateTime? createdSince)
         {
-            return GetContactTrackingClicks(contactId, null, createdSince);
+            return this.GetContactTrackingClicks(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1172,7 +1161,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<ForwardActivity> GetContactTrackingForwards(string contactId, DateTime? createdSince)
         {
-            return GetContactTrackingForwards(contactId, null, createdSince);
+            return this.GetContactTrackingForwards(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1213,7 +1202,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<OpenActivity> GetContactTrackingOpens(string contactId, DateTime? createdSince)
         {
-            return GetContactTrackingOpens(contactId, null, createdSince);
+            return this.GetContactTrackingOpens(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1254,7 +1243,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<SendActivity> GetContactTrackingSends(string contactId, DateTime? createdSince)
         {
-            return GetContactTrackingSends(contactId, null, createdSince);
+            return this.GetContactTrackingSends(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1295,7 +1284,7 @@ namespace CTCT
         /// <exception cref="IllegalArgumentException">IllegalArgumentException</exception>
         public ResultSet<OptOutActivity> GetContactTrackingOptOuts(string contactId, DateTime? createdSince)
         {
-            return GetContactTrackingOptOuts(contactId, null, createdSince);
+            return this.GetContactTrackingOptOuts(contactId, null, createdSince);
         }
 
         /// <summary>
@@ -1354,7 +1343,7 @@ namespace CTCT
         /// <returns>Returns a list of campaigns.</returns>
         public ResultSet<EmailCampaign> GetCampaigns(Pagination pagination)
         {
-            return GetCampaigns(null, null, null, pagination);
+            return this.GetCampaigns(null, null, null, pagination);
         }
 
         /// <summary>
@@ -1364,7 +1353,7 @@ namespace CTCT
         /// <returns>Returns a list of campaigns.</returns>
         public ResultSet<EmailCampaign> GetCampaigns(DateTime? modifiedSince)
         {
-            return GetCampaigns(null, null, modifiedSince, null);
+            return this.GetCampaigns(null, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -1375,7 +1364,7 @@ namespace CTCT
         /// <returns>Returns a list of campaigns.</returns>
         public ResultSet<EmailCampaign> GetCampaigns(CampaignStatus status, DateTime? modifiedSince)
         {
-            return GetCampaigns(status, null, modifiedSince, null);
+            return this.GetCampaigns(status, null, modifiedSince, null);
         }
 
         /// <summary>
@@ -1469,6 +1458,449 @@ namespace CTCT
         }
 
         #endregion Account service
+
+		#region MyLibrary service
+
+		/// <summary>
+		/// Get MyLibrary usage information
+		/// </summary>
+		/// <returns>Returns a MyLibraryInfo object</returns>
+		public MyLibraryInfo GetLibraryInfo()
+		{
+			return MyLibraryService.GetLibraryInfo(AccessToken, APIKey);
+		}
+
+		/// <summary>
+		/// Get all existing MyLibrary folders
+		/// </summary>
+		/// <returns>Returns a collection of MyLibraryFolder objects.</returns>
+		public ResultSet<MyLibraryFolder> GetLibraryFolders()
+		{
+			return this.GetLibraryFolders(null, null, null);
+		}
+
+		/// <summary>
+		/// Get all existing MyLibrary folders
+		/// </summary>
+		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
+		/// <returns>Returns a collection of MyLibraryFolder objects.</returns>
+		public ResultSet<MyLibraryFolder> GetLibraryFolders(FoldersSortBy? sortBy)
+		{
+			return this.GetLibraryFolders(sortBy, null, null);
+		}
+
+		/// <summary>
+		/// Get all existing MyLibrary folders
+		/// </summary>
+		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <returns>Returns a collection of MyLibraryFolder objects.</returns>
+		public ResultSet<MyLibraryFolder> GetLibraryFolders(FoldersSortBy? sortBy, int? limit)
+		{
+			return this.GetLibraryFolders(sortBy, limit, null);
+		}
+
+		/// <summary>
+		/// Get all existing MyLibrary folders
+		/// </summary>
+		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>Returns a collection of MyLibraryFolder objects.</returns>
+		public ResultSet<MyLibraryFolder> GetLibraryFolders(FoldersSortBy? sortBy, int? limit, Pagination pag)
+		{
+			return MyLibraryService.GetLibraryFolders(this.AccessToken, this.APIKey, sortBy, limit, pag);
+		}
+
+		/// <summary>
+		/// Add new folder to MyLibrary
+		/// </summary>
+		/// <param name="folder">Folder to be added (with name and parent id)</param>
+		/// <returns>Returns a MyLibraryFolder object.</returns>
+		public MyLibraryFolder AddLibraryFolder(MyLibraryFolder folder)
+		{
+			if (folder == null)
+            {
+                throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+            }
+
+			return MyLibraryService.AddLibraryFolder(this.AccessToken, this.APIKey, folder);
+		}
+
+		/// <summary>
+		/// Get a folder by Id
+		/// </summary>
+		/// <param name="folderId">The id of the folder</param>
+		/// <returns>Returns a MyLibraryFolder object.</returns>
+		public MyLibraryFolder GetLibraryFolder(string folderId)
+		{
+			if(string.IsNullOrEmpty(folderId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.GetLibraryFolder(this.AccessToken, this.APIKey, folderId);
+		}
+
+		/// <summary>
+		/// Update name and parent_id for a specific folder
+		/// </summary>
+		/// <param name="folder">Folder to be added (with name and parent id)</param>
+		/// <returns>Returns a MyLibraryFolder object.</returns>
+		public MyLibraryFolder UpdateLibraryFolder(MyLibraryFolder folder)
+		{
+			return this.UpdateLibraryFolder(folder, null);
+		}
+
+		/// <summary>
+		/// Update name and parent_id for a specific folder
+		/// </summary>
+		/// <param name="folder">Folder to be added (with name and parent id)</param>
+		/// <param name="includePayload">Determines if update's folder JSON payload is returned</param>
+		/// <returns>Returns a MyLibraryFolder object.</returns>
+		public MyLibraryFolder UpdateLibraryFolder(MyLibraryFolder folder, bool? includePayload)
+		{
+			if (folder == null)
+            {
+                throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+            }
+
+			return MyLibraryService.UpdateLibraryFolder(this.AccessToken, this.APIKey, folder, includePayload);
+		}
+
+		/// <summary>
+		/// Delete a specific folder
+		/// </summary>
+		/// <param name="folder">The folder to be deleted</param>
+		 /// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
+		public bool DeleteLibraryFolder(MyLibraryFolder folder)
+		{
+			if(folder == null)
+			{
+				 throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return this.DeleteLibraryFolder(folder.Id);
+		}
+
+		/// <summary>
+		/// Delete a specific folder
+		/// </summary>
+		/// <param name="folderId">The id of the folder</param>
+		 /// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
+		public bool DeleteLibraryFolder(string folderId)
+		{
+			if(string.IsNullOrEmpty(folderId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.DeleteLibraryFolder(this.AccessToken, this.APIKey, folderId);
+		}
+
+		/// <summary>
+		/// Get files from Trash folder
+		/// </summary>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryTrashFiles()
+		{
+			return this.GetLibraryTrashFiles(null, null, null, null);
+		}
+
+		/// <summary>
+		/// Get files from Trash folder
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryTrashFiles(FileTypes? type)
+		{
+			return this.GetLibraryTrashFiles(type, null, null, null);
+		}
+
+		/// <summary>
+		/// Get files from Trash folder
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryTrashFiles(FileTypes? type, TrashSortBy? sortBy)
+		{
+			return this.GetLibraryTrashFiles(type, sortBy, null, null);
+		}
+
+		/// <summary>
+		/// Get files from Trash folder
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryTrashFiles(FileTypes? type, TrashSortBy? sortBy, int? limit)
+		{
+			return this.GetLibraryTrashFiles(type, sortBy, limit, null);
+		}
+
+		/// <summary>
+		/// Get files from Trash folder
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryTrashFiles(FileTypes? type, TrashSortBy? sortBy, int? limit, Pagination pag)
+		{
+			return MyLibraryService.GetLibraryTrashFiles(this.AccessToken, this.APIKey, type, sortBy, limit, pag);
+		}
+
+		/// <summary>
+		/// Delete files in Trash folder
+		/// </summary>
+		 /// <returns>Returns true if files were deleted successfully, false otherwise</returns>
+		public bool DeleteLibraryTrashFiles()
+		{
+			return MyLibraryService.DeleteLibraryTrashFiles(this.AccessToken, this.APIKey);
+		}
+
+		/// <summary>
+		/// Get files
+		/// </summary>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFiles()
+		{
+			return this.GetLibraryFiles(null, null, null, null);
+		}
+
+		/// <summary>
+		/// Get files
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFiles(FileTypes? type)
+		{
+			return this.GetLibraryFiles(type, null, null, null);
+		}
+
+		/// <summary>
+		/// Get files
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <param name="source">Specifies to retrieve files from a particular source</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFiles(FileTypes? type, FilesSources? source)
+		{
+			return this.GetLibraryFiles(type, source, null, null);
+		}
+
+		/// <summary>
+		/// Get files
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <param name="source">Specifies to retrieve files from a particular source</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFiles(FileTypes? type, FilesSources? source, int? limit)
+		{
+			return this.GetLibraryFiles(type, source, limit, null);
+		}
+
+		/// <summary>
+		/// Get files
+		/// </summary>
+		/// <param name="type">The type of the files to retrieve</param>
+		/// <param name="source">Specifies to retrieve files from a particular source</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFiles(FileTypes? type, FilesSources? source, int? limit, Pagination pag)
+		{
+			return MyLibraryService.GetLibraryFiles(this.AccessToken, this.APIKey, type, source, limit, pag);
+		}
+
+		/// <summary>
+		/// Get files from a specific folder
+		/// </summary>
+		/// <param name="folderId">The id of the folder from which to retrieve files</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFilesByFolder(string folderId)
+		{
+			return this.GetLibraryFilesByFolder(folderId, null, null);
+		}
+
+		/// <summary>
+		/// Get files from a specific folder
+		/// </summary>
+		/// <param name="folderId">The id of the folder from which to retrieve files</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFilesByFolder(string folderId, int? limit)
+		{
+			return this.GetLibraryFilesByFolder(folderId, limit, null);
+		}
+
+		/// <summary>
+		/// Get files from a specific folder
+		/// </summary>
+		/// <param name="folderId">The id of the folder from which to retrieve files</param>
+		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
+		/// <param name="pag">Pagination object.</param>
+		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
+		public ResultSet<MyLibraryFile> GetLibraryFilesByFolder(string folderId, int? limit, Pagination pag)
+		{
+			if(string.IsNullOrEmpty(folderId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.GetLibraryFilesByFolder(this.AccessToken, this.APIKey, folderId, limit, pag);
+		}
+
+		/// <summary>
+		/// Get file after id
+		/// </summary>
+		/// <param name="fileId">The id of the file</param>
+		/// <returns>Returns a MyLibraryFile object.</returns>
+		public MyLibraryFile GetLibraryFile(string fileId)
+		{
+			if(string.IsNullOrEmpty(fileId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.GetLibraryFile(this.AccessToken, this.APIKey, fileId);
+		}
+
+		/// <summary>
+		/// Update a specific file
+		/// </summary>
+		/// <param name="file">File to be updated</param>
+		/// <returns>Returns a MyLibraryFile object.</returns>
+		public MyLibraryFile UpdateLibraryFile(MyLibraryFile file)
+		{
+			return this.UpdateLibraryFile(file, null);
+		}
+
+		/// <summary>
+		/// Update a specific file
+		/// </summary>
+		/// <param name="file">File to be updated</param>
+		/// <param name="includePayload">Determines if update's folder JSON payload is returned</param>
+		/// <returns>Returns a MyLibraryFile object.</returns>
+		public MyLibraryFile UpdateLibraryFile(MyLibraryFile file, bool? includePayload)
+		{
+			if(file == null)
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+						
+			return MyLibraryService.UpdateLibraryFile(this.AccessToken, this.APIKey, file, includePayload);
+		}
+
+		/// <summary>
+		/// Delete a specific file
+		/// </summary>
+		/// <param name="file">The file to be deleted</param>
+		/// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
+		public bool DeleteLibraryFile(MyLibraryFile file)
+		{
+			if(file == null)
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return this.DeleteLibraryFile(file.Id);
+		}
+
+		/// <summary>
+		/// Delete a specific file
+		/// </summary>
+		/// <param name="fileId">The id of the file</param>
+		/// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
+		public bool DeleteLibraryFile(string fileId)
+		{
+			if(string.IsNullOrEmpty(fileId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.DeleteLibraryFile(this.AccessToken, this.APIKey, fileId);
+		}
+
+		/// <summary>
+		/// Get status for an upload file
+		/// </summary>
+		/// <param name="fileId">The id of the file</param>
+		/// <returns>Returns a list of FileUploadStatus objects</returns>
+		public IList<FileUploadStatus> GetLibraryFileUploadStatus(string fileId)
+		{
+			if(string.IsNullOrEmpty(fileId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.GetLibraryFileUploadStatus(this.AccessToken, this.APIKey, fileId);
+		}
+
+		/// <summary>
+		/// Move files to a different folder
+		/// </summary>
+		/// <param name="folderId">The id of the folder</param>
+		/// <param name="fileIds">List of comma separated file ids</param>
+		/// <returns>Returns a list of FileMoveResult objects.</returns>
+		public IList<FileMoveResult> MoveLibraryFile(string folderId, IList<string> fileIds)
+		{
+			if(string.IsNullOrEmpty(folderId))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			if(fileIds == null || fileIds.Count.Equals(0))
+			{
+				throw new IllegalArgumentException(Config.Errors.MyLibraryOrId);
+			}
+
+			return MyLibraryService.MoveLibraryFile(this.AccessToken, this.APIKey, folderId, fileIds);
+		}
+
+		/// <summary>
+		/// Add files using the multipart content-type
+		/// </summary>
+		/// <param name="fileName">The file name and extension</param>
+		/// <param name="fileType">The file type</param>
+		/// <param name="folderId">The id of the folder</param>
+		/// <param name="description">The description of the file</param>
+		/// <param name="source">The source of the original file</param>
+		/// <param name="data">The data contained in the file being uploaded</param>
+		/// <returns>Returns the file Id associated with the uploaded file</returns>
+		public string AddLibraryFilesMultipart(string fileName, FileType fileType, string folderId, string description, FileSource source, byte[] data)
+		{
+			if(string.IsNullOrEmpty(fileName))
+			{
+				throw new IllegalArgumentException(Config.Errors.FileNameNull);
+			}
+
+			var extension = Path.GetExtension(fileName).ToLowerInvariant();
+			string[] fileTypes = new string[5] { ".jpeg", ".jpg", ".gif", ".png", ".pdf" };
+
+			if (!((IList<string>)fileTypes).Contains(extension))
+			{
+			    throw new IllegalArgumentException(Config.Errors.FileTypeInvalid);
+			}
+
+			if(string.IsNullOrEmpty(folderId) || string.IsNullOrEmpty(description))
+			{
+				throw new IllegalArgumentException(Config.Errors.FieldNull);
+			}
+
+			if(data == null)
+			{
+				throw new IllegalArgumentException(Config.Errors.FileNull);
+			}
+
+			return MyLibraryService.AddLibraryFilesMultipart(this.AccessToken, this.APIKey, fileName, fileType, folderId, description, source, data);
+		}
+
+		#endregion
 
         #endregion
     }

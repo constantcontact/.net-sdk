@@ -77,6 +77,14 @@
     <Compile Include="Components\EmailCampaigns\MessageFooter.cs" />
     <Compile Include="Components\EmailCampaigns\Schedule.cs" />
     <Compile Include="Components\EmailCampaigns\TestSend.cs" />
+    <Compile Include="Components\MyLibrary\BaseLibrary.cs" />
+    <Compile Include="Components\MyLibrary\FileMoveResult.cs" />
+    <Compile Include="Components\MyLibrary\FileUploadStatus.cs" />
+    <Compile Include="Components\MyLibrary\MyLibraryFile.cs" />
+    <Compile Include="Components\MyLibrary\MyLibraryFolder.cs" />
+    <Compile Include="Components\MyLibrary\MyLibraryInfo.cs" />
+    <Compile Include="Components\MyLibrary\Thumbnail.cs" />
+    <Compile Include="Components\MyLibrary\UsageSummary.cs" />
     <Compile Include="Components\ResultSet.cs" />
     <Compile Include="Components\Tracking\BaseActivity.cs" />
     <Compile Include="Components\Tracking\BounceActivity.cs" />
@@ -111,7 +119,9 @@
     <Compile Include="Services\Interfaces\IEmailCampaignService.cs" />
     <Compile Include="Services\Interfaces\IContactService.cs" />
     <Compile Include="Services\Interfaces\IListService.cs" />
+    <Compile Include="Services\Interfaces\IMyLibraryService.cs" />
     <Compile Include="Services\ListService.cs" />
+    <Compile Include="Services\MyLibraryService.cs" />
     <Compile Include="Util\Config.cs" />
     <Compile Include="Util\CUrlRequestError.cs" />
     <Compile Include="Util\CUrlResponse.cs" />
@@ -130,6 +140,7 @@
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
