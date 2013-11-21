@@ -5,12 +5,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CTCT;
 using CTCT.Components.Contacts;
 using System.Net;
+using System.Linq;
 using CTCT.Components.Activities;
 using CTCT.Components.EmailCampaigns;
 using CTCT.Components.Tracking;
 using CTCT.Components;
 using CTCT.Exceptions;
 using System.Text;
+using CTCT.Components.MyLibrary;
+using CTCT.Util;
 
 namespace CTCTWrapper.UnitTest
 {
@@ -1505,6 +1508,151 @@ namespace CTCTWrapper.UnitTest
         }
 
         #endregion Bulk Activities API
+
+		#region MyLibrary API
+
+		[TestMethod]
+		public void GetLibraryInfoTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+			var result = cc.GetLibraryInfo();
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(result.UsageSummary);
+		}
+
+		[TestMethod]
+		public void LiveGetAllFoldersTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var folders = cc.GetLibraryFolders();
+            Assert.IsNotNull(folders);
+            Assert.IsNotNull(folders.Results);
+            Assert.AreNotEqual(0, folders.Results.Count);
+		}
+
+		[TestMethod]
+        public void LiveAddFolderTest()
+        {
+            var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var folder = new MyLibraryFolder();
+			folder.Id = Guid.NewGuid().ToString();
+			folder.Name = Guid.NewGuid().ToString();
+			folder.CreatedDate = Extensions.ToISO8601String(DateTime.Now);
+            folder.ModifiedDate = Extensions.ToISO8601String(DateTime.Now);
+
+			var newFolder = cc.AddLibraryFolder(folder);
+            Assert.IsNotNull(newFolder);
+            Assert.IsNotNull(newFolder.Id);
+        }
+
+		[TestMethod]
+		public void LiveUpdateFolderTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var folder = new MyLibraryFolder();
+			folder.Id = Guid.NewGuid().ToString();
+			folder.Name = Guid.NewGuid().ToString();
+			folder.CreatedDate = Extensions.ToISO8601String(DateTime.Now);
+            folder.ModifiedDate = Extensions.ToISO8601String(DateTime.Now);
+
+            var newFolder = cc.AddLibraryFolder(folder);
+            Assert.IsNotNull(newFolder);
+            Assert.IsNotNull(newFolder.Id);
+
+			newFolder.Name = Guid.NewGuid().ToString();
+            var updatedFolder = cc.UpdateLibraryFolder(newFolder);
+
+            Assert.IsNotNull(updatedFolder);
+            Assert.AreEqual(updatedFolder.Id, newFolder.Id);
+            Assert.AreEqual(updatedFolder.Name, newFolder.Name);
+		}
+
+		[TestMethod]
+		public void LiveGetFolderTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var folder = new MyLibraryFolder();
+			folder.Id = Guid.NewGuid().ToString();
+			folder.Name = Guid.NewGuid().ToString();
+			folder.CreatedDate = Extensions.ToISO8601String(DateTime.Now);
+            folder.ModifiedDate = Extensions.ToISO8601String(DateTime.Now);
+
+			var newFolder = cc.AddLibraryFolder(folder);
+			var getFolder = cc.GetLibraryFolder(newFolder.Id);
+
+            Assert.IsNotNull(getFolder);
+			Assert.AreEqual(getFolder.Id, newFolder.Id);
+			Assert.AreEqual(getFolder.Name, newFolder.Name);
+		}
+
+		[TestMethod]
+		public void LiveDeleteFolderTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var folder = new MyLibraryFolder();
+			folder.Id = Guid.NewGuid().ToString();
+			folder.Name = Guid.NewGuid().ToString();
+			folder.CreatedDate = Extensions.ToISO8601String(DateTime.Now);
+            folder.ModifiedDate = Extensions.ToISO8601String(DateTime.Now);
+
+			var newFolder = cc.AddLibraryFolder(folder);
+			bool result = cc.DeleteLibraryFolder(newFolder.Id);
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void LiveGetTrashTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+			var files = cc.GetLibraryTrashFiles();
+			Assert.IsNotNull(files);
+			Assert.IsNotNull(files.Results);
+            //Assert.AreNotEqual(0, files.Results.Count);
+		}
+
+		[TestMethod]
+		public void LiveDeleteTrashFilesTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+			var result = cc.DeleteLibraryTrashFiles();
+			Assert.IsTrue(result);
+		}
+
+		[TestMethod]
+		public void LiveGetFilesTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var files = cc.GetLibraryFiles();
+            Assert.IsNotNull(files);
+            Assert.IsNotNull(files.Results);
+            Assert.AreNotEqual(0, files.Results.Count);
+		}
+
+		[TestMethod]
+		public void LiveGetFilesByFolderTest()
+		{
+			var cc = new ConstantContact(ApiKey, AccessToken);
+
+            var folders = cc.GetLibraryFolders();
+            Assert.IsNotNull(folders);
+            Assert.IsNotNull(folders.Results);
+            Assert.AreNotEqual(0, folders.Results.Count);
+
+			var files = cc.GetLibraryFilesByFolder(folders.Results[0].Id);
+			Assert.IsNotNull(files);
+            Assert.IsNotNull(files.Results);
+		}
+
+		#endregion
 
         #endregion
 

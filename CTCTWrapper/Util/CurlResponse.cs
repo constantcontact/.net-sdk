@@ -33,6 +33,10 @@ namespace CTCT.Util
         /// Response status code.
         /// </summary>
         public HttpStatusCode StatusCode { get; set; }
+		/// <summary>
+		/// Headers dictionary.
+		/// </summary>
+		public Dictionary<string, string> Headers { get; set; }
         
         /// <summary>
         /// Class constructor.
@@ -40,6 +44,7 @@ namespace CTCT.Util
         public CUrlResponse()
         {
             IsError = false;
+			Headers = new Dictionary<string,string>();
         }
 
         /// <summary>

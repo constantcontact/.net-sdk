@@ -141,6 +141,11 @@ namespace CTCT.Util
                 {
                     throw new WebException("Response was not returned or is null");
                 }
+				foreach(string header in response.Headers.AllKeys)
+				{
+					urlResponse.Headers.Add(header, response.GetResponseHeader(header));
+				}
+
                 urlResponse.StatusCode = response.StatusCode;
                 if (response.StatusCode != HttpStatusCode.OK)
                 {

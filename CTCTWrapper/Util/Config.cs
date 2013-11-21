@@ -174,6 +174,38 @@ namespace CTCT.Util
             /// Account verified email addresses link
             /// </summary>
             public const string AccountVerifiedEmailAddressess = "account/verifiedemailaddresses";
+			/// <summary>
+			/// MyLibrary information
+			/// </summary>
+			public const string MyLibraryInfo = "library/info";
+			/// <summary>
+			/// MyLibrary folders
+			/// </summary>
+			public const string MyLibraryFolders = "library/folders";
+			/// <summary>
+			///  Access a specified folder
+			/// </summary>
+			public const string MyLibraryFolder = "library/folders/{0}";
+			/// <summary>
+			/// Files in Trash folder
+			/// </summary>
+			public const string MyLibraryTrash = "library/folders/trash/files";
+			/// <summary>
+			/// MyLibrray files
+			/// </summary>
+			public const string MyLibraryFiles = "library/files";
+			/// <summary>
+			/// MyLibrary file
+			/// </summary>
+			public const string MyLibraryFile = "library/files/{0}";
+			/// <summary>
+			/// MyLibrary files for a specific folder
+			/// </summary>
+			public const string MyLibraryFolderFiles = "library/folders/{0}/files";
+			/// <summary>
+			/// MyLibrary file upload status
+			/// </summary>
+			public const string MyLibraryFileUploadStatus = "library/files/uploadstatus/{0}";
         }
 
         /// <summary>
@@ -378,7 +410,19 @@ namespace CTCT.Util
 			/// <summary>
 			/// File type invalid error.
 			/// </summary>
-			public const string FileTypeInvalid = "File type is invalid. The valid types are txt, csv, xls and xlsx.";
+			public const string FileTypeInvalid = "File type is invalid.";
+			/// <summary>
+			/// MyLibrary item or id error
+			/// </summary>
+			public const string MyLibraryOrId = "Only an interger or a MyLibrary item is allowed for this method.";
+			/// <summary>
+			/// File Ids null error
+			/// </summary>
+			public const string FileIdNull = "File Id parameter must not be null";
+			/// <summary>
+			/// Field null error
+			/// </summary>
+			public const string FieldNull = "Field must not be null";
         }
 
         /// <summary>
