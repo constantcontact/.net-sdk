@@ -10,7 +10,7 @@ using System.IO;
 
 namespace CTCT.Services
 {
-    /// <summary>
+    /// <summary> 
     /// Performs all actions pertaining to scheduling Constant Contact Activities.
     /// </summary>
     public class ActivityService : BaseService, IActivityService
