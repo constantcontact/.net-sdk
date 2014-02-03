@@ -206,6 +206,22 @@ namespace CTCT.Util
 			/// MyLibrary file upload status
 			/// </summary>
 			public const string MyLibraryFileUploadStatus = "library/files/uploadstatus/{0}";
+            /// <summary>
+            /// EventSpot Events Collection Endpoint
+            /// </summary>
+            public const string EventSpots = "eventspot/events";
+            /// <summary>
+            /// Individual Event Fees Endpoint
+            /// </summary>
+            public const string EventFees = "eventspot/events/{0}/fees/{1}";
+            /// <summary>
+            /// Individual Promocode Endpoint
+            /// </summary>
+            public const string EventPromocode = "eventspot/events/{0}/promocodes/{1}";
+            /// <summary>
+            /// Individual Event Registrant Endpoint
+            /// </summary>
+            public const string  EventRegistrant = "eventspot/events/{0}/registrants/{1}";
         }
 
         /// <summary>

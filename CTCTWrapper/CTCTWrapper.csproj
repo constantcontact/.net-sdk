@@ -77,6 +77,14 @@
     <Compile Include="Components\EmailCampaigns\MessageFooter.cs" />
     <Compile Include="Components\EmailCampaigns\Schedule.cs" />
     <Compile Include="Components\EmailCampaigns\TestSend.cs" />
+    <Compile Include="Components\EventSpot\Address.cs" />
+    <Compile Include="Components\EventSpot\Contact.cs" />
+    <Compile Include="Components\EventSpot\EventFee.cs" />
+    <Compile Include="Components\EventSpot\IndividualEvent.cs" />
+    <Compile Include="Components\EventSpot\NotificationOptions.cs" />
+    <Compile Include="Components\EventSpot\OnlineMeeting.cs" />
+    <Compile Include="Components\EventSpot\Promocode.cs" />
+    <Compile Include="Components\EventSpot\TrackInformation.cs" />
     <Compile Include="Components\MyLibrary\BaseLibrary.cs" />
     <Compile Include="Components\MyLibrary\FileMoveResult.cs" />
     <Compile Include="Components\MyLibrary\FileUploadStatus.cs" />
@@ -110,6 +118,7 @@
     <Compile Include="Services\ContactTrackingService.cs" />
     <Compile Include="Services\EmailCampaignService.cs" />
     <Compile Include="Services\ContactService.cs" />
+    <Compile Include="Services\EventSpotService.cs" />
     <Compile Include="Services\Interfaces\IAccountService.cs" />
     <Compile Include="Services\Interfaces\IContactTrackingService.cs" />
     <Compile Include="Services\Interfaces\ICampaignTrackingService.cs" />
@@ -138,6 +147,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Authentication\WinForms\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
