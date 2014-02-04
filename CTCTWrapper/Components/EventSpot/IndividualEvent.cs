@@ -421,6 +421,7 @@ namespace CTCT.Components.EventSpot
         DELETED
     }
 
+#pragma warning disable 1591
     /// <summary>
     /// Event type
     /// </summary>
@@ -453,6 +454,7 @@ namespace CTCT.Components.EventSpot
         OTHER
     }
 
+
     public enum PaymentTypes
     {
         [Obsolete("This type is not supported for new events starting November 2013.", false)]
@@ -462,4 +464,5 @@ namespace CTCT.Components.EventSpot
         CHECK,
         DOOR
     }
+#pragma warning restore 1591
 }

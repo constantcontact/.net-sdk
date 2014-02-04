@@ -58,6 +58,19 @@ namespace CTCT.Util
             return json;
         }
 
+        public static string ToJSON(this IList<PatchRequest> list)
+        {
+            string json = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(list.GetType());
+                ser.WriteObject(ms, list);
+                json = Encoding.UTF8.GetString(ms.ToArray());
+            }
+
+            return json;
+        }
+
         /// <summary>
         /// Converts a string to its enum representation.
         /// </summary>

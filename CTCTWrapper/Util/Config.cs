@@ -222,6 +222,15 @@ namespace CTCT.Util
             /// Individual Event Registrant Endpoint
             /// </summary>
             public const string  EventRegistrant = "eventspot/events/{0}/registrants/{1}";
+            /// <summary>
+            /// Event Item Endpoint
+            /// </summary>
+            public const string EventItem = "eventspot/events/{0}/items/{1}";
+            /// <summary>
+            /// Item Attribute Endpoint
+            /// </summary>
+            public const string ItemAttribute= "eventspot/events/{0}/items/{1}/attributes/{2}";
+           
         }
 
         /// <summary>

@@ -15,6 +15,14 @@ namespace CTCT.Components.EventSpot
     public class Promocode : Component
     {
         /// <summary>
+        /// Constructor
+        /// </summary>
+        public Promocode()
+        {
+            this.FeeIds = new List<string>();
+        }
+
+        /// <summary>
         /// Name of the promotional code visible to registrants, between 4 - 12 characters, cannot contain spaces or special character (_ is OK); each code_name must be unique 
         /// </summary>
         [DataMember(Name = "code_name", EmitDefaultValue = false)]

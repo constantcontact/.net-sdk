@@ -8,52 +8,53 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Sale Item
+    /// Fee
     /// </summary>
     [DataContract]
     [Serializable]
-    public class SaleItem : Component
+    public class Fee : Component
     {
         /// <summary>
-        /// Amount paid
+        /// id
+        /// </summary>
+        [DataMember(Name = "id", EmitDefaultValue = false)]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        [DataMember(Name = "name", EmitDefaultValue = false)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Type
+        /// </summary>
+        [DataMember(Name = "type", EmitDefaultValue = false)]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Quantity
+        /// </summary>
+        [DataMember(Name = "quantity", EmitDefaultValue = false)]
+        public int Quantity { get; set; }
+
+        /// <summary>
+        /// Amount
         /// </summary>
         [DataMember(Name = "amount", EmitDefaultValue = false)]
         public float Amount { get; set; }
 
         /// <summary>
-        /// Fee ID 
+        /// Fee period type
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false)]
-        public string Id { get; set; }
+        [DataMember(Name = "fee_period_type", EmitDefaultValue = false)]
+        public string FeePeriodType { get; set; }
 
         /// <summary>
         /// Amount paid
         /// </summary>
         [DataMember(Name = "promo_type", EmitDefaultValue = false)]
         public string PromoType { get; set; }
-
-        /// <summary>
-        /// Name of registrant or guest 
-        /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Number of amount required
-        /// </summary>
-        [DataMember(Name = "quantity", EmitDefaultValue = false)]
-        public int Quantity { get; set; }
-
-        /// <summary>
-        /// Type of fees 
-        /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false)]
-        public string Type { get; set; }
-
-        /// <summary>
-        /// Amount paid
-        /// </summary>
-        [DataMember(Name = "fee_period_type", EmitDefaultValue = false)]
-        public string FeePeriodType { get; set; }
+        
     }
 }

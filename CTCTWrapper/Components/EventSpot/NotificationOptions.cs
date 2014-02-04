@@ -36,6 +36,7 @@ namespace CTCT.Components.EventSpot
         }
     }
 
+#pragma warning disable 1591
     /// <summary>
     /// Specifies the type of notifications sent to the contact email_address
     /// </summary>
@@ -43,4 +44,6 @@ namespace CTCT.Components.EventSpot
     {
         SO_REGISTRATION_NOTIFICATION
     }
+#pragma warning restore 1591
+
 }

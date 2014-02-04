@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 
 namespace CTCT.Components.EventSpot
 {
+    /// <summary>
+    /// Contact
+    /// </summary>
     [DataContract]
     [Serializable]
     public class Contact : Component
