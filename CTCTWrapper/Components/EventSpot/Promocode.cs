@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Promocode for event
+    /// Promocode class
     /// </summary>
     [DataContract]
     [Serializable]

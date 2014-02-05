@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Event Fees
+    /// EventFee class
     /// </summary>
     [DataContract]
     [Serializable]

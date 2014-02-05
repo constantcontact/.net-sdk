@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Section
+    /// Section class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -35,7 +35,7 @@ namespace CTCT.Components.EventSpot
         public IList<Field> Fields { get; set; }
 
         /// <summary>
-        /// String representation Type of the value
+        /// String representation of field type
         /// </summary>
         [DataMember(Name = "field_type", EmitDefaultValue = false)]
         private string FieldTypeString { get; set; }

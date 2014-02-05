@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Guest
+    /// Guest class
     /// </summary>
     [DataContract]
     [Serializable]

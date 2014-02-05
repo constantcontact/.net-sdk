@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Track information
+    /// TrackInformation class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -75,7 +75,7 @@ namespace CTCT.Components.EventSpot
         public bool IsTicketingLinkDisplayed { get; set; }
 
         /// <summary>
-        /// Date after which late fees apply, in ISO-8601 format 
+        /// String representation of the date after which late fees apply, in ISO-8601 format 
         /// </summary>
         [DataMember(Name = "late_fee_date", EmitDefaultValue = false)]
         private string LateFeeDateString { get; set; }
@@ -96,7 +96,7 @@ namespace CTCT.Components.EventSpot
         public int RegistrationLimitCount { get; set; }
 
         /// <summary>
-        /// Date when event registrations close, in ISO-8601 format 
+        /// String representation of the date when event registrations close, in ISO-8601 format 
         /// </summary>
         [DataMember(Name = "registration_limit_date", EmitDefaultValue = false)]
         private string RegistrationLimitDateString { get; set; }

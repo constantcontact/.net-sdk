@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Event Registrant
+    /// Registrant class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -25,7 +25,7 @@ namespace CTCT.Components.EventSpot
         }
 
         /// <summary>
-        /// id
+        /// Id
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public string Id { get; set; }
@@ -100,7 +100,7 @@ namespace CTCT.Components.EventSpot
         public string RegistrationStatus { get; set; }
 
         /// <summary>
-        /// String representation Update date
+        /// String representation of update date
         /// </summary>
         [DataMember(Name = "updated_date", EmitDefaultValue = false)]
         private string UpdatedDateString { get; set; }

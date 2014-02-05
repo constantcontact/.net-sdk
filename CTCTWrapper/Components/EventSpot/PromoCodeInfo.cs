@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Promo code info
+    /// PromoCodeInfo class
     /// </summary>
     [DataContract]
     [Serializable]

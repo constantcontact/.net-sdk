@@ -8,14 +8,14 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Field
+    /// Field class
     /// </summary>
     [DataContract]
     [Serializable]
     public class Field : Component
     {
         /// <summary>
-        /// Type of the value
+        /// String representation of the type value
         /// </summary>
         [DataMember(Name = "type", EmitDefaultValue = false)]
         private string TypeString { get; set; }
@@ -42,7 +42,7 @@ namespace CTCT.Components.EventSpot
         public string Label { get; set; }
 
         /// <summary>
-        /// Field value
+        /// The value
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
         public string Value { get; set; }

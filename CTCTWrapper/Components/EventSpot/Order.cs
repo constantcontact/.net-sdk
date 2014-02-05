@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Order
+    /// Order class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -29,7 +29,7 @@ namespace CTCT.Components.EventSpot
         public double Total { get; set; }
 
         /// <summary>
-        /// Fees
+        /// Fees list
         /// </summary>
         [DataMember(Name = "fees", EmitDefaultValue = false)]
         public IList<Fee> Fees { get; set; }

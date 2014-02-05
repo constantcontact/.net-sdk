@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Event spot individual event
+    /// IndividualEvent class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -30,7 +30,7 @@ namespace CTCT.Components.EventSpot
         }
 
         /// <summary>
-        /// String representation Date event was published or announced, in ISO-8601 format
+        /// String representation of date event was published or announced, in ISO-8601 format
         /// </summary>
         [DataMember(Name = "active_date", EmitDefaultValue = false)]
         private string ActiveDateString { get; set; }
@@ -229,7 +229,7 @@ namespace CTCT.Components.EventSpot
         }
 
         /// <summary>
-        /// The event status
+        /// String representation of the event status
         /// </summary>
         [DataMember(Name = "status", EmitDefaultValue = false)]
         private string StatusString { get; set; }
@@ -280,7 +280,7 @@ namespace CTCT.Components.EventSpot
         public string TwitterHashTag { get; set; }
 
         /// <summary>
-        /// The event type
+        /// String representation of the event type
         /// </summary>
         [DataMember(Name = "type", EmitDefaultValue = false)]
         private string TypeString { get; set; }
@@ -295,7 +295,7 @@ namespace CTCT.Components.EventSpot
         }
 
         /// <summary>
-        /// Date the event was updated in ISO-8601 format
+        /// String representation of the date the event was updated in ISO-8601 format
         /// </summary>
         [DataMember(Name = "updated_date", EmitDefaultValue = false)]
         private string UpdatedDateString { get; set; }
@@ -308,9 +308,6 @@ namespace CTCT.Components.EventSpot
             get { return this.UpdatedDateString.FromISO8601String(); }
             set { this.UpdatedDateString = value.ToISO8601String(); }
         }
-
-
-
 
         /// <summary>
         /// URI that points to the detailed description of that event
@@ -386,10 +383,6 @@ namespace CTCT.Components.EventSpot
             }
         }
     }
-
-
-
-
 
 
 

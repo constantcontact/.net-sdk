@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// 
+    /// NotificationOptions class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -21,7 +21,7 @@ namespace CTCT.Components.EventSpot
         public bool IsOptedIn { get; set; }
 
         /// <summary>
-        /// Specifies the type of notifications sent to the contact email_address, valid values: SO_REGISTRATION_NOTIFICATION - send notice for each registration (Default) 
+        /// String representation of the type of notifications sent to the contact email_address, valid values: SO_REGISTRATION_NOTIFICATION - send notice for each registration (Default) 
         /// </summary>
         [DataMember(Name = "notification_type", EmitDefaultValue = false)]
         private string NotificationTypeString { get; set; }

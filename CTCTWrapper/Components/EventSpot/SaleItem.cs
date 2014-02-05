@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Sale Item
+    /// SaleItem class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -51,7 +51,7 @@ namespace CTCT.Components.EventSpot
         public string Type { get; set; }
 
         /// <summary>
-        /// Amount paid
+        /// Fee period type
         /// </summary>
         [DataMember(Name = "fee_period_type", EmitDefaultValue = false)]
         public string FeePeriodType { get; set; }

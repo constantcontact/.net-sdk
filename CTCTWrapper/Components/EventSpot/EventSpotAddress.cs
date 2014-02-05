@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Address specifying the event location
+    /// EventSpotAddress class
     /// </summary>
     [DataContract]
     [Serializable]

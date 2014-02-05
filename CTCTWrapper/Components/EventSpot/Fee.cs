@@ -8,14 +8,14 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Fee
+    /// Fee class
     /// </summary>
     [DataContract]
     [Serializable]
     public class Fee : Component
     {
         /// <summary>
-        /// id
+        /// Id
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public string Id { get; set; }

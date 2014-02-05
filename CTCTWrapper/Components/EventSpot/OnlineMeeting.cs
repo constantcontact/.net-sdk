@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Online meeting details,
+    /// OnlineMeeting class
     /// </summary>
     [DataContract]
     [Serializable]

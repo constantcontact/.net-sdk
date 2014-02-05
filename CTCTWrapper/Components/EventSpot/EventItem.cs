@@ -8,7 +8,7 @@ using CTCT.Util;
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Event Item
+    /// EventItem class
     /// </summary>
     [DataContract]
     [Serializable]
@@ -31,14 +31,14 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Number of items available for sale, displayed on the registration page if show_quantity_available = true. 
         /// </summary>
-        [DataMember(Name = "default_quantity_available", EmitDefaultValue = false)]
+        [DataMember(Name = "default_quantity_available", EmitDefaultValue = true)]
         public int DefaultQuantityAvailable { get; set; }
 
         /// <summary>
         /// The total quantity of items offered for sale, minimum = 0, cannot leave blank. 
         /// If the item has attributes, the summation of the quantity_total for all attributes automatically overwrites the value you enter here. 
         /// </summary>
-        [DataMember(Name = "default_quantity_total", EmitDefaultValue = false)]
+        [DataMember(Name = "default_quantity_total", EmitDefaultValue = true)]
         public int DefaultQuantityTotal { get; set; }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// The maximum quantity of this item that a registrant, as well as any of their guests, can purchase, minimum = 0, cannot leave blank; value cannot be greater than the value of default_quantity_available 
         /// </summary>
-        [DataMember(Name = "per_registrant_limit", EmitDefaultValue = false)]
+        [DataMember(Name = "per_registrant_limit", EmitDefaultValue = true)]
         public int PerRegistrantLimit { get; set; }
 
         /// <summary>
