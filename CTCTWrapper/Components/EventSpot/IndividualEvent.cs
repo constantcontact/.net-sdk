@@ -19,14 +19,14 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         public IndividualEvent()
         {
-            this.Address = new Address();
-            this.PaymentAddress = new Address();
+            this.Address = new EventSpotAddress();
+            this.PaymentAddress = new EventSpotAddress();
             this.PaymentOptions = new List<PaymentTypes>();
             this.PaymentOptionsArray = new List<string>();
             this.TrackInformation = new TrackInformation();
             this.OnlineMeeting = new OnlineMeeting();
             this.NotificationOptions = new List<NotificationOptions>();
-            this.Contact = new Contact();
+            this.Contact = new EventSpotContact();
         }
 
         /// <summary>
@@ -322,13 +322,13 @@ namespace CTCT.Components.EventSpot
         /// Address specifying the event location, used to determine event location on map if is_map_displayed set to true
         /// </summary>
         [DataMember(Name = "address", EmitDefaultValue = false)]
-        public Address Address { get; set; }
+        public EventSpotAddress Address { get; set; }
 
         /// <summary>
         /// The event host's contact information 
         /// </summary>
         [DataMember(Name = "contact", EmitDefaultValue = false)]
-        public Contact Contact { get; set; }
+        public EventSpotContact Contact { get; set; }
 
         /// <summary>
         /// Define whether or not event notifications are sent to the contact email_address, and which notifications. 
@@ -346,7 +346,7 @@ namespace CTCT.Components.EventSpot
         /// Address to which checks will be sent. REQUIRED if CHECK is selected as a payment option 
         /// </summary>
         [DataMember(Name = "payment_address", EmitDefaultValue = false)]
-        public Address PaymentAddress { get; set; }
+        public EventSpotAddress PaymentAddress { get; set; }
 
         /// <summary>
         /// Use these settings to define the information displayed on the Event registration page 

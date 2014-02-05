@@ -58,7 +58,13 @@ namespace CTCT.Util
             return json;
         }
 
-        public static string ToJSON(this IList<PatchRequest> list)
+        /// <summary>
+        /// Converts a list T of type Component to JSON representation.
+        /// </summary>
+        /// <typeparam name="T">Type of Component</typeparam>
+        /// <param name="list">The string list.</param>
+        /// <returns>Returns the JSON representation of the list.</returns>
+        public static string ToJSON<T>(this IList<T> list) where T : Components.Component
         {
             string json = null;
             using (MemoryStream ms = new MemoryStream())

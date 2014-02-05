@@ -77,9 +77,10 @@
     <Compile Include="Components\EmailCampaigns\MessageFooter.cs" />
     <Compile Include="Components\EmailCampaigns\Schedule.cs" />
     <Compile Include="Components\EmailCampaigns\TestSend.cs" />
-    <Compile Include="Components\EventSpot\Address.cs" />
+    <Compile Include="Components\EventSpot\EventSpotAddress.cs" />
     <Compile Include="Components\EventSpot\Attribute.cs" />
-    <Compile Include="Components\EventSpot\Contact.cs" />
+    <Compile Include="Components\EventSpot\EventSpotContact.cs" />
+    <Compile Include="Services\Interfaces\IEventSpotService.cs" />
     <Compile Include="Util\PatchRequest.cs" />
     <Compile Include="Components\EventSpot\EventFee.cs" />
     <Compile Include="Components\EventSpot\EventItem.cs" />

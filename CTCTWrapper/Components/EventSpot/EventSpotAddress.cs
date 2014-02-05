@@ -11,7 +11,7 @@ namespace CTCT.Components.EventSpot
     /// </summary>
     [DataContract]
     [Serializable]
-    public class Address : Component
+    public class EventSpotAddress : Component
     {
 
         /// <summary>

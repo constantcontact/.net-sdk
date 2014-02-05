@@ -448,6 +448,14 @@ namespace CTCT.Util
 			/// Field null error
 			/// </summary>
 			public const string FieldNull = "Field must not be null";
+            /// <summary>
+            /// EventSpot id error
+            /// </summary>
+            public const string InvalidId = "Only an valid id is allowed for this method.";
+            /// <summary>
+            /// Objects null
+            /// </summary>
+            public const string ObjectNull = "Object provided is not valid.";
         }
 
         /// <summary>

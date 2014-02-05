@@ -11,7 +11,7 @@ namespace CTCT.Components.EventSpot
     /// </summary>
     [DataContract]
     [Serializable]
-    public class Contact : Component
+    public class EventSpotContact : Component
     {
         /// <summary>
         /// Event contact's email-address
