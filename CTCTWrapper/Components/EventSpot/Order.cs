@@ -25,7 +25,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Total
         /// </summary>
-        [DataMember(Name = "total", EmitDefaultValue = false)]
+        [DataMember(Name = "total", EmitDefaultValue = true)]
         public double Total { get; set; }
 
         /// <summary>

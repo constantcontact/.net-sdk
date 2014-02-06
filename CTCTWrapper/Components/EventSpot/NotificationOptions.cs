@@ -17,7 +17,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Set to true to send event notifications to the contact email_address, false for no notifications; Default is false 
         /// </summary>
-        [DataMember(Name = "is_opted_in", EmitDefaultValue = false)]
+        [DataMember(Name = "is_opted_in", EmitDefaultValue = true)]
         public bool IsOptedIn { get; set; }
 
         /// <summary>

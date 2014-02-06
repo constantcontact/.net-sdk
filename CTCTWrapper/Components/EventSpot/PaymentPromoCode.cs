@@ -25,7 +25,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Total discount
         /// </summary>
-        [DataMember(Name = "total_discount", EmitDefaultValue = false)]
+        [DataMember(Name = "total_discount", EmitDefaultValue = true)]
         public double TotalDiscount { get; set; }
 
         /// <summary>

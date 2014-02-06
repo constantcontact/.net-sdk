@@ -29,13 +29,13 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Number of item attributes that are still available for sale 
         /// </summary>
-        [DataMember(Name = "quantity_available", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity_available", EmitDefaultValue = true)]
         public int QuantityAvailable { get; set; }
 
         /// <summary>
         /// Number of attributes offered for sale 
         /// </summary>
-        [DataMember(Name = "quantity_total", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity_total", EmitDefaultValue = true)]
         public int QuantityTotal { get; set; }
     }
 }

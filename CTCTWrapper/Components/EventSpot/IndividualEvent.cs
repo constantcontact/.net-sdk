@@ -47,7 +47,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Set to true allows registrants to view others who have registered for the event, Default is false 
         /// </summary>
-        [DataMember(Name = "are_registrants_public", EmitDefaultValue = false)]
+        [DataMember(Name = "are_registrants_public", EmitDefaultValue = true)]
         public bool AreRegistrantsPublic { get; set; }
 
         /// <summary>
@@ -144,37 +144,37 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Set to true to display the event on the account's calendar; Default = true 
         /// </summary>
-        [DataMember(Name = "is_calendar_displayed", EmitDefaultValue = false)]
+        [DataMember(Name = "is_calendar_displayed", EmitDefaultValue = true)]
         public bool IsCalendarDisplayed { get; set; }
 
         /// <summary>
         /// Set to true to enable registrant check-in, and indicate that the registrant attended the event; Default is false 
         /// </summary>
-        [DataMember(Name = "is_checkin_available", EmitDefaultValue = false)]
+        [DataMember(Name = "is_checkin_available", EmitDefaultValue = true)]
         public bool IsCheckinAvailable { get; set; }
 
         /// <summary>
         /// Indicates if the event home/landing page is displayed for the event; set to true only if a landing page has been created for the event; Default is false 
         /// </summary>
-        [DataMember(Name = "is_home_page_displayed", EmitDefaultValue = false)]
+        [DataMember(Name = "is_home_page_displayed", EmitDefaultValue = true)]
         public bool IsHomePageDisplayed { get; set; }
 
         /// <summary>
         /// Set to true to publish the event in external event directories such as SocialVents and EventsInAmerica; Default is false 
         /// </summary>
-        [DataMember(Name = "is_listed_in_external_directory", EmitDefaultValue = false)]
+        [DataMember(Name = "is_listed_in_external_directory", EmitDefaultValue = true)]
         public bool IsListedInExternalDirectory { get; set; }
 
         /// <summary>
         /// For future usage, Default = true 
         /// </summary>
-        [DataMember(Name = "is_map_displayed", EmitDefaultValue = false)]
+        [DataMember(Name = "is_map_displayed", EmitDefaultValue = true)]
         public bool IsMapDisplayed { get; set; }
 
         /// <summary>
         /// Set to true if this is an online event; Default is false 
         /// </summary>
-        [DataMember(Name = "is_virtual_event", EmitDefaultValue = false)]
+        [DataMember(Name = "is_virtual_event", EmitDefaultValue = true)]
         public bool IsVirtualEvent { get; set; }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Number of event registrants 
         /// </summary>
-        [DataMember(Name = "total_registered_count", EmitDefaultValue = false)]
+        [DataMember(Name = "total_registered_count", EmitDefaultValue = true)]
         public int TotalRegisteredCount { get; set; }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace CTCT.Components.EventSpot
                 IList<string> temp = new List<string>();
                 foreach (PaymentTypes pt in value)
                 {
-                     temp.Add(value.ToString());
+                    temp.Add(pt.ToString());
                 }
                 this.PaymentOptionsArray = temp;
             }

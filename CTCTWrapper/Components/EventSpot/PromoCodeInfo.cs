@@ -38,19 +38,19 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Redemption count
         /// </summary>
-        [DataMember(Name = "redemption_count", EmitDefaultValue = false)]
+        [DataMember(Name = "redemption_count", EmitDefaultValue = true)]
         public int RedemptionCount { get; set; }
 
         /// <summary>
         /// Discount percent
         /// </summary>
-        [DataMember(Name = "discount_percent", EmitDefaultValue = false)]
+        [DataMember(Name = "discount_percent", EmitDefaultValue = true)]
         public double DiscountPercent { get; set; }
 
         /// <summary>
         /// Discount amount 
         /// </summary>
-        [DataMember(Name = "discount_amount", EmitDefaultValue = false)]
+        [DataMember(Name = "discount_amount", EmitDefaultValue = true)]
         public double DiscountAmount { get; set; }
 
         /// <summary>

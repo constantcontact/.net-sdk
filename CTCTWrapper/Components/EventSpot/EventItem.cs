@@ -74,7 +74,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// If true, displays the remaining quantity of this item for purchase on the registration page 
         /// </summary>
-        [DataMember(Name = "show_quantity_available", EmitDefaultValue = false)]
+        [DataMember(Name = "show_quantity_available", EmitDefaultValue = true)]
         public bool ShowQuantityAvailable { get; set; }
     }
 }

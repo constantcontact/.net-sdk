@@ -50,13 +50,13 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Specifies a fixed discount amount, minimum of 0.01, is required when code_type = DISCOUNT, but not using discount_percent
         /// </summary>
-        [DataMember(Name = "discount_amount", EmitDefaultValue = false)]
+        [DataMember(Name = "discount_amount", EmitDefaultValue = true)]
         public double DiscountAmount { get; set; }
 
         /// <summary>
         /// Specifies a discount percentage, from 1% - 100%, is required when code_type = DISCOUNT, but not using discount_amount
         /// </summary>
-        [DataMember(Name = "discount_percent", EmitDefaultValue = false)]
+        [DataMember(Name = "discount_percent", EmitDefaultValue = true)]
         public int DiscountPercent { get; set; }
 
         /// <summary>
@@ -112,19 +112,19 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Number of promocodes available for redemption; -1 = unlimited 
         /// </summary>
-        [DataMember(Name = "quantity_available", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity_available", EmitDefaultValue = true)]
         public int QuantityAvailable { get; set; }
 
         /// <summary>
         /// Total number of promocodes available for redemption; -1 = unlimited
         /// </summary>
-        [DataMember(Name = "quantity_total", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity_total", EmitDefaultValue = true)]
         public int QuantityTotal { get; set; }
 
         /// <summary>
         /// Number of promocodes that have been redeemed; starts at 0
         /// </summary>
-        [DataMember(Name = "quantity_used", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity_used", EmitDefaultValue = true)]
         public int QuantityUsed { get; set; }
 
         /// <summary>

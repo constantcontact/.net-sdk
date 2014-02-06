@@ -35,13 +35,13 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Quantity
         /// </summary>
-        [DataMember(Name = "quantity", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity", EmitDefaultValue = true)]
         public int Quantity { get; set; }
 
         /// <summary>
         /// Amount
         /// </summary>
-        [DataMember(Name = "amount", EmitDefaultValue = false)]
+        [DataMember(Name = "amount", EmitDefaultValue = true)]
         public float Amount { get; set; }
 
         /// <summary>

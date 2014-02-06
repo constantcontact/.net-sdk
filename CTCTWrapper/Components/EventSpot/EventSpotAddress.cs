@@ -35,13 +35,13 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Longitude coordinates of the event location, , not used to determine event Location at this time on map if is_map_displayed set to true 
         /// </summary>
-        [DataMember(Name = "longitude", EmitDefaultValue = false)]
+        [DataMember(Name = "longitude", EmitDefaultValue = true)]
         public double Longitude { get; set; }
 
         /// <summary>
         /// Latitude coordinates of the event location, not used to determine event Location on map if is_map_displayed set to true 
         /// </summary>
-        [DataMember(Name = "latitude", EmitDefaultValue = false)]
+        [DataMember(Name = "latitude", EmitDefaultValue = true)]
         public double Latitude { get; set; }
 
         /// <summary>

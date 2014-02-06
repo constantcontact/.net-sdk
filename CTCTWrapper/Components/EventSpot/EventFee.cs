@@ -56,13 +56,13 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Fee for registrations that occur after the event's late_fee_date 
         /// </summary>
-        [DataMember(Name = "late_fee", EmitDefaultValue = false)]
+        [DataMember(Name = "late_fee", EmitDefaultValue = true)]
         public double LateFee { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [DataMember(Name = "has_restricted_access", EmitDefaultValue = false)]
+        [DataMember(Name = "has_restricted_access", EmitDefaultValue = true)]
         public bool HasRestrictedAccess { get; set; }
     }
 

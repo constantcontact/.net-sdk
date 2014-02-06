@@ -15,6 +15,15 @@ namespace CTCT.Components.EventSpot
     public class TrackInformation : Component
     {
         /// <summary>
+        /// Constructor
+        /// </summary>
+        public TrackInformation()
+        {
+            this.InformationSectionsArray = new List<string>();
+            this.InformationSections = new List<InformationSections>();
+        }
+
+        /// <summary>
         /// Date on which early fees end, in ISO-8601 format 
         /// </summary>
         [DataMember(Name = "early_fee_date", EmitDefaultValue = false)]
@@ -39,39 +48,31 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Number of guests each registrant can bring, 0 - 100, default = 0 
         /// </summary>
-        [DataMember(Name = "guest_limit", EmitDefaultValue = false)]
+        [DataMember(Name = "guest_limit", EmitDefaultValue = true)]
         public int GuestLimit { get; set; }
-
-        /// <summary>
-        ///  Determines if the Who (CONTACT), When (TIME), or Where (LOCATION) information is shown on the Event page. Default settings are CONTACT, TIME, and LOCATION ; 
-        ///  valid values are:CONTACT - displays the event contact informationTIME - displays the event date and time
-        ///  LOCATION - displays the event location
-        /// </summary>
-        [DataMember(Name = "information_sections", EmitDefaultValue = false)]
-        public string[] InformationSections { get; set; }
 
         /// <summary>
         /// Default = false; Set to true to display the guest count field on the registration form; if true, is_guest_name_required must be set to false (default)
         /// </summary>
-        [DataMember(Name = "is_guest_anonymous_enabled", EmitDefaultValue = false)]
+        [DataMember(Name = "is_guest_anonymous_enabled", EmitDefaultValue = true)]
         public bool IsGuestAnonymousEnabled { get; set; }
 
         /// <summary>
         /// Default = false. Set to display guest name fields on registration form; if true, then is_guest_anonymous_enabled must be set false (default)
         /// </summary>
-        [DataMember(Name = "is_guest_name_required", EmitDefaultValue = false)]
+        [DataMember(Name = "is_guest_name_required", EmitDefaultValue = true)]
         public bool IsGuestNameRequired { get; set; }
 
         /// <summary>
         /// Default = false; Manually closes the event registration when set to true, takes precedence over registration_limit_date and registration_limit_count settings 
         /// </summary>
-        [DataMember(Name = "is_registration_closed_manually", EmitDefaultValue = false)]
+        [DataMember(Name = "is_registration_closed_manually", EmitDefaultValue = true)]
         public bool IsRegistrationClosedManually { get; set; }
 
         /// <summary>
         /// Default = false; Set to true provide a link for registrants to retrieve an event ticket after they register
         /// </summary>
-        [DataMember(Name = "is_ticketing_link_displayed", EmitDefaultValue = false)]
+        [DataMember(Name = "is_ticketing_link_displayed", EmitDefaultValue = true)]
         public bool IsTicketingLinkDisplayed { get; set; }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Specifies the maximum number of registrants for the event 
         /// </summary>
-        [DataMember(Name = "registration_limit_count", EmitDefaultValue = false)]
+        [DataMember(Name = "registration_limit_count", EmitDefaultValue = true)]
         public int RegistrationLimitCount { get; set; }
 
         /// <summary>
@@ -109,5 +110,61 @@ namespace CTCT.Components.EventSpot
             get { return this.RegistrationLimitDateString.FromISO8601String(); }
             set { this.RegistrationLimitDateString = value.ToISO8601String(); }
         }
+
+        /// <summary>
+        ///  Determines if the Who (CONTACT), When (TIME), or Where (LOCATION) information is shown on the Event page. Default settings are CONTACT, TIME, and LOCATION 
+        ///  valid values are: CONTACT - displays the event contact informationTIME - displays the event date and time
+        ///  LOCATION - displays the event location
+        /// </summary>
+        [DataMember(Name = "information_sections", EmitDefaultValue = false)]
+        private IList<string> InformationSectionsArray { get; set; }
+
+        /// <summary>
+        ///  Determines if the Who (CONTACT), When (TIME), or Where (LOCATION) information is shown on the Event page. Default settings are CONTACT, TIME, and LOCATION 
+        ///  valid values are: CONTACT - displays the event contact informationTIME - displays the event date and time
+        ///  LOCATION - displays the event location
+        /// </summary>
+        public IList<InformationSections> InformationSections
+        {
+            get
+            {
+                IList<InformationSections> temp = new List<InformationSections>();
+                foreach (string s in this.InformationSectionsArray)
+                {
+                    var value = s.ToEnum<InformationSections>();
+                    temp.Add(value);
+                }
+                return temp;
+            }
+            set
+            {
+                IList<string> temp = new List<string>();
+                foreach (InformationSections pt in value.Distinct())
+                {
+                    temp.Add(pt.ToString());
+                }
+                this.InformationSectionsArray = temp;
+            }
+        }
+    }
+
+    /// <summary>
+    /// InformationSection of TrackTnformation
+    /// </summary>
+    [Serializable]
+    public enum InformationSections
+    {
+        /// <summary>
+        /// displays the event contact information
+        /// </summary>
+        CONTACT,
+        /// <summary>
+        /// displays the event date and time
+        /// </summary>
+        TIME,
+        /// <summary>
+        /// displays the event location
+        /// </summary>
+        LOCATION
     }
 }

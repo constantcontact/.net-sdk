@@ -84,7 +84,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Guest count
         /// </summary>
-        [DataMember(Name = "guest_count", EmitDefaultValue = false)]
+        [DataMember(Name = "guest_count", EmitDefaultValue = true)]
         public int GuestCount { get; set; }
 
         /// <summary>

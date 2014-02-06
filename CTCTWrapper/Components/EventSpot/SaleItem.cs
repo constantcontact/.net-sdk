@@ -17,7 +17,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Amount paid
         /// </summary>
-        [DataMember(Name = "amount", EmitDefaultValue = false)]
+        [DataMember(Name = "amount", EmitDefaultValue = true)]
         public float Amount { get; set; }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Number of amount required
         /// </summary>
-        [DataMember(Name = "quantity", EmitDefaultValue = false)]
+        [DataMember(Name = "quantity", EmitDefaultValue = true)]
         public int Quantity { get; set; }
 
         /// <summary>
