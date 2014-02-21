@@ -77,6 +77,28 @@
     <Compile Include="Components\EmailCampaigns\MessageFooter.cs" />
     <Compile Include="Components\EmailCampaigns\Schedule.cs" />
     <Compile Include="Components\EmailCampaigns\TestSend.cs" />
+    <Compile Include="Components\EventSpot\EventSpotAddress.cs" />
+    <Compile Include="Components\EventSpot\Attribute.cs" />
+    <Compile Include="Components\EventSpot\EventSpotContact.cs" />
+    <Compile Include="Services\Interfaces\IEventSpotService.cs" />
+    <Compile Include="Util\PatchRequest.cs" />
+    <Compile Include="Components\EventSpot\EventFee.cs" />
+    <Compile Include="Components\EventSpot\EventItem.cs" />
+    <Compile Include="Components\EventSpot\Fee.cs" />
+    <Compile Include="Components\EventSpot\Field.cs" />
+    <Compile Include="Components\EventSpot\Guest.cs" />
+    <Compile Include="Components\EventSpot\Order.cs" />
+    <Compile Include="Components\EventSpot\PaymentPromoCode.cs" />
+    <Compile Include="Components\EventSpot\PaymentSummary.cs" />
+    <Compile Include="Components\EventSpot\PromoCodeInfo.cs" />
+    <Compile Include="Components\EventSpot\Registrant.cs" />
+    <Compile Include="Components\EventSpot\IndividualEvent.cs" />
+    <Compile Include="Components\EventSpot\NotificationOptions.cs" />
+    <Compile Include="Components\EventSpot\OnlineMeeting.cs" />
+    <Compile Include="Components\EventSpot\Promocode.cs" />
+    <Compile Include="Components\EventSpot\SaleItem.cs" />
+    <Compile Include="Components\EventSpot\Section.cs" />
+    <Compile Include="Components\EventSpot\TrackInformation.cs" />
     <Compile Include="Components\MyLibrary\BaseLibrary.cs" />
     <Compile Include="Components\MyLibrary\FileMoveResult.cs" />
     <Compile Include="Components\MyLibrary\FileUploadStatus.cs" />
@@ -110,6 +132,7 @@
     <Compile Include="Services\ContactTrackingService.cs" />
     <Compile Include="Services\EmailCampaignService.cs" />
     <Compile Include="Services\ContactService.cs" />
+    <Compile Include="Services\EventSpotService.cs" />
     <Compile Include="Services\Interfaces\IAccountService.cs" />
     <Compile Include="Services\Interfaces\IContactTrackingService.cs" />
     <Compile Include="Services\Interfaces\ICampaignTrackingService.cs" />
@@ -138,6 +161,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Authentication\WinForms\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

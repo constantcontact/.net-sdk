@@ -59,6 +59,25 @@ namespace CTCT.Util
         }
 
         /// <summary>
+        /// Converts a list T of type Component to JSON representation.
+        /// </summary>
+        /// <typeparam name="T">Type of Component</typeparam>
+        /// <param name="list">The string list.</param>
+        /// <returns>Returns the JSON representation of the list.</returns>
+        public static string ToJSON<T>(this IList<T> list) where T : Components.Component
+        {
+            string json = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                DataContractJsonSerializer ser = new DataContractJsonSerializer(list.GetType());
+                ser.WriteObject(ms, list);
+                json = Encoding.UTF8.GetString(ms.ToArray());
+            }
+
+            return json;
+        }
+
+        /// <summary>
         /// Converts a string to its enum representation.
         /// </summary>
         /// <typeparam name="T">Enum type.</typeparam>

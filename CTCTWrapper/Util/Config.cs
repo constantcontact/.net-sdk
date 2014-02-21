@@ -206,6 +206,31 @@ namespace CTCT.Util
 			/// MyLibrary file upload status
 			/// </summary>
 			public const string MyLibraryFileUploadStatus = "library/files/uploadstatus/{0}";
+            /// <summary>
+            /// EventSpot Events Collection Endpoint
+            /// </summary>
+            public const string EventSpots = "eventspot/events";
+            /// <summary>
+            /// Individual Event Fees Endpoint
+            /// </summary>
+            public const string EventFees = "eventspot/events/{0}/fees/{1}";
+            /// <summary>
+            /// Individual Promocode Endpoint
+            /// </summary>
+            public const string EventPromocode = "eventspot/events/{0}/promocodes/{1}";
+            /// <summary>
+            /// Individual Event Registrant Endpoint
+            /// </summary>
+            public const string  EventRegistrant = "eventspot/events/{0}/registrants/{1}";
+            /// <summary>
+            /// Event Item Endpoint
+            /// </summary>
+            public const string EventItem = "eventspot/events/{0}/items/{1}";
+            /// <summary>
+            /// Item Attribute Endpoint
+            /// </summary>
+            public const string ItemAttribute= "eventspot/events/{0}/items/{1}/attributes/{2}";
+           
         }
 
         /// <summary>
@@ -423,6 +448,14 @@ namespace CTCT.Util
 			/// Field null error
 			/// </summary>
 			public const string FieldNull = "Field must not be null";
+            /// <summary>
+            /// EventSpot id error
+            /// </summary>
+            public const string InvalidId = "Only an valid id is allowed for this method.";
+            /// <summary>
+            /// Objects null
+            /// </summary>
+            public const string ObjectNull = "Object provided is not valid.";
         }
 
         /// <summary>

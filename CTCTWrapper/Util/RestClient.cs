@@ -47,6 +47,27 @@ namespace CTCT.Util
             return this.HttpRequest(url, WebRequestMethods.Http.Post, accessToken, apiKey, bytes, null);
         }
 
+        /// <summary>
+        /// Make an Http PATCH request.
+        /// </summary>
+        /// <param name="url">Request URL.</param>
+        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
+        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="data">Data to send with request.</param>
+        /// <returns>The response body, http info, and error (if one exists).</returns>
+        public CUrlResponse Patch(string url, string accessToken, string apiKey, string data)
+        {
+            byte[] bytes = null;
+
+            if (!string.IsNullOrEmpty(data))
+            {
+                // Convert the request contents to a byte array
+                bytes = System.Text.Encoding.UTF8.GetBytes(data);
+            }
+
+            return this.HttpRequest(url, "PATCH", accessToken, apiKey, bytes, null);
+        }
+
 		/// <summary>
 		/// Make an HTTP Post Multipart request.
 		/// </summary>
