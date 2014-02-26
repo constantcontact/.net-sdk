@@ -15,6 +15,7 @@ using System.IO;
 using System.Text;
 using CTCT.Components.MyLibrary;
 using CTCT.Components.EventSpot;
+using CTCT.Components.AccountService;
 
 #endregion
 
@@ -1462,6 +1463,25 @@ namespace CTCT
         public IList<VerifiedEmailAddress> GetVerifiedEmailAddress()
         {
             return AccountService.GetVerifiedEmailAddress(AccessToken, APIKey);
+        }
+
+        /// <summary>
+        /// Get account summary information
+        /// </summary>
+        /// <returns>An AccountSummaryInformation object</returns>
+        public AccountSummaryInformation GetAccountSummaryInformation()
+        { 
+            return AccountService.GetAccountSummaryInformation(AccessToken, APIKey);
+        }
+
+        /// <summary>
+        /// Updates account summary information
+        /// </summary>
+        /// <param name="accountSumaryInfo">An AccountSummaryInformation object</param>
+        /// <returns>An AccountSummaryInformation object</returns>
+        public AccountSummaryInformation PutAccountSummaryInformation(AccountSummaryInformation accountSumaryInfo)
+        {
+            return AccountService.PutAccountSummaryInformation(AccessToken, APIKey, accountSumaryInfo);
         }
 
         #endregion Account service
