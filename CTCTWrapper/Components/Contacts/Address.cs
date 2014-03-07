@@ -49,6 +49,11 @@ namespace CTCT.Components.Contacts
         [DataMember(Name = "state_code", EmitDefaultValue = false)]
         public string StateCode { get; set; }
         /// <summary>
+        /// Gets or sets the state name.
+        /// </summary>
+        [DataMember(Name = "state", EmitDefaultValue = false)]
+        public string StateName { get; set; }
+        /// <summary>
         /// Gets or sets the contry code.
         /// </summary>
         [DataMember(Name = "country_code", EmitDefaultValue = false)]
