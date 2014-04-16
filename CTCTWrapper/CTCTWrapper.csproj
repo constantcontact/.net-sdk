@@ -56,6 +56,8 @@
     <Compile Include="Authentication\WinForms\AuthenticationForm.designer.cs">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\AccountService\OrganizationAddresses.cs" />
+    <Compile Include="Components\AccountService\AccountSummaryInformation.cs" />
     <Compile Include="Components\Activities\Activity.cs" />
     <Compile Include="Components\Activities\ActivityError.cs" />
     <Compile Include="Components\Activities\AddContacts.cs" />
