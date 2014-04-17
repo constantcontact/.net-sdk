@@ -152,7 +152,7 @@ namespace CTCT.Components.Contacts
         /// </summary>
         UNCONFIRMED,
         /// <summary>
-        /// Output.
+        /// OptOut.
         /// </summary>
         OPTOUT,
         /// <summary>
