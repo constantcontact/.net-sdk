@@ -192,7 +192,7 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Output.
         /// </summary>
-        public const string Output = "OPTOUT";
+        public const string OptOut = "OPTOUT";
         /// <summary>
         /// Removed.
         /// </summary>
