@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CTCT.Webohooks.Helper
+namespace CTCT.Util
 {
-    #region Class StringValueAttribute
-
     /// <summary>
     /// Simple attribute class for storing String Values
     /// </summary>
@@ -32,6 +30,4 @@ namespace CTCT.Webohooks.Helper
             get { return _value; }
         }
     }
-
-    #endregion
 }

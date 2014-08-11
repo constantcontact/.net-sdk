@@ -13,8 +13,19 @@ namespace CTCT.Webohooks.Helper
     {
         #region Porpertiese
 
+        /// <summary>
+        /// HTTP header hash
+        /// </summary>
         public string CtctHttpHeader { get; private set; }
+
+        /// <summary>
+        /// HTTP body
+        /// </summary>
         public string Body { get; private set; }
+
+        /// <summary>
+        /// Client secret key
+        /// </summary>
         public string SharedSecret { get; private set; }
 
         #endregion

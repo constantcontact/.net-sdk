@@ -6,7 +6,7 @@ using System.Collections;
 using CTCT.Webohooks.Model;
 using System.Reflection;
 
-namespace CTCT.Webohooks.Helper
+namespace CTCT.Util
 {
     /// <summary>
     /// Helper class for working with 'extended' enums using <see cref="StringValueAttribute"/> attributes.

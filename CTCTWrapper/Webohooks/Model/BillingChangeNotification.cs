@@ -7,6 +7,7 @@ using System.Collections;
 using CTCT.Webohooks.Helper;
 using CTCT.Components;
 using System.Runtime.Serialization;
+using CTCT.Util;
 
 namespace CTCT.Webohooks.Model
 {
@@ -53,7 +54,7 @@ namespace CTCT.Webohooks.Model
         /// <summary>
         /// ToString override
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A string with details about the notification</returns>
         public override string ToString()
         {
             var builder = new StringBuilder();

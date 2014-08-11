@@ -39,7 +39,7 @@ namespace CTCT.Webohooks
         /// <summary>
         /// Class constructor
         /// </summary>
-        /// <param name="clientSecret"></param>
+        /// <param name="clientSecret">Client secret key</param>
         public CTCTWebohookUtil(string clientSecret)
         {
             this.ClientSecret = clientSecret;
