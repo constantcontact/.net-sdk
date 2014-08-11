@@ -190,7 +190,7 @@ namespace CTCT.Components.Contacts
         /// </summary>
         public const string Unconfirmed = "UNCONFIRMED";
         /// <summary>
-        /// Output.
+        /// OptOut.
         /// </summary>
         public const string OptOut = "OPTOUT";
         /// <summary>
