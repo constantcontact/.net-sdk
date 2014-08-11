@@ -14,7 +14,7 @@ namespace CTCT.Webohooks
     /// Main Webhook Utility class 
     /// This is meant to be used by users to validate and parse Webhooks received from ConstantContact
     /// </summary>
-    public class CTCTWebohookUtil
+    public class CTCTWebhookUtil
     {
         #region Propertiese
 
@@ -40,7 +40,7 @@ namespace CTCT.Webohooks
         /// Class constructor
         /// </summary>
         /// <param name="clientSecret">Client secret key</param>
-        public CTCTWebohookUtil(string clientSecret)
+        public CTCTWebhookUtil(string clientSecret)
         {
             this.ClientSecret = clientSecret;
         }
