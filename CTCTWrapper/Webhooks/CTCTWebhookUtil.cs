@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CTCT.Webohooks.Model;
+using CTCT.Webhooks.Model;
 using CTCT.Components;
 using CTCT.Exceptions;
 using CTCT.Util;
-using CTCT.Webohooks.Helper;
+using CTCT.Webhooks.Helper;
 
-namespace CTCT.Webohooks
+namespace CTCT.Webhooks
 {
     /// <summary>
     /// Main Webhook Utility class 

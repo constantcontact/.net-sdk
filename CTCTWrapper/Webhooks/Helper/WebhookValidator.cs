@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace CTCT.Webohooks.Helper
+namespace CTCT.Webhooks.Helper
 {
     /// <summary>
     /// Represents a helper class that validates a Webhook

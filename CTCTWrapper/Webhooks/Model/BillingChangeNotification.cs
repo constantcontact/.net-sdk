@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Collections;
-using CTCT.Webohooks.Helper;
+using CTCT.Webhooks.Helper;
 using CTCT.Components;
 using System.Runtime.Serialization;
 using CTCT.Util;
 
-namespace CTCT.Webohooks.Model
+namespace CTCT.Webhooks.Model
 {
     /// <summary>
     /// Represents a notification object sent to client through Webhooks Notifications.

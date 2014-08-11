@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
-using CTCT.Webohooks.Model;
 using System.Reflection;
 
 namespace CTCT.Util
