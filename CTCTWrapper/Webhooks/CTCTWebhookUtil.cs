@@ -16,7 +16,7 @@ namespace CTCT.Webhooks
     /// </summary>
     public class CTCTWebhookUtil
     {
-        #region Propertiese
+        #region Properties
 
         /// <summary>
         /// The secret key provided by ConstantContact along with the API KEY

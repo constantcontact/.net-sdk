@@ -18,7 +18,7 @@ namespace CTCT.Webhooks.Model
     [Serializable]
     public class BillingChangeNotification : Component
     {
-        #region Propertiese
+        #region Properties
 
         /// <summary>
         /// Notification url

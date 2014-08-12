@@ -11,7 +11,7 @@ namespace CTCT.Webhooks.Helper
     /// </summary>
     public class WebHookValidator
     {
-        #region Porpertiese
+        #region Properties
 
         /// <summary>
         /// HTTP header hash
