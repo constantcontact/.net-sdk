@@ -1,4 +1,7 @@
-﻿using System;
+﻿//class from: http://www.codeproject.com/Articles/11130/String-Enumerations-in-C
+//license: http://www.codeproject.com/info/cpol10.aspx
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
