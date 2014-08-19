@@ -154,6 +154,11 @@
     <Compile Include="Util\IRestClient.cs" />
     <Compile Include="Util\MultipartBuilder.cs" />
     <Compile Include="Util\RestClient.cs" />
+    <Compile Include="Webhooks\CTCTWebhookUtil.cs" />
+    <Compile Include="Util\StringEnum.cs" />
+    <Compile Include="Util\StringValueAttribute.cs" />
+    <Compile Include="Webhooks\Helper\WebhookValidator.cs" />
+    <Compile Include="Webhooks\Model\BillingChangeNotification.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

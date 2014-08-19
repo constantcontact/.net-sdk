@@ -447,7 +447,9 @@ namespace CTCT.Components.EventSpot
         OTHER
     }
 
-
+    /// <summary>
+    /// Payment Types
+    /// </summary>
     public enum PaymentTypes
     {
         [Obsolete("This type is not supported for new events starting November 2013.", false)]

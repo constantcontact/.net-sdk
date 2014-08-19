@@ -60,7 +60,7 @@ namespace CTCT.Components.EventSpot
         public double LateFee { get; set; }
 
         /// <summary>
-        /// 
+        /// Has restricted access
         /// </summary>
         [DataMember(Name = "has_restricted_access", EmitDefaultValue = true)]
         public bool HasRestrictedAccess { get; set; }
