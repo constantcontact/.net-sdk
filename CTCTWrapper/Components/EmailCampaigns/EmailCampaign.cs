@@ -139,8 +139,8 @@ namespace CTCT.Components.EmailCampaigns
         /// <summary>
         /// Gets or sets the view page link.
         /// </summary>
-        [DataMember(Name = "view_as_web_page_link", EmitDefaultValue = false)]
-        public string ViewAsWebPageLink { get; set; }
+        [DataMember(Name = "view_as_web_page_link_text", EmitDefaultValue = false)]
+        public string ViewAsWebPageLinkText { get; set; }
         /// <summary>
         /// Gets or sets the greeting.
         /// </summary>
