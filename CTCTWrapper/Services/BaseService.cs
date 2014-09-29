@@ -59,7 +59,7 @@ namespace CTCT.Services
                     {
                         sb.Append("&");
                     }
-                    sb.AppendFormat("{0}={1}", prms[i].ToString(), prms[i + 1].ToString());
+                    sb.AppendFormat("{0}={1}", HttpUtility.UrlEncode(prms[i].ToString()), HttpUtility.UrlEncode(prms[i + 1].ToString()));
                 }
                 query = sb.ToString();
             }

@@ -56,6 +56,8 @@
     <Compile Include="Authentication\WinForms\AuthenticationForm.designer.cs">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\AccountService\OrganizationAddresses.cs" />
+    <Compile Include="Components\AccountService\AccountSummaryInformation.cs" />
     <Compile Include="Components\Activities\Activity.cs" />
     <Compile Include="Components\Activities\ActivityError.cs" />
     <Compile Include="Components\Activities\AddContacts.cs" />
@@ -77,10 +79,41 @@
     <Compile Include="Components\EmailCampaigns\MessageFooter.cs" />
     <Compile Include="Components\EmailCampaigns\Schedule.cs" />
     <Compile Include="Components\EmailCampaigns\TestSend.cs" />
+    <Compile Include="Components\EventSpot\EventSpotAddress.cs" />
+    <Compile Include="Components\EventSpot\Attribute.cs" />
+    <Compile Include="Components\EventSpot\EventSpotContact.cs" />
+    <Compile Include="Services\Interfaces\IEventSpotService.cs" />
+    <Compile Include="Util\PatchRequest.cs" />
+    <Compile Include="Components\EventSpot\EventFee.cs" />
+    <Compile Include="Components\EventSpot\EventItem.cs" />
+    <Compile Include="Components\EventSpot\Fee.cs" />
+    <Compile Include="Components\EventSpot\Field.cs" />
+    <Compile Include="Components\EventSpot\Guest.cs" />
+    <Compile Include="Components\EventSpot\Order.cs" />
+    <Compile Include="Components\EventSpot\PaymentPromoCode.cs" />
+    <Compile Include="Components\EventSpot\PaymentSummary.cs" />
+    <Compile Include="Components\EventSpot\PromoCodeInfo.cs" />
+    <Compile Include="Components\EventSpot\Registrant.cs" />
+    <Compile Include="Components\EventSpot\IndividualEvent.cs" />
+    <Compile Include="Components\EventSpot\NotificationOptions.cs" />
+    <Compile Include="Components\EventSpot\OnlineMeeting.cs" />
+    <Compile Include="Components\EventSpot\Promocode.cs" />
+    <Compile Include="Components\EventSpot\SaleItem.cs" />
+    <Compile Include="Components\EventSpot\Section.cs" />
+    <Compile Include="Components\EventSpot\TrackInformation.cs" />
+    <Compile Include="Components\MyLibrary\BaseLibrary.cs" />
+    <Compile Include="Components\MyLibrary\FileMoveResult.cs" />
+    <Compile Include="Components\MyLibrary\FileUploadStatus.cs" />
+    <Compile Include="Components\MyLibrary\MyLibraryFile.cs" />
+    <Compile Include="Components\MyLibrary\MyLibraryFolder.cs" />
+    <Compile Include="Components\MyLibrary\MyLibraryInfo.cs" />
+    <Compile Include="Components\MyLibrary\Thumbnail.cs" />
+    <Compile Include="Components\MyLibrary\UsageSummary.cs" />
     <Compile Include="Components\ResultSet.cs" />
     <Compile Include="Components\Tracking\BaseActivity.cs" />
     <Compile Include="Components\Tracking\BounceActivity.cs" />
     <Compile Include="Components\Tracking\ClickActivity.cs" />
+    <Compile Include="Components\Tracking\ContactActivity.cs" />
     <Compile Include="Components\Tracking\ForwardActivity.cs" />
     <Compile Include="Components\Tracking\OpenActivity.cs" />
     <Compile Include="Components\Tracking\OptOutActivity.cs" />
@@ -101,6 +134,7 @@
     <Compile Include="Services\ContactTrackingService.cs" />
     <Compile Include="Services\EmailCampaignService.cs" />
     <Compile Include="Services\ContactService.cs" />
+    <Compile Include="Services\EventSpotService.cs" />
     <Compile Include="Services\Interfaces\IAccountService.cs" />
     <Compile Include="Services\Interfaces\IContactTrackingService.cs" />
     <Compile Include="Services\Interfaces\ICampaignTrackingService.cs" />
@@ -110,13 +144,21 @@
     <Compile Include="Services\Interfaces\IEmailCampaignService.cs" />
     <Compile Include="Services\Interfaces\IContactService.cs" />
     <Compile Include="Services\Interfaces\IListService.cs" />
+    <Compile Include="Services\Interfaces\IMyLibraryService.cs" />
     <Compile Include="Services\ListService.cs" />
+    <Compile Include="Services\MyLibraryService.cs" />
     <Compile Include="Util\Config.cs" />
     <Compile Include="Util\CUrlRequestError.cs" />
     <Compile Include="Util\CUrlResponse.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\IRestClient.cs" />
+    <Compile Include="Util\MultipartBuilder.cs" />
     <Compile Include="Util\RestClient.cs" />
+    <Compile Include="Webhooks\CTCTWebhookUtil.cs" />
+    <Compile Include="Util\StringEnum.cs" />
+    <Compile Include="Util\StringValueAttribute.cs" />
+    <Compile Include="Webhooks\Helper\WebhookValidator.cs" />
+    <Compile Include="Webhooks\Model\BillingChangeNotification.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -126,8 +168,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Authentication\WinForms\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

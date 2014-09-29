@@ -6,10 +6,11 @@ using CTCT.Components.Activities;
 using CTCT.Util;
 using CTCT.Components;
 using CTCT.Exceptions;
+using System.IO;
 
 namespace CTCT.Services
 {
-    /// <summary>
+    /// <summary> 
     /// Performs all actions pertaining to scheduling Constant Contact Activities.
     /// </summary>
     public class ActivityService : BaseService, IActivityService
@@ -181,5 +182,63 @@ namespace CTCT.Services
 
             return activity;
         }
+
+		/// <summary>
+		///  Create an Add Contacts Multipart Activity
+		/// </summary>
+		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
+        /// <param name="apiKey">The API key for the application</param>>
+		/// <param name="fileName">The file name to be imported</param>
+		/// <param name="fileContent">The file content to be imported</param>
+		/// <param name="lists">Array of list's id</param>
+		/// <returns>Returns an Activity object.</returns>
+		public Activity AddContactstMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists)
+		{
+			Activity activity = null;
+			string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.AddContactsActivity);
+			byte[] data = MultipartBuilder.CreateMultipartContent(fileName, fileContent, lists);
+			CUrlResponse response = RestClient.PostMultipart(url, accessToken, apiKey, data);
+
+            if (response.IsError)
+            {
+                throw new CtctException(response.GetErrorMessage());
+            }
+
+            if(response.HasData)
+            {
+                activity = response.Get<Activity>();
+            }
+
+            return activity;
+		}
+
+		/// <summary>
+		///  Create a Remove Contacts Multipart Activity
+		/// </summary>
+		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
+        /// <param name="apiKey">The API key for the application</param>>
+		/// <param name="fileName">The file name to be imported</param>
+		/// <param name="fileContent">The file content to be imported</param>
+		/// <param name="lists">Array of list's id</param>
+		/// <returns>Returns an Activity object.</returns>
+		public Activity RemoveContactsMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists)
+		{
+			Activity activity = null;
+			string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.RemoveFromListsActivity);
+			byte[] data = MultipartBuilder.CreateMultipartContent(fileName, fileContent, lists);
+			CUrlResponse response = RestClient.PostMultipart(url, accessToken, apiKey, data);
+
+			if (response.IsError)
+			{
+			    throw new CtctException(response.GetErrorMessage());
+			}
+
+			if(response.HasData)
+			{
+			    activity = response.Get<Activity>();
+			}
+
+			return activity;
+		}
     }
 }

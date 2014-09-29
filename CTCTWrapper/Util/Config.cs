@@ -131,6 +131,14 @@ namespace CTCT.Util
             /// </summary>
             public const string CampaignTrackingLink = "emailmarketing/campaigns/{0}/tracking/clicks/{1}";
             /// <summary>
+            /// Contact tracking activities.
+            /// </summary>
+            public const string ContactTrackingActivities = "contacts/{0}/tracking";
+            /// <summary>
+            /// Contact tracking activities by email campaign.
+            /// </summary>
+            public const string ContactTrackingEmailCampaignActivities = "contacts/{0}/tracking/reports/summaryByCampaign";
+            /// <summary>
             /// Contact tracking summary.
             /// </summary>
             public const string ContactTrackingSummary = "contacts/{0}/tracking/reports/summary";
@@ -166,6 +174,67 @@ namespace CTCT.Util
             /// Account verified email addresses link
             /// </summary>
             public const string AccountVerifiedEmailAddressess = "account/verifiedemailaddresses";
+            /// <summary>
+            /// Account Summary Information
+            /// </summary>
+            public const string AccountSummaryInformation = "account/info";
+            /// <summary>
+            /// MyLibrary information
+            /// </summary>
+            public const string MyLibraryInfo = "library/info";
+            /// <summary>
+            /// MyLibrary folders
+            /// </summary>
+            public const string MyLibraryFolders = "library/folders";
+            /// <summary>
+            ///  Access a specified folder
+            /// </summary>
+            public const string MyLibraryFolder = "library/folders/{0}";
+            /// <summary>
+            /// Files in Trash folder
+            /// </summary>
+            public const string MyLibraryTrash = "library/folders/trash/files";
+            /// <summary>
+            /// MyLibrray files
+            /// </summary>
+            public const string MyLibraryFiles = "library/files";
+            /// <summary>
+            /// MyLibrary file
+            /// </summary>
+            public const string MyLibraryFile = "library/files/{0}";
+            /// <summary>
+            /// MyLibrary files for a specific folder
+            /// </summary>
+            public const string MyLibraryFolderFiles = "library/folders/{0}/files";
+            /// <summary>
+            /// MyLibrary file upload status
+            /// </summary>
+            public const string MyLibraryFileUploadStatus = "library/files/uploadstatus/{0}";
+            /// <summary>
+            /// EventSpot Events Collection Endpoint
+            /// </summary>
+            public const string EventSpots = "eventspot/events";
+            /// <summary>
+            /// Individual Event Fees Endpoint
+            /// </summary>
+            public const string EventFees = "eventspot/events/{0}/fees/{1}";
+            /// <summary>
+            /// Individual Promocode Endpoint
+            /// </summary>
+            public const string EventPromocode = "eventspot/events/{0}/promocodes/{1}";
+            /// <summary>
+            /// Individual Event Registrant Endpoint
+            /// </summary>
+            public const string EventRegistrant = "eventspot/events/{0}/registrants/{1}";
+            /// <summary>
+            /// Event Item Endpoint
+            /// </summary>
+            public const string EventItem = "eventspot/events/{0}/items/{1}";
+            /// <summary>
+            /// Item Attribute Endpoint
+            /// </summary>
+            public const string ItemAttribute = "eventspot/events/{0}/items/{1}/attributes/{2}";
+
         }
 
         /// <summary>
@@ -359,6 +428,48 @@ namespace CTCT.Util
             /// Update contact without ID error.
             /// </summary>
             public const string UpdateId = "You must provide a contact ID in order to update a contact.";
+            /// <summary>
+            /// FileName null error.
+            /// </summary>
+            public const string FileNameNull = "You must provide a FileName parameter for this method.";
+            /// <summary>
+            /// File null error.
+            /// </summary>
+            public const string FileNull = "You must provide a File parameter for this method.";
+            /// <summary>
+            /// File type invalid error.
+            /// </summary>
+            public const string FileTypeInvalid = "File type is invalid.";
+            /// <summary>
+            /// MyLibrary item or id error
+            /// </summary>
+            public const string MyLibraryOrId = "Only an interger or a MyLibrary item is allowed for this method.";
+            /// <summary>
+            /// File Ids null error
+            /// </summary>
+            public const string FileIdNull = "File Id parameter must not be null";
+            /// <summary>
+            /// Field null error
+            /// </summary>
+            public const string FieldNull = "Field must not be null";
+            /// <summary>
+            /// EventSpot id error
+            /// </summary>
+            public const string InvalidId = "Only an valid id is allowed for this method.";
+            /// <summary>
+            /// Objects null
+            /// </summary>
+            public const string ObjectNull = "Object provided is not valid.";
+
+            /// <summary>
+            /// Invalid Webhook error
+            /// </summary>
+            public const string InvalidWebhook = "Invalid Webhook. The x-ctct-hmac-sha256 does not correspond to message encryption.";
+
+            /// <summary>
+            /// Client Secret null error
+            /// </summary>
+            public const string NoClientSecret = "You must provide the client secret (via constructor or setClientSecret() ) corresponding to your API   from Constant Contact";
         }
 
         /// <summary>

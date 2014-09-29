@@ -11,7 +11,7 @@ namespace CTCT.Components.Tracking
     /// </summary>
     [Serializable]
     [DataContract]
-    public class TrackingSummary : Component
+    public class TrackingSummary : BaseActivity
     {
         /// <summary>
         /// Gets or sets the number of sends.

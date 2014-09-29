@@ -26,7 +26,7 @@ namespace CTCT.Services
         public IList<ContactList> GetLists(string accessToken, string apiKey, DateTime? modifiedSince)
         {
             IList<ContactList> lists = new List<ContactList>();
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Lists);
+            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Lists, GetQueryParameters(new object[] { "modified_since", Extensions.ToISO8601String(modifiedSince) }));
             CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
 
             if (response.IsError)
@@ -147,39 +147,12 @@ namespace CTCT.Services
         /// </summary>
         /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
         /// <param name="apiKey">The API key for the application</param>
-        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
-        /// <param name="pag">Pagination object.</param>
-        /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContactsFromList(string accessToken, string apiKey, DateTime? modifiedSince, Pagination pag)
-        {
-            return GetContactsFromList(accessToken, apiKey, null, null, modifiedSince, pag);
-        }
-
-        /// <summary>
-        /// Get all contacts from an individual list.
-        /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
-        /// <param name="listId">List id to retrieve contacts for.</param>
-        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
-        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
-        /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContactsFromList(string accessToken, string apiKey, string listId, int? limit, DateTime? modifiedSince)
-        {
-            return GetContactsFromList(accessToken, apiKey, listId, limit, modifiedSince, null);
-        }
-
-        /// <summary>
-        /// Get all contacts from an individual list.
-        /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="listId">List id to retrieve contacts for.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        private ResultSet<Contact> GetContactsFromList(string accessToken, string apiKey, string listId, int? limit, DateTime? modifiedSince, Pagination pag)
+        public ResultSet<Contact> GetContactsFromList(string accessToken, string apiKey, string listId, int? limit, DateTime? modifiedSince, Pagination pag)
         {
             var contacts = new ResultSet<Contact>();
             string url = (pag == null) ? Config.ConstructUrl(Config.Endpoints.ListContacts, new object[] { listId }, new object[] { "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) }) : pag.GetNextUrl();

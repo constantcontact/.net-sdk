@@ -32,6 +32,16 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
+		/// <summary>
+        /// Gets or sets the date and time the contact list was added
+        /// </summary>
+        [DataMember(Name = "created_date", EmitDefaultValue = false)]
+        public string DateCreated { get; set; }
+		/// <summary>
+        /// Gets or sets the date and time list's information was last modified
+        /// </summary>
+        [DataMember(Name = "modified_date", EmitDefaultValue = false)]
+        public string DateModified { get; set; }
 
         /// <summary>
         /// Class constructor.

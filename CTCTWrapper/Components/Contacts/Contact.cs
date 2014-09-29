@@ -53,7 +53,7 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the email addresses.
         /// </summary>
         [DataMember(Name = "email_addresses")]
-        public IList<EmailAddress> EmailAddresses { get; private set; }
+        public IList<EmailAddress> EmailAddresses { get; set; }
         /// <summary>
         /// Gets or sets the prefix name.
         /// </summary>
@@ -68,7 +68,7 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the addresses.
         /// </summary>
         [DataMember(Name = "addresses")]
-        public IList<Address> Addresses { get; private set; }
+        public IList<Address> Addresses { get; set; }
         /// <summary>
         /// Gets or sets the notes.
         /// </summary>
@@ -113,12 +113,12 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the list of custom fields.
         /// </summary>
         [DataMember(Name = "custom_fields")]
-        public IList<CustomField> CustomFields { get; private set; }
+        public IList<CustomField> CustomFields { get; set; }
         /// <summary>
         /// Gets or sets the lists.
         /// </summary>
         [DataMember(Name = "lists")]
-        public List<ContactList> Lists { get; private set; }
+        public List<ContactList> Lists { get; set; }
         /// <summary>
         /// Gets or sets the source details.
         /// </summary>
@@ -137,6 +137,29 @@ namespace CTCT.Components.Contacts
             this.Notes = new List<Note>();
         }
     }
+
+	/// <summary>
+	/// Contact status enumeration
+	/// </summary>
+	public enum ContactStatus
+	{
+		 /// <summary>
+        /// Active.
+        /// </summary>
+        ACTIVE,
+        /// <summary>
+        /// Unconfirmed.
+        /// </summary>
+        UNCONFIRMED,
+        /// <summary>
+        /// OptOut.
+        /// </summary>
+        OPTOUT,
+        /// <summary>
+        /// Removed.
+        /// </summary>
+        REMOVED
+	}
 
     /// <summary>
     /// ActionBy structure.
@@ -167,9 +190,9 @@ namespace CTCT.Components.Contacts
         /// </summary>
         public const string Unconfirmed = "UNCONFIRMED";
         /// <summary>
-        /// Output.
+        /// OptOut.
         /// </summary>
-        public const string Output = "OPTOUT";
+        public const string OptOut = "OPTOUT";
         /// <summary>
         /// Removed.
         /// </summary>
