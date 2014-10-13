@@ -19,7 +19,7 @@ namespace CTCT.Webhooks
         #region Properties
 
         /// <summary>
-        /// The secret key provided by ConstantContact along with the API KEY
+        /// The client secret associated with the api key
         /// </summary>
         public string ClientSecret { get; private set; }
 
