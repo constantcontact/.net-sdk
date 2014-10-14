@@ -6,6 +6,7 @@ using System.Net;
 using System.Collections.Specialized;
 using System.IO;
 using System.Configuration;
+using System.Reflection;
 
 namespace CTCT.Util
 {
@@ -132,6 +133,7 @@ namespace CTCT.Util
                                                                                              
             request.Method = method;
 			request.Accept = "application/json";
+            request.Headers["x-ctct-request-source"] = "sdk.NET." + GetWrapperAssemblyVersion().ToString();
 
 			if(isMultipart.HasValue && isMultipart.Value)
 			{
@@ -175,11 +177,8 @@ namespace CTCT.Util
             }
             catch (WebException e)
             {
-                if (e.Response != null)
-                {
-                    response = (HttpWebResponse)e.Response;
-                    urlResponse.IsError = true;
-                }
+                response = e.Response as HttpWebResponse;
+                urlResponse.IsError = true;
             }
             finally
             {
@@ -203,6 +202,12 @@ namespace CTCT.Util
             }
 
             return urlResponse;
+        }
+
+        private Version GetWrapperAssemblyVersion()
+        {
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+            return version;
         }
     }
 }
