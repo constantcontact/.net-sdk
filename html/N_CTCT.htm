@@ -1,0 +1,203 @@
+﻿<html xmlns:MSHelp="http://msdn.microsoft.com/mshelp" xmlns:mshelp="http://msdn.microsoft.com/mshelp">
+  <head>
+    <link rel="SHORTCUT ICON" href="./../icons/favicon.ico" />
+    <style type="text/css">.OH_CodeSnippetContainerTabLeftActive, .OH_CodeSnippetContainerTabLeft,.OH_CodeSnippetContainerTabLeftDisabled { backgroundImageName: tabLeftBG.gif; }.OH_CodeSnippetContainerTabRightActive, .OH_CodeSnippetContainerTabRight,.OH_CodeSnippetContainerTabRightDisabled { backgroundImageName: tabRightBG.gif; }.OH_footer { backgroundImageName: footer_slice.gif; background-position: top; background-repeat: repeat-x; }</style>
+    <link rel="stylesheet" type="text/css" href="./../styles/branding.css" />
+    <link rel="stylesheet" type="text/css" href="./../styles/branding-en-US.css" />
+    <style type="text/css">
+			body
+			{
+			border-left:5px solid #e6e6e6;
+			overflow-x:scroll;
+			overflow-y:scroll;
+			}
+		</style>
+    <script src="./../scripts/branding.js" type="text/javascript">
+      <!---->
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>CTCT Namespace</title>
+    <meta name="Language" content="en-us" />
+    <meta name="System.Keywords" content="CTCT namespace" />
+    <meta name="Microsoft.Help.F1" content="CTCT" />
+    <meta name="Microsoft.Help.Id" content="N:CTCT" />
+    <meta name="Description" content=" " />
+    <meta name="Microsoft.Help.ContentType" content="Reference" />
+    <meta name="BrandingAware" content="'true'" />
+    <meta name="container" content="CTCT" />
+    <meta name="file" content="N_CTCT" />
+    <meta name="guid" content="N_CTCT" />
+    
+    <link type="text/css" rel="stylesheet" href="./../styles/highlight.css" />
+    <script type="text/javascript" src="../scripts/highlight.js">
+      <!---->
+    </script>
+    <meta name="SelfBranded" content="true" />
+  </head>
+  <body onload="onLoad()" class="primary-mtps-offline-document">
+    <div class="OH_outerDiv">
+      <div class="OH_outerContent">
+        <table class="TitleTable">
+          <tr>
+            <td class="OH_tdTitleColumn">CTCT Namespace</td>
+            <td class="OH_tdRunningTitleColumn">CTCT Wrapper Documented Class Library</td>
+          </tr>
+        </table>
+        <div id="mainSection">
+          <div id="mainBody">
+            <span class="introStyle"></span>
+            <div class="summary"> </div>
+            <div class="OH_CollapsibleAreaRegion">
+              <div class="OH_regiontitle">Classes</div>
+              <div class="OH_CollapsibleArea_HrDiv">
+                <hr class="OH_CollapsibleArea_Hr" />
+              </div>
+            </div>
+            <div class="OH_clear"></div>
+            <table id="typeList" class="members">
+              <tr>
+                <th class="ps_iconColumn">
+					 
+				</th>
+                <th class="ps_nameColumn">Class</th>
+                <th class="ps_descriptionColumn">Description</th>
+              </tr>
+              <tr data="class; public">
+                <td>
+                  <img src="./../icons/pubclass.gif" alt="Public class" title="Public class" />
+                </td>
+                <td>
+                  <a href="T_CTCT_AuthenticationForm.htm" target="">AuthenticationForm</a>
+                </td>
+                <td>
+                  <div class="summary">
+            Form used for windows authentication
+            </div>
+                </td>
+              </tr>
+              <tr data="class; public">
+                <td>
+                  <img src="./../icons/pubclass.gif" alt="Public class" title="Public class" />
+                </td>
+                <td>
+                  <a href="T_CTCT_ConstantContact.htm" target="">ConstantContact</a>
+                </td>
+                <td>
+                  <div class="summary">
+             Main class meant to be used by users to access Constant Contact API functionality.
+             <div class="OH_CollapsibleAreaRegion"><div class="OH_regiontitle">Examples</div><div class="OH_CollapsibleArea_HrDiv"><hr class="OH_CollapsibleArea_Hr" /></div></div><div class="OH_clear"></div>
+             ASPX page:
+             <div id="ID0EACAABAAAAAAA" class="OH_CodeSnippetContainer"><div class="OH_CodeSnippetContainerTabs" id="ID0EACAABAAAAAAA_tabs"></div><div id="ID0EACAABAAAAAAA_codecollection" class="OH_CodeSnippetContainerCodeCollection"><div class="OH_CodeSnippetToolBar"><div class="OH_CodeSnippetToolBarText"><a id="ID0EACAABAAAAAAA_ViewColorized" href="#" onclick="javascript:ExchangeTitleContent('ID0EACAABAAAAAAA','4')" title="View Colorized" style="display: none">View Colorized</a><a id="ID0EACAABAAAAAAA_copycode" href="#" onclick="javascript:CopyToClipboard('ID0EACAABAAAAAAA','4')" title="Copy to Clipboard">Copy to Clipboard</a><a id="ID0EACAABAAAAAAA_PrintText" class="OH_PrintText" href="#" onclick="javascript:Print('ID0EACAABAAAAAAA','4')" title="Print">Print</a></div></div><div id="ID0EACAABAAAAAAA_code_Div1" class="OH_CodeSnippetContainerCode" style="display: block"><pre>&lt;%@Page Title=<span class="highlight-literal">"Home Page"</span> Language=<span class="highlight-literal">"C#"</span> MasterPageFile=<span class="highlight-literal">"~/Site.master"</span> AutoEventWireup=<span class="highlight-literal">"true"</span>
+       CodeBehind=<span class="highlight-literal">"Default.aspx.cs"</span> Inherits=<span class="highlight-literal">"WebApplication1._Default"</span>%&gt;
+...
+   &lt;asp:TextBox ID=<span class="highlight-literal">"tbxEmail"</span> runat=<span class="highlight-literal">"server"</span>&gt;&lt;/asp:TextBox&gt;
+   &lt;asp:Button ID=<span class="highlight-literal">"btnJoin"</span> runat=<span class="highlight-literal">"server"</span> Text=<span class="highlight-literal">"Join"</span> onclick=<span class="highlight-literal">"btnJoin_Click"</span> /&gt;
+   &lt;asp:Label ID=<span class="highlight-literal">"lblMessage"</span> runat=<span class="highlight-literal">"server"</span> Text=<span class="highlight-literal">""</span>&gt;&lt;/asp:Label&gt;
+...</pre></div><div id="ID0EACAABAAAAAAA_code_Plain_Div1" class="OH_CodeSnippetContainerCode" style="display: none"><pre>&lt;%@Page Title="Home Page" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true"
+       CodeBehind="Default.aspx.cs" Inherits="WebApplication1._Default"%&gt;
+...
+   &lt;asp:TextBox ID="tbxEmail" runat="server"&gt;&lt;/asp:TextBox&gt;
+   &lt;asp:Button ID="btnJoin" runat="server" Text="Join" onclick="btnJoin_Click" /&gt;
+   &lt;asp:Label ID="lblMessage" runat="server" Text=""&gt;&lt;/asp:Label&gt;
+...</pre></div></div></div><script>addSpecificTextLanguageTagSet('ID0EACAABAAAAAAA');</script><div class="OH_CollapsibleAreaRegion"><div class="OH_regiontitle">Examples</div><div class="OH_CollapsibleArea_HrDiv"><hr class="OH_CollapsibleArea_Hr" /></div></div><div class="OH_clear"></div>
+             Code behind:
+             <div id="ID0EABAABAAAAAAA" class="OH_CodeSnippetContainer"><div class="OH_CodeSnippetContainerTabs" id="ID0EABAABAAAAAAA_tabs"></div><div id="ID0EABAABAAAAAAA_codecollection" class="OH_CodeSnippetContainerCodeCollection"><div class="OH_CodeSnippetToolBar"><div class="OH_CodeSnippetToolBarText"><a id="ID0EABAABAAAAAAA_ViewColorized" href="#" onclick="javascript:ExchangeTitleContent('ID0EABAABAAAAAAA','4')" title="View Colorized" style="display: none">View Colorized</a><a id="ID0EABAABAAAAAAA_copycode" href="#" onclick="javascript:CopyToClipboard('ID0EABAABAAAAAAA','4')" title="Copy to Clipboard">Copy to Clipboard</a><a id="ID0EABAABAAAAAAA_PrintText" class="OH_PrintText" href="#" onclick="javascript:Print('ID0EABAABAAAAAAA','4')" title="Print">Print</a></div></div><div id="ID0EABAABAAAAAAA_code_Div1" class="OH_CodeSnippetContainerCode" style="display: block"><pre><span class="highlight-keyword">public</span> <span class="highlight-keyword">partial</span> <span class="highlight-keyword">class</span> _Default : System.Web.UI.Page
+{
+   <span class="highlight-keyword">protected</span> <span class="highlight-keyword">void</span> Page_Load(<span class="highlight-keyword">object</span> sender, EventArgs e)
+   {
+        ...
+   }
+
+   <span class="highlight-keyword">protected</span> <span class="highlight-keyword">void</span> btnJoin_Click(<span class="highlight-keyword">object</span> sender, EventArgs e)
+   {
+       <span class="highlight-keyword">try</span>
+       {
+           Contact contact = <span class="highlight-keyword">new</span> Contact();
+           <span class="highlight-comment">// Don't care about the id value</span>
+           contact.Id = <span class="highlight-number">1</span>;
+           contact.EmailAddresses.Add(<span class="highlight-keyword">new</span> EmailAddress() {
+                EmailAddr = tbxEmail.Text,
+                ConfirmStatus = ConfirmStatus.NoConfirmationRequired,
+                Status = Status.Active });
+           contact.Lists.Add(<span class="highlight-keyword">new</span> ContactList() {
+                Id = <span class="highlight-number">1</span>,
+                Status = Status.Active });
+
+           ConstantContact cc = <span class="highlight-keyword">new</span> ConstantContact();
+           cc.AddContact(contact);
+           lblMessage.Text = <span class="highlight-literal">"You have been added to my mailing list!"</span>;
+       }
+       <span class="highlight-keyword">catch</span> (Exception ex) { lblMessage.Text = ex.ToString(); }
+   }
+}</pre></div><div id="ID0EABAABAAAAAAA_code_Plain_Div1" class="OH_CodeSnippetContainerCode" style="display: none"><pre>public partial class _Default : System.Web.UI.Page
+{
+   protected void Page_Load(object sender, EventArgs e)
+   {
+        ...
+   }
+
+   protected void btnJoin_Click(object sender, EventArgs e)
+   {
+       try
+       {
+           Contact contact = new Contact();
+           // Don't care about the id value
+           contact.Id = 1;
+           contact.EmailAddresses.Add(new EmailAddress() {
+                EmailAddr = tbxEmail.Text,
+                ConfirmStatus = ConfirmStatus.NoConfirmationRequired,
+                Status = Status.Active });
+           contact.Lists.Add(new ContactList() {
+                Id = 1,
+                Status = Status.Active });
+
+           ConstantContact cc = new ConstantContact();
+           cc.AddContact(contact);
+           lblMessage.Text = "You have been added to my mailing list!";
+       }
+       catch (Exception ex) { lblMessage.Text = ex.ToString(); }
+   }
+}</pre></div></div></div><script>addSpecificTextLanguageTagSet('ID0EABAABAAAAAAA');</script><div class="OH_CollapsibleAreaRegion"><div class="OH_regiontitle">Examples</div><div class="OH_CollapsibleArea_HrDiv"><hr class="OH_CollapsibleArea_Hr" /></div></div><div class="OH_clear"></div>
+             Web.config entries:
+             <div id="ID0EAAAABAAAAAAA" class="OH_CodeSnippetContainer"><div class="OH_CodeSnippetContainerTabs" id="ID0EAAAABAAAAAAA_tabs"></div><div id="ID0EAAAABAAAAAAA_codecollection" class="OH_CodeSnippetContainerCodeCollection"><div class="OH_CodeSnippetToolBar"><div class="OH_CodeSnippetToolBarText"><a id="ID0EAAAABAAAAAAA_ViewColorized" href="#" onclick="javascript:ExchangeTitleContent('ID0EAAAABAAAAAAA','4')" title="View Colorized" style="display: none">View Colorized</a><a id="ID0EAAAABAAAAAAA_copycode" href="#" onclick="javascript:CopyToClipboard('ID0EAAAABAAAAAAA','4')" title="Copy to Clipboard">Copy to Clipboard</a><a id="ID0EAAAABAAAAAAA_PrintText" class="OH_PrintText" href="#" onclick="javascript:Print('ID0EAAAABAAAAAAA','4')" title="Print">Print</a></div></div><div id="ID0EAAAABAAAAAAA_code_Div1" class="OH_CodeSnippetContainerCode" style="display: block"><pre>...
+&lt;appSettings&gt;
+    &lt;add key=<span class="highlight-literal">"APIKey"</span> <span class="highlight-keyword">value</span>=<span class="highlight-literal">"APIKey"</span>/&gt;
+    &lt;add key=<span class="highlight-literal">"Password"</span> <span class="highlight-keyword">value</span>=<span class="highlight-literal">"password"</span>/&gt;
+    &lt;add key=<span class="highlight-literal">"Username"</span> <span class="highlight-keyword">value</span>=<span class="highlight-literal">"username"</span>/&gt;
+    &lt;add key=<span class="highlight-literal">"RedirectURL"</span> <span class="highlight-keyword">value</span>=<span class="highlight-literal">"http://somedomain"</span>/&gt;
+&lt;/appSettings&gt;
+...</pre></div><div id="ID0EAAAABAAAAAAA_code_Plain_Div1" class="OH_CodeSnippetContainerCode" style="display: none"><pre>...
+&lt;appSettings&gt;
+    &lt;add key="APIKey" value="APIKey"/&gt;
+    &lt;add key="Password" value="password"/&gt;
+    &lt;add key="Username" value="username"/&gt;
+    &lt;add key="RedirectURL" value="http://somedomain"/&gt;
+&lt;/appSettings&gt;
+...</pre></div></div></div><script>addSpecificTextLanguageTagSet('ID0EAAAABAAAAAAA');</script></div>
+                </td>
+              </tr>
+              <tr data="class; public">
+                <td>
+                  <img src="./../icons/pubclass.gif" alt="Public class" title="Public class" />
+                </td>
+                <td>
+                  <a href="T_CTCT_OAuth.htm" target="">OAuth</a>
+                </td>
+                <td>
+                  <div class="summary">
+            Main class meant to be used by users to obtain access token by authenticating their app
+            </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="OH_footer" class="OH_footer">
+      <p />
+      <div class="OH_feedbacklink">
+        <a href="mailto:?subject=CTCT+Wrapper+Documented+Class+Library+CTCT+Namespace+100+EN-US&amp;body=Your%20feedback%20is%20used%20to%20improve%20the%20documentation%20and%20the%20product.%20Your%20e-mail%20address%20will%20not%20be%20used%20for%20any%20other%20purpose%20and%20is%20disposed%20of%20after%20the%20issue%20you%20report%20is%20resolved.%20While%20working%20to%20resolve%20the%20issue%20that%20you%20report%2c%20you%20may%20be%20contacted%20via%20e-mail%20to%20get%20further%20details%20or%20clarification%20on%20the%20feedback%20you%20sent.%20After%20the%20issue%20you%20report%20has%20been%20addressed%2c%20you%20may%20receive%20an%20e-mail%20to%20let%20you%20know%20that%20your%20feedback%20has%20been%20addressed.">Send Feedback</a> on this topic.</div>
+    </div>
+  </body>
+</html>
