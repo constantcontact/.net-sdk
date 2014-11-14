@@ -18,7 +18,7 @@ namespace CTCT.Components.EmailCampaigns
         /// Unique id of the schedule.
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// The scheduled start date/time in ISO 8601 format.
         /// </summary>
