@@ -510,7 +510,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now.AddMonths(1);
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
         }
 
@@ -558,7 +558,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now.AddMonths(1);
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             var schs = cc.GetSchedules(camp.Id);
@@ -611,7 +611,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now.AddMonths(1);
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             camp.GreetingName = GreetingName.FIRST_AND_LAST_NAME;
@@ -664,10 +664,10 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now.AddMonths(1);
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
-            var result = cc.DeleteSchedule(camp.Id, schedule.Id.ToString(CultureInfo.InvariantCulture));
+            var result = cc.DeleteSchedule(camp.Id, schedule.Id);
 
             Assert.IsTrue(result);
         }
@@ -717,7 +717,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now.AddMonths(1);
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             DateTime schDateAgain = DateTime.Now.AddMonths(2);
@@ -867,7 +867,7 @@ namespace CTCTWrapper.UnitTest
             var schDate = DateTime.Now;
             var schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             ResultSet<BounceActivity> result = cc.GetCampaignTrackingBounces(camp.Id, null, null);
@@ -943,7 +943,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now.AddDays(1);
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             return camp;
@@ -993,7 +993,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now;
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             ResultSet<ForwardActivity> result = cc.GetCampaignTrackingForwards(camp.Id, null, DateTime.Now.AddMonths(-1));
@@ -1045,7 +1045,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now;
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             ResultSet<OpenActivity> result = cc.GetCampaignTrackingOpens(camp.Id, null, DateTime.Now.AddMonths(-1));
@@ -1097,7 +1097,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now;
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             ResultSet<SendActivity> result = cc.GetCampaignTrackingSends(camp.Id, null, DateTime.Now.AddMonths(-1));
@@ -1149,7 +1149,7 @@ namespace CTCTWrapper.UnitTest
             DateTime schDate = DateTime.Now;
             Schedule schedule = cc.AddSchedule(camp.Id, new Schedule { ScheduledDate = schDate });
             Assert.IsNotNull(schedule);
-            Assert.AreNotEqual(0, schedule.Id);
+            Assert.AreNotEqual("", schedule.Id);
             Assert.IsNotNull(schedule.ScheduledDate);
 
             ResultSet<OptOutActivity> result = cc.GetCampaignTrackingOptOuts(camp.Id, null, DateTime.Now.AddMonths(-1));

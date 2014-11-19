@@ -170,7 +170,10 @@ namespace CTCT.Util
 				}
 
                 urlResponse.StatusCode = response.StatusCode;
-                if (response.StatusCode != HttpStatusCode.OK)
+                if (response.StatusCode != HttpStatusCode.OK &&
+                    response.StatusCode != HttpStatusCode.Created &&
+                    response.StatusCode != HttpStatusCode.Accepted &&
+                    response.StatusCode != HttpStatusCode.NoContent)
                 {
                     throw new WebException("Response with status: " + response.StatusCode + " " + response.StatusDescription);
                 }
