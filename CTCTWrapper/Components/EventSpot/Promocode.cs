@@ -50,13 +50,13 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Specifies a fixed discount amount, minimum of 0.01, is required when code_type = DISCOUNT, but not using discount_percent
         /// </summary>
-        [DataMember(Name = "discount_amount", EmitDefaultValue = true)]
+        [DataMember(Name = "discount_amount", EmitDefaultValue = false)]
         public double DiscountAmount { get; set; }
 
         /// <summary>
         /// Specifies a discount percentage, from 1% - 100%, is required when code_type = DISCOUNT, but not using discount_amount
         /// </summary>
-        [DataMember(Name = "discount_percent", EmitDefaultValue = true)]
+        [DataMember(Name = "discount_percent", EmitDefaultValue = false)]
         public int DiscountPercent { get; set; }
 
         /// <summary>
