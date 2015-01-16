@@ -13,6 +13,8 @@ namespace CTCT.Components.EmailCampaigns
     [DataContract]
     public class MessageFooter : Component
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the city.
         /// </summary>
@@ -77,11 +79,8 @@ namespace CTCT.Components.EmailCampaigns
         /// Gets or sets the subscribe link text.
         /// </summary>
         [DataMember(Name = "subscribe_link_text", EmitDefaultValue = false)]
-        public string SubscribeLinkText { get; set; }
+        public string SubscribeLinkText { get; set; } 
 
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public MessageFooter() { }
+        #endregion
     }
 }

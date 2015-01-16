@@ -14,6 +14,8 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class MyLibraryFile : BaseLibrary
 	{
+        #region Properties
+		
 		/// <summary>
 		/// Gets or sets the description of the file
 		/// </summary>
@@ -98,15 +100,22 @@ namespace CTCT.Components.MyLibrary
 		/// </summary>
 		[DataMember(Name = "thumbnail", EmitDefaultValue = false)]
         public Thumbnail Thumbnail { get; set; }
+ 
+	    #endregion
 
-		/// <summary>
+
+        #region Constructors
+
+        /// <summary>
 		/// Class contructor
 		/// </summary>
 		public MyLibraryFile()
 		{
 			this.Thumbnail = new Thumbnail();
-		}
-	}
+        }
+
+        #endregion
+    }
 
 	/// <summary>
 	/// File type enum

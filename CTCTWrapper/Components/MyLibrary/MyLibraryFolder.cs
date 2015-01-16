@@ -12,8 +12,17 @@ namespace CTCT.Components.MyLibrary
 	[DataContract]
     [Serializable]
 	public class MyLibraryFolder : BaseLibrary
-	{
-		/// <summary>
+    {
+        #region Fields
+
+        [DataMember(Name = "children", EmitDefaultValue = false)]
+        private List<MyLibraryFolder> _Children = new List<MyLibraryFolder>();
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
 		/// Gets or sets the number of files in the library folder
 		/// </summary>
 		[DataMember(Name = "item_count", EmitDefaultValue = false)]
@@ -31,15 +40,12 @@ namespace CTCT.Components.MyLibrary
 		/// <summary>
 		/// Gets or sets the list of child or grandchild folders
 		/// </summary>
-		[DataMember(Name = "children", EmitDefaultValue = false)]
-        public IList<MyLibraryFolder> Children { get; set; }
+        public IList<MyLibraryFolder> Children 
+        {
+            get { return _Children; }
+            set { _Children = value.ToList(); }
+        }
 
-		/// <summary>
-		/// Class constructor
-		/// </summary>
-		public MyLibraryFolder()
-		{
-			this.Children = new List<MyLibraryFolder>();
-		}
-	}
+        #endregion
+    }
 }

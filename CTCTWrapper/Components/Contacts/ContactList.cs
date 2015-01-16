@@ -12,6 +12,8 @@ namespace CTCT.Components.Contacts
     [DataContract]
     public class ContactList : Component
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -43,9 +45,6 @@ namespace CTCT.Components.Contacts
         [DataMember(Name = "modified_date", EmitDefaultValue = false)]
         public string DateModified { get; set; }
 
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public ContactList() { }
+        #endregion
     }
 }

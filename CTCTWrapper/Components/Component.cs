@@ -15,6 +15,8 @@ namespace CTCT.Components
     [DataContract]
     public abstract class Component
     {
+        #region Methods
+
         /// <summary>
         /// Get the object from JSON.
         /// </summary>
@@ -53,5 +55,7 @@ namespace CTCT.Components
 
             return json;
         }
+
+        #endregion
     }
 }

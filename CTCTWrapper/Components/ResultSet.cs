@@ -16,21 +16,31 @@ namespace CTCT.Components
     [Serializable]
     public class ResultSet<T> where T : Component
     {
+        #region Fields
+
+        [DataMember(Name = "results")]
+        private List<T> _Results;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the array of result objects returned.
         /// </summary>
-        [DataMember(Name = "results")]
-        public IList<T> Results { get; set; }
+        public IList<T> Results 
+        {
+            get { return _Results; }
+            set { _Results = value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the next link.
         /// </summary>
         [DataMember(Name = "meta")]
         public Meta Meta { get; set; }
 
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public ResultSet() { }
+        #endregion
     }
 
     /// <summary>
@@ -40,16 +50,15 @@ namespace CTCT.Components
     [Serializable]
     public class Meta
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the pagination link.
         /// </summary>
         [DataMember(Name="pagination")]
         public Pagination Pagination { get; set; }
 
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public Meta() { }
+        #endregion
     }
 
     /// <summary>
@@ -59,16 +68,17 @@ namespace CTCT.Components
     [Serializable]
     public class Pagination
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the next link.
         /// </summary>
         [DataMember(Name="next_link")]
         public string Next { get; set; }
 
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public Pagination() { }
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Format the URL for the next page call.
@@ -78,5 +88,7 @@ namespace CTCT.Components
         {
             return String.Concat(Config.Endpoints.BaseUrl, this.Next.Replace("/v2/", String.Empty));
         }
+
+        #endregion
     }
 }

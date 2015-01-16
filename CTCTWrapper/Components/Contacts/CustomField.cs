@@ -13,6 +13,8 @@ namespace CTCT.Components.Contacts
     [Serializable]
     public class CustomField : Component
     {
+        #region Properties
+
         /// <summary>
         /// Name of the custom field. Only accepted names.
         /// </summary>
@@ -22,7 +24,9 @@ namespace CTCT.Components.Contacts
         /// Value of the custom field.
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
-        public string Value { get; set; }
+        public string Value { get; set; } 
+
+        #endregion
     }
 
     /// <summary>
@@ -30,6 +34,8 @@ namespace CTCT.Components.Contacts
     /// </summary>
     public struct CustomFieldName
     {
+        #region Constants
+
         /// <summary>
         /// Custom field 1.
         /// </summary>
@@ -89,6 +95,8 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Custom field 15.
         /// </summary>
-        public const string CustomField15 = "CustomField15";
+        public const string CustomField15 = "CustomField15"; 
+
+        #endregion
     }
 }

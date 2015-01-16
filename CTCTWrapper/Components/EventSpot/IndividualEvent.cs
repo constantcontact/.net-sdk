@@ -14,20 +14,17 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class IndividualEvent : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public IndividualEvent()
-        {
-            this.Address = new EventSpotAddress();
-            this.PaymentAddress = new EventSpotAddress();
-            this.PaymentOptions = new List<PaymentTypes>();
-            this.PaymentOptionsArray = new List<string>();
-            this.TrackInformation = new TrackInformation();
-            this.OnlineMeeting = new OnlineMeeting();
-            this.NotificationOptions = new List<NotificationOptions>();
-            this.Contact = new EventSpotContact();
-        }
+        #region Fields
+
+        [DataMember(Name = "notification_options", EmitDefaultValue = false)]
+        private List<NotificationOptions> _NotificationOptions = new List<NotificationOptions>();
+
+        [DataMember(Name = "payment_options", EmitDefaultValue = false)]
+        private List<string> _PaymentOptionsArray = new List<string>();
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// String representation of date event was published or announced, in ISO-8601 format
@@ -330,8 +327,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Define whether or not event notifications are sent to the contact email_address, and which notifications. 
         /// </summary>
-        [DataMember(Name = "notification_options", EmitDefaultValue = false)]
-        public IList<NotificationOptions> NotificationOptions { get; set; }
+        public IList<NotificationOptions> NotificationOptions 
+        {
+            get { return _NotificationOptions; }
+            set { _NotificationOptions = value.ToList(); }
+        }
 
         /// <summary>
         /// Online meeting details, REQUIRED if is_virtual_event is set to true 
@@ -354,8 +354,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Specifies the payment options available to registrants 
         /// </summary>
-        [DataMember(Name = "payment_options", EmitDefaultValue = false)]
-        private IList<string> PaymentOptionsArray { get; set; }
+        private IList<string> PaymentOptionsArray 
+        {
+            get { return _PaymentOptionsArray; }
+            set { _PaymentOptionsArray = value.ToList(); }
+        }
 
         /// <summary>
         /// Specifies the payment options available to registrants 
@@ -364,7 +367,7 @@ namespace CTCT.Components.EventSpot
         {
             get
             {
-                IList<PaymentTypes> temp = new List<PaymentTypes>();
+                var temp = new List<PaymentTypes>();
                 foreach (string s in this.PaymentOptionsArray)
                 {
                     var value = s.ToEnum<PaymentTypes>();
@@ -374,7 +377,7 @@ namespace CTCT.Components.EventSpot
             }
             set
             {
-                IList<string> temp = new List<string>();
+                var temp = new List<string>();
                 foreach (PaymentTypes pt in value)
                 {
                     temp.Add(pt.ToString());
@@ -382,9 +385,26 @@ namespace CTCT.Components.EventSpot
                 this.PaymentOptionsArray = temp;
             }
         }
+
+#endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public IndividualEvent()
+        {
+            this.Address = new EventSpotAddress();
+            this.PaymentAddress = new EventSpotAddress();
+            this.PaymentOptions = new List<PaymentTypes>();
+            this.TrackInformation = new TrackInformation();
+            this.OnlineMeeting = new OnlineMeeting();
+            this.Contact = new EventSpotContact();
+        }
+
+        #endregion
     }
-
-
 
     /// <summary>
     /// Event status
@@ -415,6 +435,7 @@ namespace CTCT.Components.EventSpot
     }
 
 #pragma warning disable 1591
+
     /// <summary>
     /// Event type
     /// </summary>
@@ -459,5 +480,6 @@ namespace CTCT.Components.EventSpot
         CHECK,
         DOOR
     }
+
 #pragma warning restore 1591
 }

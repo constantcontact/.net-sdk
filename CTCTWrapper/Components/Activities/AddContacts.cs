@@ -15,41 +15,75 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class AddContacts : Component
     {
+        #region Fields
+
+        [DataMember(Name = "import_data", EmitDefaultValue = false)]
+        private List<AddContactsImportData> _ImportData = new List<AddContactsImportData>();
+
+        [DataMember(Name = "lists", EmitDefaultValue = false)]
+        private List<string> _Lists = new List<string>();
+
+        [DataMember(Name = "column_names")]
+        private List<string> _ColumnNames = new List<string>();
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Activity id.
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public string Id { get; set; }
+
         /// <summary>
         /// Gets or sets the list of imported data.
         /// </summary>
-        [DataMember(Name = "import_data", EmitDefaultValue = false)]
-        public IList<AddContactsImportData> ImportData { get; set; }
+        public IList<AddContactsImportData> ImportData
+        {
+            get { return _ImportData; }
+            set { _ImportData = value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the list of id's to add.
         /// </summary>
-        [DataMember(Name = "lists", EmitDefaultValue = false)]
-        public IList<string> Lists { get; set; }
+        public IList<string> Lists
+        {
+            get { return _Lists; }
+            set { _Lists = value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the list of column names.
         /// </summary>
-        [DataMember(Name = "column_names")]
-        public IList<string> ColumnNames { get; set; }
+        public IList<string> ColumnNames
+        {
+            get { return _ColumnNames; }
+            set { _ColumnNames = value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the contact count that were processed by this activity.
         /// </summary>
         [DataMember(Name = "contact_count", EmitDefaultValue = false)]
         public string ContactCount { get; set; }
+
         /// <summary>
         /// Gets or sets the activity process error count.
         /// </summary>
         [DataMember(Name = "error_count", EmitDefaultValue = false)]
         public string ErrorCount { get; set; }
+
         /// <summary>
         /// Activity type.
         /// </summary>
         [DataMember(Name = "type", EmitDefaultValue = false)]
         public string Type { get; private set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Class constructor.
@@ -147,5 +181,7 @@ namespace CTCT.Components.Activities
                 }
             }
         }
+
+        #endregion
     }
 }

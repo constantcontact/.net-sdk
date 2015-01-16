@@ -30,7 +30,7 @@ namespace CTCT.Services
         /// Constructor with the option to to supply an alternative rest client to be used.
         /// </summary>
         /// <param name="restClient">RestClientInterface implementation to be used in the service.</param>
-        public BaseService(RestClient restClient)
+        public BaseService(IRestClient restClient)
         {
             this.RestClient = restClient;
         }

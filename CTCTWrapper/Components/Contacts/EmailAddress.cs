@@ -13,6 +13,8 @@ namespace CTCT.Components.Contacts
     [Serializable]
     public class EmailAddress : Component
     {
+        #region Properties
+
         /// <summary>
         /// Email address id.
         /// </summary>
@@ -52,12 +54,19 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the email address.
         /// </summary>
         [DataMember(Name = "email_address")]
-        public string EmailAddr { get; set; }
+        public string EmailAddr { get; set; } 
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Class constructor.
         /// </summary>
-        public EmailAddress() { }
+        public EmailAddress() 
+        {
+        
+        }
 
         /// <summary>
         /// Class constructor.
@@ -67,6 +76,8 @@ namespace CTCT.Components.Contacts
         {
             this.EmailAddr = emailAddress;
         }
+
+        #endregion
     }
 
     /// <summary>
@@ -74,6 +85,8 @@ namespace CTCT.Components.Contacts
     /// </summary>
     public struct ConfirmStatus
     {
+        #region Constants
+
         /// <summary>
         /// Confirmed.
         /// </summary>
@@ -85,7 +98,9 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Unconfirmed.
         /// </summary>
-        public const string Unconfirmed = "UNCONFIRMED";
+        public const string Unconfirmed = "UNCONFIRMED"; 
+
+        #endregion
     }
 
     /// <summary>
@@ -93,6 +108,8 @@ namespace CTCT.Components.Contacts
     /// </summary>
     public struct OptInSource
     {
+        #region Constants 
+
         /// <summary>
         /// ActionByVisitor.
         /// </summary>
@@ -100,6 +117,8 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// ActionByOwner.
         /// </summary>
-        public const string ActionByOwner = "ACTION_BY_OWNER";
+        public const string ActionByOwner = "ACTION_BY_OWNER"; 
+
+        #endregion
     }
 }

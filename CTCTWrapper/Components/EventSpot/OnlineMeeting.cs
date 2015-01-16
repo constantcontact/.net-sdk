@@ -13,6 +13,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class OnlineMeeting : Component
     {
+        #region Properties
+
         /// <summary>
         /// Online meeting instructions, such as dial in number, password, etc 
         /// </summary>
@@ -35,6 +37,8 @@ namespace CTCT.Components.EventSpot
         /// URL for online meeting. REQUIRED if is_virtual_event is set to true
         /// </summary>
         [DataMember(Name = "url", EmitDefaultValue = false)]
-        public string Url { get; set; }
+        public string Url { get; set; } 
+
+        #endregion
     }
 }

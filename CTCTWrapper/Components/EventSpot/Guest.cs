@@ -14,6 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Guest : Component
     {
+        #region Properties
+
         /// <summary>
         /// Unique ID assigned to a guest 
         /// </summary>
@@ -24,6 +26,8 @@ namespace CTCT.Components.EventSpot
         /// Field sections displayed 
         /// </summary>
         [DataMember(Name = "guests_info", EmitDefaultValue = false)]
-        public string GuestsInfo { get; set; }
+        public string GuestsInfo { get; set; } 
+
+        #endregion
     }
 }

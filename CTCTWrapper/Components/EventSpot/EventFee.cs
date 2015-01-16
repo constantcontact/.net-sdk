@@ -14,6 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class EventFee : Component
     {
+        #region Properties
+
         /// <summary>
         /// Fee for registrations that occur prior to the event's early_fee_date 
         /// </summary>
@@ -63,7 +65,9 @@ namespace CTCT.Components.EventSpot
         /// Has restricted access
         /// </summary>
         [DataMember(Name = "has_restricted_access", EmitDefaultValue = true)]
-        public bool HasRestrictedAccess { get; set; }
+        public bool HasRestrictedAccess { get; set; } 
+
+        #endregion
     }
 
     /// <summary>

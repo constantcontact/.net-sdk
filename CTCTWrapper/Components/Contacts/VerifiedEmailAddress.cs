@@ -13,6 +13,8 @@ namespace CTCT.Components.Contacts
     [DataContract]
     public class VerifiedEmailAddress : Component
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the email address.
         /// </summary>
@@ -24,11 +26,6 @@ namespace CTCT.Components.Contacts
         [DataMember(Name = "status", EmitDefaultValue = false)]
         public string Status { get; set; }
 
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        public VerifiedEmailAddress()
-        { 
-        }
+        #endregion
     }
 }

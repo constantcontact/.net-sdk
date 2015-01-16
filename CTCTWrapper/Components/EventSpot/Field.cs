@@ -14,6 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Field : Component
     {
+        #region Properties
+
         /// <summary>
         /// String representation of the type value
         /// </summary>
@@ -45,6 +47,8 @@ namespace CTCT.Components.EventSpot
         /// The value
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
-        public string Value { get; set; }
+        public string Value { get; set; } 
+
+        #endregion
     }
 }

@@ -13,20 +13,24 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class Thumbnail : Component
 	{
-		/// <summary>
-		/// Gets or sets the URL referencing the thumbnail of the file
-		/// </summary>
-		[DataMember(Name = "url", EmitDefaultValue = false)]
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the URL referencing the thumbnail of the file
+        /// </summary>
+        [DataMember(Name = "url", EmitDefaultValue = false)]
         public string Url { get; set; }
-		/// <summary>
-		/// Gets or sets the height in pixels
-		/// </summary>
-		[DataMember(Name = "height", EmitDefaultValue = false)]
+        /// <summary>
+        /// Gets or sets the height in pixels
+        /// </summary>
+        [DataMember(Name = "height", EmitDefaultValue = false)]
         public int Height { get; set; }
-		/// <summary>
-		/// Gets or sets the width in pixels
-		/// </summary>
-		[DataMember(Name = "width", EmitDefaultValue = false)]
+        /// <summary>
+        /// Gets or sets the width in pixels
+        /// </summary>
+        [DataMember(Name = "width", EmitDefaultValue = false)]
         public int Width { get; set; }
+        
+        #endregion
 	}
 }

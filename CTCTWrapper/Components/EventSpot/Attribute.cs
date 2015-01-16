@@ -14,6 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Attribute : Component
     {
+        #region Properties
+
         /// <summary>
         /// The attribute's unique ID 
         /// </summary>
@@ -36,6 +38,8 @@ namespace CTCT.Components.EventSpot
         /// Number of attributes offered for sale 
         /// </summary>
         [DataMember(Name = "quantity_total", EmitDefaultValue = true)]
-        public int QuantityTotal { get; set; }
+        public int QuantityTotal { get; set; } 
+
+        #endregion
     }
 }

@@ -13,6 +13,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class EventSpotContact : Component
     {
+        #region Properties
+
         /// <summary>
         /// Event contact's email-address
         /// </summary>
@@ -35,6 +37,8 @@ namespace CTCT.Components.EventSpot
         /// Event contact's phone number 
         /// </summary>
         [DataMember(Name = "phone_number")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } 
+
+        #endregion
     }
 }

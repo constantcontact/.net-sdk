@@ -14,17 +14,19 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class FileUploadStatus : Component
 	{
-		/// <summary>
-		/// Gets or setd the file id
-		/// </summary>
-		[DataMember(Name = "file_id", EmitDefaultValue = false)]
+        #region Properties
+
+        /// <summary>
+        /// Gets or setd the file id
+        /// </summary>
+        [DataMember(Name = "file_id", EmitDefaultValue = false)]
         public string FileId { get; set; }
-		/// <summary>
-		/// Gets or sets the description
-		/// </summary>
-		[DataMember(Name = "description", EmitDefaultValue = false)]
+        /// <summary>
+        /// Gets or sets the description
+        /// </summary>
+        [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description { get; set; }
-		/// <summary>
+        /// <summary>
         /// Status, string representation.
         /// </summary>
         [DataMember(Name = "status", EmitDefaultValue = false)]
@@ -37,5 +39,7 @@ namespace CTCT.Components.MyLibrary
             get { return this.StatusString.ToEnum<FileStatus>(); }
             set { this.StatusString = value.ToString(); }
         }
+        
+        #endregion
 	}
 }

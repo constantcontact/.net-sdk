@@ -13,6 +13,8 @@ namespace CTCT.Components.Contacts
     [Serializable]
     public class Note : Component
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -32,6 +34,8 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the datetime when note was modified.
         /// </summary>
         [DataMember(Name = "modified_date", EmitDefaultValue = false)]
-        public string ModifiedDate { get; set; }
+        public string ModifiedDate { get; set; } 
+
+        #endregion
     }
 }

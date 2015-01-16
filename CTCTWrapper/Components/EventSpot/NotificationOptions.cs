@@ -14,6 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class NotificationOptions : Component
     {
+        #region Properties
+
         /// <summary>
         /// Set to true to send event notifications to the contact email_address, false for no notifications; Default is false 
         /// </summary>
@@ -33,7 +35,9 @@ namespace CTCT.Components.EventSpot
         {
             get { return this.NotificationTypeString.ToEnum<NotificationType>(); }
             set { this.NotificationTypeString = value.ToString(); }
-        }
+        } 
+
+        #endregion
     }
 
 #pragma warning disable 1591

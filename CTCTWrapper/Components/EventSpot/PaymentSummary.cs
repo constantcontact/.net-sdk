@@ -14,6 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class PaymentSummary : Component
     {
+        #region Constructors
+		
         /// <summary>
         /// Constructor
         /// </summary>
@@ -22,6 +24,10 @@ namespace CTCT.Components.EventSpot
             this.Order = new Order();
             this.PromoCode = new PaymentPromoCode();
         }
+ 
+	    #endregion
+
+        #region Properties
 
         /// <summary>
         /// Order
@@ -46,5 +52,8 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "promo_code", EmitDefaultValue = false)]
         public PaymentPromoCode PromoCode { get; set; }
+
+        
+        #endregion
     }
 }

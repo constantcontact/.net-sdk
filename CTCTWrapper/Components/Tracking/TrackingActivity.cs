@@ -10,6 +10,8 @@ namespace CTCT.Components.Tracking
     /// </summary>
     public class TrackingActivity
     {
+        #region Properties
+
         /// <summary>
         /// Gets or sets the list of activities.
         /// </summary>
@@ -19,9 +21,6 @@ namespace CTCT.Components.Tracking
         /// </summary>
         public int Next { get; set; }
 
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        public TrackingActivity() { }
+        #endregion
     }
 }

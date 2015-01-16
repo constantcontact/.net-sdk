@@ -14,19 +14,23 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class EventItem : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public EventItem()
-        {
-            this.Attributes = new List<Attribute>();
-        }
+        #region Fields
+
+        [DataMember(Name = "attributes", EmitDefaultValue = false)]
+        private List<Attribute> _Attributes = new List<Attribute>();
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// An array of item attributes and options 
         /// </summary>
-        [DataMember(Name = "attributes", EmitDefaultValue = false)]
-        public IList<Attribute> Attributes { get; private set; }
+        public IList<Attribute> Attributes 
+        {
+            get { return _Attributes; }
+            private set { _Attributes = value.ToList(); }
+        }
 
         /// <summary>
         /// Number of items available for sale, displayed on the registration page if show_quantity_available = true. 
@@ -76,5 +80,7 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "show_quantity_available", EmitDefaultValue = true)]
         public bool ShowQuantityAvailable { get; set; }
+
+        #endregion
     }
 }

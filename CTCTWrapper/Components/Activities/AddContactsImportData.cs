@@ -14,65 +14,90 @@ namespace CTCT.Components.Activities
     [DataContract]
     public class AddContactsImportData : Component
     {
+        #region Fields
+
+        [DataMember(Name = "email_addresses")]
+        private List<string> _EmailAddresses = new List<string>();
+
+        [DataMember(Name = "addresses", EmitDefaultValue = false)]
+        private List<Address> _Addresses = new List<Address>();
+
+        [DataMember(Name = "custom_fields", EmitDefaultValue = false)]
+        private List<CustomField> _CustomFields = new List<CustomField>();
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
         [DataMember(Name = "first_name", EmitDefaultValue = false)]
         public string FirstName { get; set; }
+
         /// <summary>
         /// Gets or sets the middle name.
         /// </summary>
         [DataMember(Name = "middle_name", EmitDefaultValue = false)]
         public string MiddleName { get; set; }
+
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
         [DataMember(Name = "last_name", EmitDefaultValue = false)]
         public string LastName { get; set; }
+
         /// <summary>
         /// Gets or sets the job title.
         /// </summary>
         [DataMember(Name = "job_title", EmitDefaultValue = false)]
         public string JobTitle { get; set; }
+
         /// <summary>
         /// Gets or sets the company name.
         /// </summary>
         [DataMember(Name = "company_name", EmitDefaultValue = false)]
         public string CompanyName { get; set; }
+
         /// <summary>
         /// Gets or sets the work phone.
         /// </summary>
         [DataMember(Name = "work_phone", EmitDefaultValue = false)]
         public string WorkPhone { get; set; }
+
         /// <summary>
         /// Gets or sets the home phone.
         /// </summary>
         [DataMember(Name = "home_phone", EmitDefaultValue = false)]
         public string HomePhone { get; set; }
+
         /// <summary>
         /// Gets or sets the email addresses list.
         /// </summary>
-        [DataMember(Name = "email_addresses")]
-        public IList<string> EmailAddresses { get; set; }
+        public IList<string> EmailAddresses 
+        {
+            get { return _EmailAddresses; }
+            set { _EmailAddresses = value.ToList(); } 
+        }
+
         /// <summary>
         /// Gets or sets addresses list.
         /// </summary>
-        [DataMember(Name = "addresses", EmitDefaultValue = false)]
-        public IList<Address> Addresses { get; set; }
+        public IList<Address> Addresses 
+        {
+            get { return _Addresses; }
+            set { _Addresses = value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the custom fields list.
         /// </summary>
-        [DataMember(Name = "custom_fields", EmitDefaultValue = false)]
-        public IList<CustomField> CustomFields { get; set; }
-
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public AddContactsImportData()
+        public IList<CustomField> CustomFields 
         {
-            this.EmailAddresses = new List<string>();
-            this.Addresses = new List<Address>();
-            this.CustomFields = new List<CustomField>();
+            get { return _CustomFields; }
+            set { _CustomFields = value.ToList(); }
         }
+
+        #endregion
     }
 }
