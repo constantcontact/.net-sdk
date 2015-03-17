@@ -13,8 +13,6 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class MyLibraryInfo : Component
 	{
-        #region Properties
-
         /// <summary>
         /// Gets or sets the image root
         /// </summary>
@@ -43,11 +41,7 @@ namespace CTCT.Components.MyLibrary
         /// </summary>
         [DataMember(Name = "usage_summary", EmitDefaultValue = false)]
         public UsageSummary UsageSummary { get; set; }
-        
-        #endregion
-
-        #region Constructors
-
+ 
         /// <summary>
         /// Class constructor
         /// </summary>
@@ -55,7 +49,5 @@ namespace CTCT.Components.MyLibrary
         {
             this.UsageSummary = new UsageSummary();
         }
-        
-        #endregion
 	}
 }

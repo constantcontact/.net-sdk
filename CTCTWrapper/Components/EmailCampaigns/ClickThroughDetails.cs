@@ -13,8 +13,6 @@ namespace CTCT.Components.EmailCampaigns
     [DataContract]
     public class ClickThroughDetails : Component
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the actual url that was clicked on.
         /// </summary>
@@ -32,7 +30,5 @@ namespace CTCT.Components.EmailCampaigns
         /// </summary>
         [DataMember(Name = "click_count")]
         public int ClickCount { get; set; } 
-
-        #endregion
     }
 }

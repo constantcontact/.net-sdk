@@ -14,17 +14,11 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Registrant : Component
     {
-        #region Fields
-
         [DataMember(Name = "sections", EmitDefaultValue = false)]
         private List<Section> _Sections = new List<Section>();
 
         [DataMember(Name = "guest_sections", EmitDefaultValue = false)]
         private List<Guest> _GuestSections = new List<Guest>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Id
@@ -38,7 +32,7 @@ namespace CTCT.Components.EventSpot
         public IList<Section> Sections 
         {
             get { return _Sections; }
-            set { _Sections = value.ToList(); }
+            set { _Sections = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -125,12 +119,8 @@ namespace CTCT.Components.EventSpot
         public IList<Guest> GuestSections 
         {
             get { return _GuestSections; }
-            set { _GuestSections = value.ToList(); }
+            set { _GuestSections = value == null ? null : value.ToList(); }
         }
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Constructor
@@ -139,7 +129,5 @@ namespace CTCT.Components.EventSpot
         {
             this.PaymentSummary = new PaymentSummary();
         }
-
-         #endregion
     }
 }

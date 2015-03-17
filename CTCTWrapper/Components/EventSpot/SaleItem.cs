@@ -14,8 +14,6 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class SaleItem : Component
     {
-        #region Properties
-
         /// <summary>
         /// Amount paid
         /// </summary>
@@ -57,7 +55,5 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "fee_period_type", EmitDefaultValue = false)]
         public string FeePeriodType { get; set; }
-
-	    #endregion
     }
 }

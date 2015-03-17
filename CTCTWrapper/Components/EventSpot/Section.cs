@@ -14,14 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Section : Component
     {
-        #region Fields
-
         [DataMember(Name = "fields", EmitDefaultValue = false)]
         private List<Field> _Fields = new List<Field>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Field label displayed to viewers 
@@ -35,7 +29,7 @@ namespace CTCT.Components.EventSpot
         public IList<Field> Fields 
         {
             get { return _Fields; }
-            set { _Fields = value.ToList(); }
+            set { _Fields = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -52,8 +46,6 @@ namespace CTCT.Components.EventSpot
             get { return this.FieldTypeString.ToEnum<FieldType>(); }
             set { this.FieldTypeString = value.ToString(); }
         }
-
-        #endregion
     }
 
     /// <summary>

@@ -14,8 +14,6 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class PromoCodeInfo : Component
     {
-        #region Properties
-
         /// <summary>
         /// Code name
         /// </summary>
@@ -75,7 +73,5 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "discount_scope", EmitDefaultValue = false)]
         public string DiscountScope { get; set; } 
-
-        #endregion
     }
 }

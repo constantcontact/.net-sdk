@@ -13,8 +13,6 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class ActivityError : Component
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the message.
         /// </summary>
@@ -30,7 +28,5 @@ namespace CTCT.Components.Activities
         /// </summary>
         [DataMember(Name = "email_address")]
         public string EmailAddress { get; set; } 
-
-        #endregion
     }
 }

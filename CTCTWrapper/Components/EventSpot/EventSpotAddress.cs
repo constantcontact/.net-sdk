@@ -13,8 +13,6 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class EventSpotAddress : Component
     {
-        #region Properties
-
         /// <summary>
         /// Standard 2 letter abbreviation for the state or Canadian province of the event location; if state_code is entered, the system overwrites the state property with the resolved state or province name
         /// </summary>
@@ -80,7 +78,5 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "city", EmitDefaultValue = false)]
         public string City { get; set; } 
-
-        #endregion
     }
 }

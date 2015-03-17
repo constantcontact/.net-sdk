@@ -13,14 +13,8 @@ namespace CTCT.Components.AccountService
     [Serializable]
     public class AccountSummaryInformation : Component
     {
-        #region Fields
-
         [DataMember(Name = "organization_addresses", EmitDefaultValue = false)]
         private List<OrganizationAddresses> _OrganizationAddresses = new List<OrganizationAddresses>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Standard 2 letter ISO 3166-1 code of the country associated with the account owner 
@@ -83,9 +77,7 @@ namespace CTCT.Components.AccountService
         public IList<OrganizationAddresses> OrganizationAddresses
         {
             get { return _OrganizationAddresses; }
-            set { _OrganizationAddresses = value.ToList(); }
+            set { _OrganizationAddresses = value == null ? null : value.ToList(); }
         }
-
-        #endregion
     }
 }

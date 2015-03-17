@@ -13,8 +13,6 @@ namespace CTCT.Components.AccountService
     [Serializable]
     public class OrganizationAddresses : Component
     {
-        #region Properties
-
         /// <summary>
         /// REQUIRED if including organization_addresses; The city the organization is located in 
         /// </summary>
@@ -64,7 +62,5 @@ namespace CTCT.Components.AccountService
         /// </summary>
         [DataMember(Name = "state_code", EmitDefaultValue = false)]
         public string StateCode { get; set; }   
-
-        #endregion
     }
 }

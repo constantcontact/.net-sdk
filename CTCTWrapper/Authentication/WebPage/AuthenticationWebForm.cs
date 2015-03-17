@@ -14,24 +14,14 @@ namespace CTCT.Authentication.WebPage
     /// </summary>
     public sealed class AuthenticationWebPage : Page
     {
-        #region Constants
-
         private const string RequestAuthorizationUrl = "https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize?response_type=code&client_id={0}&redirect_uri={1}&state={2}";
         private const string RequestAccessTokenUrl = "https://oauth2.constantcontact.com/oauth2/oauth/token?grant_type=authorization_code&client_id={0}&client_secret={1}&code={2}&redirect_uri={3}";
-
-        #endregion
-
-        #region Private Properties
 
         private string _url = string.Empty;
         private readonly string _redirectUrl = string.Empty;
         private readonly string _apiKey = string.Empty;
         private readonly string _clientSecret = string.Empty;
         
-        #endregion
-
-        #region Public Properties
-
         /// <summary>
         /// Access token field
         /// </summary>
@@ -47,10 +37,6 @@ namespace CTCT.Authentication.WebPage
         /// </summary>
         public HttpContext HttpContext;
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
         /// Initialize new instance of AuthenticationWebForm class
         /// </summary>
@@ -65,10 +51,6 @@ namespace CTCT.Authentication.WebPage
             _redirectUrl = ConfigurationManager.AppSettings["RedirectURL"];
             _clientSecret = ConfigurationManager.AppSettings["ClientSecretKey"];  
         }
-
-        #endregion
-
-        #region Public methods
 
         /// <summary>
         /// Gets authorization code
@@ -125,7 +107,5 @@ namespace CTCT.Authentication.WebPage
 
             return AccessToken;
         }
-
-        #endregion 
     }
 }

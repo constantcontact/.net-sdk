@@ -16,17 +16,11 @@ namespace CTCT.Components.EmailCampaigns
     [DataContract]
     public class EmailCampaign : Component
     {
-        #region Fields
-
         [DataMember(Name = "sent_to_contact_lists", EmitDefaultValue = false)]
         private List<SentContactList> _Lists = new List<SentContactList>();
 
         [DataMember(Name = "click_through_details", EmitDefaultValue = false)]
         private List<ClickThroughDetails> _ClickThroughDetails = new List<ClickThroughDetails>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the id.
@@ -256,7 +250,7 @@ namespace CTCT.Components.EmailCampaigns
         public IList<ClickThroughDetails> ClickThroughDetails
         {
             get { return _ClickThroughDetails; }
-            set { _ClickThroughDetails = value.ToList(); }
+            set { _ClickThroughDetails = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -271,7 +265,7 @@ namespace CTCT.Components.EmailCampaigns
         public IList<SentContactList> Lists
         {
             get { return _Lists; }
-            set { _Lists = value.ToList(); }
+            set { _Lists = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -291,8 +285,6 @@ namespace CTCT.Components.EmailCampaigns
         /// </summary>
         [DataMember(Name = "archive_url", EmitDefaultValue = false)]
         public string ArchiveURL { get; set; }
-
-        #endregion
     }
 
     /// <summary>

@@ -14,14 +14,8 @@ namespace CTCT.Components.EmailCampaigns
     [DataContract]
     public class TestSend : Component
     {
-        #region Fields
-
         [DataMember(Name = "email_addresses")]
         private List<string> _EmailAddresses = new List<string>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Format of the email to send (HTML, TEXT, HTML_AND_TEXT).
@@ -41,10 +35,8 @@ namespace CTCT.Components.EmailCampaigns
         public IList<string> EmailAddresses
         {
             get { return _EmailAddresses; }
-            set { _EmailAddresses = value.ToList(); }
+            set { _EmailAddresses = value == null ? null : value.ToList(); }
         }
-
-        #endregion
     }
 
     /// <summary>

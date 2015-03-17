@@ -13,14 +13,8 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class MyLibraryFolder : BaseLibrary
     {
-        #region Fields
-
         [DataMember(Name = "children", EmitDefaultValue = false)]
         private List<MyLibraryFolder> _Children = new List<MyLibraryFolder>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
 		/// Gets or sets the number of files in the library folder
@@ -43,9 +37,7 @@ namespace CTCT.Components.MyLibrary
         public IList<MyLibraryFolder> Children 
         {
             get { return _Children; }
-            set { _Children = value.ToList(); }
+            set { _Children = value == null ? null : value.ToList(); }
         }
-
-        #endregion
     }
 }

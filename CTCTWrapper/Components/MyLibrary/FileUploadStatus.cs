@@ -14,8 +14,6 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class FileUploadStatus : Component
 	{
-        #region Properties
-
         /// <summary>
         /// Gets or setd the file id
         /// </summary>
@@ -39,7 +37,5 @@ namespace CTCT.Components.MyLibrary
             get { return this.StatusString.ToEnum<FileStatus>(); }
             set { this.StatusString = value.ToString(); }
         }
-        
-        #endregion
 	}
 }

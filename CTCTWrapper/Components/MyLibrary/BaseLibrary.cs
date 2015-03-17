@@ -13,8 +13,6 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class BaseLibrary : Component
 	{
-        #region Properties
-
         /// <summary>
         /// Gets or sets the id
         /// </summary>
@@ -35,7 +33,5 @@ namespace CTCT.Components.MyLibrary
         /// </summary>
         [DataMember(Name = "name", EmitDefaultValue = false)]
         public string Name { get; set; }
-
-        #endregion
 	}
 }

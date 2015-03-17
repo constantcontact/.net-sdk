@@ -14,14 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Order : Component
     {
-        #region Fields
-
         [DataMember(Name = "fees", EmitDefaultValue = false)]
         private List<Fee> _Fees = new List<Fee>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Total
@@ -35,7 +29,7 @@ namespace CTCT.Components.EventSpot
         public IList<Fee> Fees
         {
             get { return _Fees; }
-            set { _Fees = value.ToList(); }
+            set { _Fees = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -64,7 +58,5 @@ namespace CTCT.Components.EventSpot
             get { return this.OrderDateString.FromISO8601String(); }
             set { this.OrderDateString = value.ToISO8601String(); }
         }
-
-        #endregion
     }
 }

@@ -13,8 +13,6 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class FileMoveResult : Component
 	{
-        #region Properties
-
         /// <summary>
         /// Gets or sets the id
         /// </summary>
@@ -25,7 +23,5 @@ namespace CTCT.Components.MyLibrary
         /// </summary>
         [DataMember(Name = "uri", EmitDefaultValue = false)]
         public string Uri { get; set; }
-        
-        #endregion
 	}
 }

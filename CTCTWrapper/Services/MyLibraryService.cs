@@ -6,6 +6,7 @@ using CTCT.Components.MyLibrary;
 using CTCT.Util;
 using CTCT.Exceptions;
 using CTCT.Components;
+using System.IO;
 
 namespace CTCT.Services
 {
@@ -14,398 +15,415 @@ namespace CTCT.Services
 	/// </summary>
 	public class MyLibraryService : BaseService, IMyLibraryService
 	{
+        /// <summary>
+        /// My library service constructor
+        /// </summary>
+        /// <param name="userServiceContext">User service context</param>
+        public MyLibraryService(IUserServiceContext userServiceContext)
+            : base(userServiceContext)
+        {
+        }
+
 		/// <summary>
 		/// Get MyLibrary usage information
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <returns>Returns a MyLibraryInfo object</returns>
-		public MyLibraryInfo GetLibraryInfo(string accessToken, string apiKey)
+		public MyLibraryInfo GetLibraryInfo()
 		{
-			MyLibraryInfo result = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryInfo);
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryInfo);
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+               var result = response.Get<MyLibraryInfo>();
+               return result;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                result = response.Get<MyLibraryInfo>();
-            }
-
-            return result;
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
 
 		/// <summary>
 		/// Get all existing MyLibrary folders
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
 		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
 		/// <param name="pag">Pagination object.</param>
 		/// <returns>Returns a collection of MyLibraryFolder objects.</returns>
-		public ResultSet<MyLibraryFolder> GetLibraryFolders(string accessToken, string apiKey, FoldersSortBy? sortBy, int? limit, Pagination pag)
+		public ResultSet<MyLibraryFolder> GetLibraryFolders(FoldersSortBy? sortBy, int? limit, Pagination pag)
 		{
-			ResultSet<MyLibraryFolder> results = null;
-            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryFolders, GetQueryParameters(new object[] { "sort_by", sortBy, "limit", limit})) : pag.GetNextUrl();
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            string url = (pag == null) ? String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryFolders, GetQueryParameters(new object[] { "sort_by", sortBy, "limit", limit })) : pag.GetNextUrl();
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var results = response.Get<ResultSet<MyLibraryFolder>>();
+                return results;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                results = response.Get<ResultSet<MyLibraryFolder>>();
-            }
-
-            return results;
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
 
 		/// <summary>
 		/// Add new folder to MyLibrary
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="folder">Folder to be added (with name and parent id)</param>
 		/// <returns>Returns a MyLibraryFolder object.</returns>
-		public MyLibraryFolder AddLibraryFolder(string accessToken, string apiKey, MyLibraryFolder folder)
+		public MyLibraryFolder AddLibraryFolder(MyLibraryFolder folder)
 		{
-			MyLibraryFolder newFolder = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryFolders);
+            if (folder == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryFolders);
             string json = folder.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var newFolder = response.Get<MyLibraryFolder>();
+                return newFolder;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                newFolder = Component.FromJSON<MyLibraryFolder>(response.Body);
-            }
-
-            return newFolder;
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
 
 		/// <summary>
 		/// Get a folder by Id
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="folderId">The id of the folder</param>
 		/// <returns>Returns a MyLibraryFolder object.</returns>
-		public MyLibraryFolder GetLibraryFolder(string accessToken, string apiKey, string folderId)
+		public MyLibraryFolder GetLibraryFolder(string folderId)
 		{
-			MyLibraryFolder folder = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.MyLibraryFolder, folderId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(folderId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.MyLibraryFolder, folderId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                folder = Component.FromJSON<MyLibraryFolder>(response.Body);
+                var folder = response.Get<MyLibraryFolder>();
+                return folder;
             }
-            
-            return folder;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
 
 		/// <summary>
 		/// Update name and parent_id for a specific folder
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="folder">Folder to be added (with name and parent id)</param>
 		/// <param name="includePayload">Determines if update's folder JSON payload is returned</param>
 		/// <returns>Returns a MyLibraryFolder object.</returns>
-		public MyLibraryFolder UpdateLibraryFolder(string accessToken, string apiKey, MyLibraryFolder folder, bool? includePayload)
+		public MyLibraryFolder UpdateLibraryFolder(MyLibraryFolder folder, bool? includePayload)
 		{
-			MyLibraryFolder updatedFolder = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, string.Format(Config.Endpoints.MyLibraryFolder, folder.Id), GetQueryParameters(new object[] { "include_payload", includePayload } ));
+            if (folder == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, string.Format(Settings.Endpoints.Default.MyLibraryFolder, folder.Id), GetQueryParameters(new object[] { "include_payload", includePayload } ));
             string json = folder.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var updatedFolder = response.Get<MyLibraryFolder>();
+                return updatedFolder;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                updatedFolder = Component.FromJSON<MyLibraryFolder>(response.Body);
-            }
-
-            return updatedFolder;
+                throw new CtctException(ex.Message, ex);
+            }  
 		}
 
 		/// <summary>
 		/// Delete a specific folder
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="folderId">The id of the folder</param>
 		 /// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
-		public bool DeleteLibraryFolder(string accessToken, string apiKey, string folderId)
+		public bool DeleteLibraryFolder(string folderId)
 		{
-			string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.MyLibraryFolder, folderId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(folderId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+			string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.MyLibraryFolder, folderId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }    
 		}
+
+        /// <summary>
+        /// Delete a specific folder
+        /// </summary>
+        /// <param name="folder">The MyLibraryFolder</param>
+        /// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
+        public bool DeleteLibraryFolder(MyLibraryFolder folder)
+        {
+            if (folder == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            return DeleteLibraryFolder(folder.Id);
+        }
 
 		/// <summary>
 		/// Get files from Trash folder
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="type">The type of the files to retrieve</param>
 		/// <param name="sortBy">Specifies how the list of folders is sorted</param>
 		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
 		/// <param name="pag">Pagination object.</param>
 		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
-		public ResultSet<MyLibraryFile> GetLibraryTrashFiles(string accessToken, string apiKey, FileTypes? type, TrashSortBy? sortBy, int? limit, Pagination pag)
+		public ResultSet<MyLibraryFile> GetLibraryTrashFiles(FileTypes? type, TrashSortBy? sortBy, int? limit, Pagination pag)
 		{
-			ResultSet<MyLibraryFile> results = null;
-            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryTrash, GetQueryParameters(new object[] { "type", type, "sort_by", sortBy, "limit", limit})) : pag.GetNextUrl();
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            string url = (pag == null) ? String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryTrash, GetQueryParameters(new object[] { "type", type, "sort_by", sortBy, "limit", limit})) : pag.GetNextUrl();
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var results = response.Get<ResultSet<MyLibraryFile>>();
+                return results;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                results = response.Get<ResultSet<MyLibraryFile>>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return results;
 		}
 
 		/// <summary>
 		/// Delete files in Trash folder
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		 /// <returns>Returns true if files were deleted successfully, false otherwise</returns>
-		public bool DeleteLibraryTrashFiles(string accessToken, string apiKey)
+		public bool DeleteLibraryTrashFiles()
 		{
-			string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryTrash);
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+			string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryTrash);
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
             }
-
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
 		}
 
 		/// <summary>
 		/// Get files
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="type">The type of the files to retrieve</param>
 		/// <param name="source">Specifies to retrieve files from a particular source</param>
 		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
 		/// <param name="pag">Pagination object.</param>
 		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
-		public ResultSet<MyLibraryFile> GetLibraryFiles(string accessToken, string apiKey, FileTypes? type, FilesSources? source, int? limit, Pagination pag)
+		public ResultSet<MyLibraryFile> GetLibraryFiles(FileTypes? type, FilesSources? source, int? limit, Pagination pag)
 		{
-			ResultSet<MyLibraryFile> results = null;
-            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryFiles, GetQueryParameters(new object[] { "type", type, "source", source, "limit", limit})) : pag.GetNextUrl();
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            string url = (pag == null) ? String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryFiles, GetQueryParameters(new object[] { "type", type, "source", source, "limit", limit})) : pag.GetNextUrl();
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var results = response.Get<ResultSet<MyLibraryFile>>();
+                return results;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                results = response.Get<ResultSet<MyLibraryFile>>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return results;
 		}
 
 		/// <summary>
 		/// Get files from a specific folder
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="folderId">The id of the folder from which to retrieve files</param>
 		/// <param name="limit">Specifies the number of results per page in the output, from 1 - 50, default = 50.</param>
 		/// <param name="pag">Pagination object.</param>
 		/// <returns>Returns a collection of MyLibraryFile objects.</returns>
-		public ResultSet<MyLibraryFile> GetLibraryFilesByFolder(string accessToken, string apiKey, string folderId, int? limit, Pagination pag)
+		public ResultSet<MyLibraryFile> GetLibraryFilesByFolder(string folderId, int? limit, Pagination pag)
 		{
-			ResultSet<MyLibraryFile> results = null;
-            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.MyLibraryFolderFiles, folderId), GetQueryParameters(new object[] { "limit", limit})) : pag.GetNextUrl();
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(folderId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
             }
 
-            if (response.HasData)
+            string url = (pag == null) ? String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.MyLibraryFolderFiles, folderId), GetQueryParameters(new object[] { "limit", limit})) : pag.GetNextUrl();
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                results = response.Get<ResultSet<MyLibraryFile>>();
+                var results = response.Get<ResultSet<MyLibraryFile>>();
+                return results;
             }
-
-            return results;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
 		}
 
 		/// <summary>
 		/// Get file after id
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="fileId">The id of the file</param>
 		/// <returns>Returns a MyLibraryFile object.</returns>
-		public MyLibraryFile GetLibraryFile(string accessToken, string apiKey, string fileId)
+		public MyLibraryFile GetLibraryFile(string fileId)
 		{
-			MyLibraryFile file = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.MyLibraryFile, fileId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(fileId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.MyLibraryFile, fileId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                file = Component.FromJSON<MyLibraryFile>(response.Body);
+                var file = response.Get<MyLibraryFile>();
+                return file;
             }
-            
-            return file;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
 		}
 
 		/// <summary>
 		/// Update a specific file
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="file">File to be updated</param>
 		/// <param name="includePayload">Determines if update's folder JSON payload is returned</param>
 		/// <returns>Returns a MyLibraryFile object.</returns>
-		public MyLibraryFile UpdateLibraryFile(string accessToken, string apiKey, MyLibraryFile file, bool? includePayload)
+		public MyLibraryFile UpdateLibraryFile(MyLibraryFile file, bool? includePayload)
 		{
-			MyLibraryFile updatedFile = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, string.Format(Config.Endpoints.MyLibraryFile, file.Id), GetQueryParameters(new object[] { "include_payload", includePayload } ));
+            if (file == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, string.Format(Settings.Endpoints.Default.MyLibraryFile, file.Id), GetQueryParameters(new object[] { "include_payload", includePayload } ));
             string json = file.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var updatedFile = response.Get<MyLibraryFile>();
+                return updatedFile;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                updatedFile = Component.FromJSON<MyLibraryFile>(response.Body);
+                throw new CtctException(ex.Message, ex);
             }
-
-            return updatedFile;
 		}
 
 		/// <summary>
 		/// Delete a specific file
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="fileId">The id of the file</param>
 		/// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
-		public bool DeleteLibraryFile(string accessToken, string apiKey, string fileId)
+		public bool DeleteLibraryFile(string fileId)
 		{
-			string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.MyLibraryFile, fileId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(fileId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+			string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.MyLibraryFile, fileId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
+
+        /// <summary>
+        /// Delete a specific file
+        /// </summary>
+        /// <param name="file">The MyLibraryFile</param>
+        /// <returns>Returns true if folder was deleted successfully, false otherwise</returns>
+        public bool DeleteLibraryFile(MyLibraryFile file)
+        {
+            if (file == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            return DeleteLibraryFile(file.Id);
+        }
 
 		/// <summary>
 		/// Get status for an upload file
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="fileId">The id of the file</param>
 		/// <returns>Returns a list of FileUploadStatus objects</returns>
-		public IList<FileUploadStatus> GetLibraryFileUploadStatus(string accessToken, string apiKey, string fileId)
+		public IList<FileUploadStatus> GetLibraryFileUploadStatus(string fileId)
 		{
-			IList<FileUploadStatus> lists = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, string.Format(Config.Endpoints.MyLibraryFileUploadStatus, fileId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(fileId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, string.Format(Settings.Endpoints.Default.MyLibraryFileUploadStatus, fileId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                lists = response.Get<IList<FileUploadStatus>>();
+                var lists = response.Get<IList<FileUploadStatus>>();
+                return lists;
             }
-
-            return lists;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
 
 		/// <summary>
 		/// Move files to a different folder
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="folderId">The id of the folder</param>
 		/// <param name="fileIds">List of file ids</param>
 		/// <returns>Returns a list of FileMoveResult objects.</returns>
-		public IList<FileMoveResult> MoveLibraryFile(string accessToken, string apiKey, string folderId, IList<string> fileIds)
+		public IList<FileMoveResult> MoveLibraryFile(string folderId, IList<string> fileIds)
 		{
-			IList<FileMoveResult> movedFiles = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, string.Format(Config.Endpoints.MyLibraryFolderFiles, folderId));
+            if (string.IsNullOrEmpty(folderId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            if (fileIds == null || fileIds.Count.Equals(0))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.MyLibraryOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, string.Format(Settings.Endpoints.Default.MyLibraryFolderFiles, folderId));
 			string json = fileIds.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var movedFiles = response.Get<IList<FileMoveResult>>();
+                return movedFiles;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                movedFiles = Component.FromJSON<IList<FileMoveResult>>(response.Body);
-            }
-
-            return movedFiles;
+                throw new CtctException(ex.Message, ex);
+            } 
 		}
 
 		/// <summary>
 		/// Add files using the multipart content-type
 		/// </summary>
-		/// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="fileName">The file name and extension</param>
 		/// <param name="fileType">The file type</param>
 		/// <param name="folderId">The id of the folder</param>
@@ -413,12 +431,35 @@ namespace CTCT.Services
 		/// <param name="source">The source of the original file</param>
 		/// <param name="data">The data contained in the file being uploaded</param>
 		/// <returns>Returns the file Id associated with the uploaded file</returns>
-		public string AddLibraryFilesMultipart(string accessToken, string apiKey, string fileName, FileType fileType, string folderId, string description, FileSource source, byte[] data)
+		public string AddLibraryFilesMultipart(string fileName, FileType fileType, string folderId, string description, FileSource source, byte[] data)
 		{
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileNameNull);
+            }
+
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            string[] fileTypes = new string[5] { ".jpeg", ".jpg", ".gif", ".png", ".pdf" };
+
+            if (!((IList<string>)fileTypes).Contains(extension))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileTypeInvalid);
+            }
+
+            if (string.IsNullOrEmpty(folderId) || string.IsNullOrEmpty(description))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FieldNull);
+            }
+
+            if (data == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileNull);
+            }
+
 			string result = null;
-			string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.MyLibraryFiles);
+			string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.MyLibraryFiles);
 			byte[] content = MultipartBuilder.CreateMultipartContent(fileName, data, null, fileType.ToString(), folderId, description, source.ToString());
-			CUrlResponse response = RestClient.PostMultipart(url, accessToken, apiKey, content);
+            RawApiResponse response = RestClient.PostMultipart(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, content);
 
             if (response.IsError)
             {
@@ -434,6 +475,53 @@ namespace CTCT.Services
 
 			return result;
 		}
+
+        /// <summary>
+        /// Get all existing MyLibrary folders
+        /// </summary>
+        /// <returns>Returns a collection of MyLibraryFolder objects.</returns>
+        public ResultSet<MyLibraryFolder> GetLibraryFolders()
+        {
+            return GetLibraryFolders(null, null, null);
+        }
+
+        /// <summary>
+        /// Update name and parent_id for a specific folder
+        /// </summary>
+        /// <param name="folder">Folder to be added (with name and parent id)</param>
+        /// <returns>Returns a MyLibraryFolder object.</returns>
+        public MyLibraryFolder UpdateLibraryFolder(MyLibraryFolder folder)
+        {
+            return UpdateLibraryFolder(folder, null);
+        }
+
+        /// <summary>
+        /// Get files from Trash folder
+        /// </summary>
+        /// <returns>Returns a collection of MyLibraryFile objects.</returns>
+        public ResultSet<MyLibraryFile> GetLibraryTrashFiles()
+        {
+            return GetLibraryTrashFiles(null, null, null, null);
+        }
+
+        /// <summary>
+        /// Get files
+        /// </summary>
+        /// <returns>Returns a collection of MyLibraryFile objects.</returns>
+        public ResultSet<MyLibraryFile> GetLibraryFiles()
+        {
+            return GetLibraryFiles(null, null, null, null);
+        }
+
+        /// <summary>
+        /// Get files from a specific folder
+        /// </summary>
+        /// <param name="folderId">The id of the folder from which to retrieve files</param>
+        /// <returns>Returns a collection of MyLibraryFile objects.</returns>
+        public ResultSet<MyLibraryFile> GetLibraryFilesByFolder(string folderId)
+        {
+            return GetLibraryFilesByFolder(folderId, null, null);
+        }
 	}
 
 	/// <summary>

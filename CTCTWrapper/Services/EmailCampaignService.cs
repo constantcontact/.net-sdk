@@ -14,132 +14,148 @@ namespace CTCT.Services
     /// </summary>
     public class EmailCampaignService : BaseService, IEmailCampaignService
     {
+        /// <summary>
+        /// Email campaign service constructor
+        /// </summary>
+        /// <param name="userServiceContext">User service context</param>
+        public EmailCampaignService(IUserServiceContext userServiceContext)
+            : base(userServiceContext)
+        {
+        }
 
         /// <summary>
         /// Get a set of campaigns.
         /// </summary>
-        /// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
+        /// <returns>Returns a list of campaigns.</returns>
+        public ResultSet<EmailCampaign> GetCampaigns(DateTime? modifiedSince)
+        {
+            return GetCampaigns(null, null, modifiedSince, null);
+        }
+
+        /// <summary>
+        /// Get a set of campaigns.
+        /// </summary>
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <returns>Returns a ResultSet of campaigns.</returns>
-        public ResultSet<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince)
+        public ResultSet<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit, DateTime? modifiedSince)
         {
-            return this.GetCampaigns(accessToken, apiKey, status, limit, modifiedSince, null);
+            return this.GetCampaigns(status, limit, modifiedSince, null);
         }
-        
+
         /// <summary>
         /// Get a set of campaigns.
         /// </summary>
-        /// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="status">Returns list of email campaigns with specified status.</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 500.</param>
         /// <param name="modifiedSince">limit campaigns to campaigns modified since the supplied date</param>
         /// <param name="pag">Pagination object returned by a previous call to GetCampaigns</param>
         /// <returns>Returns a ResultSet of campaigns.</returns>
-        public ResultSet<EmailCampaign> GetCampaigns(string accessToken, string apiKey, CampaignStatus? status, int? limit, DateTime? modifiedSince, Pagination pag)
+        public ResultSet<EmailCampaign> GetCampaigns(CampaignStatus? status, int? limit, DateTime? modifiedSince, Pagination pag)
         {
-            ResultSet<EmailCampaign> results = null;
-            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Campaigns, GetQueryParameters(new object[] { "status", status, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) })) : pag.GetNextUrl();
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            string url = (pag == null) ? String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.Campaigns, GetQueryParameters(new object[] { "status", status, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince) })) : pag.GetNextUrl();
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var results = response.Get<ResultSet<EmailCampaign>>();
+                return results;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                results = response.Get<ResultSet<EmailCampaign>>();
-            }
-
-            return results;
+                throw new CtctException(ex.Message, ex);
+            } 
         }
 
         /// <summary>
         /// Get campaign details for a specific campaign.
         /// </summary>
-        /// <param name="accessToken">Access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Campaign id.</param>
         /// <returns>Returns a campaign.</returns>
-        public EmailCampaign GetCampaign(string accessToken, string apiKey, string campaignId)
+        public EmailCampaign GetCampaign(string campaignId)
         {
-            EmailCampaign campaign = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Campaign, campaignId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(campaignId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.EmailCampaignOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Campaign, campaignId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                campaign = response.Get<EmailCampaign>();
+                var campaign = response.Get<EmailCampaign>();
+                return campaign;
             }
-
-            return campaign;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            } 
         }
 
         /// <summary>
         /// Create a new campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaign">Campign to be created</param>
         /// <returns>Returns a campaign.</returns>
-        public EmailCampaign AddCampaign(string accessToken, string apiKey, EmailCampaign campaign)
+        public EmailCampaign AddCampaign(EmailCampaign campaign)
         {
-            EmailCampaign emailcampaign = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Campaigns);
-            string json = campaign.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            if (campaign == null)
             {
-                emailcampaign = response.Get<EmailCampaign>();
-            }
-            else if (response.IsError)
-            {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.EmailCampaignOrId);
             }
 
-            return emailcampaign;
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.Campaigns);
+            string json = campaign.ToJSON();
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
+            {
+                var emailcampaign = response.Get<EmailCampaign>();
+                return emailcampaign;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            } 
         }
 
         /// <summary>
         /// Delete an email campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Valid campaign id.</param>
         /// <returns>Returns true if successful.</returns>
-        public bool DeleteCampaign(string accessToken, string apiKey, string campaignId)
+        public bool DeleteCampaign(string campaignId)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Campaign, campaignId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(campaignId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.EmailCampaignOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Campaign, campaignId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }  
         }
 
         /// <summary>
         /// Update a specific email campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaign">Campaign to be updated.</param>
         /// <returns>Returns a campaign.</returns>
-        public EmailCampaign UpdateCampaign(string accessToken, string apiKey, EmailCampaign campaign)
+        public EmailCampaign UpdateCampaign(EmailCampaign campaign)
         {
-            EmailCampaign emailCampaign = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Campaign, campaign.Id));
+            if (campaign == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.EmailCampaignOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Campaign, campaign.Id));
             // Invalidate data that are not supported by the update API procedure
             campaign.CreatedDate = null;
             campaign.TrackingSummary = null;
@@ -147,19 +163,16 @@ namespace CTCT.Services
             campaign.IsVisibleInUI = null;
             // Convert to JSON string
             string json = campaign.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var emailCampaign = response.Get<EmailCampaign>();
+                return emailCampaign;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                emailCampaign = response.Get<EmailCampaign>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return emailCampaign;
         }
     }
 }

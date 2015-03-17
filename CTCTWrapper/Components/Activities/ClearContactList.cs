@@ -13,14 +13,8 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class ClearContactList: Component
     {
-        #region Fields
-
         [DataMember(Name = "lists", EmitDefaultValue = false)]
         private List<string> _Lists = new List<string>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the list of id's to add.
@@ -28,9 +22,7 @@ namespace CTCT.Components.Activities
         public IList<string> Lists
         {
             get { return _Lists; }
-            set { _Lists = value.ToList(); }
+            set { _Lists = value == null ? null : value.ToList(); }
         }
-
-        #endregion
     }
 }

@@ -14,8 +14,6 @@ namespace CTCT.Components.EmailCampaigns
     [Serializable]
     public class Schedule : Component
     {
-        #region Properties
-
         /// <summary>
         /// Unique id of the schedule.
         /// </summary>
@@ -33,8 +31,6 @@ namespace CTCT.Components.EmailCampaigns
         {
             get { return this.ScheduledDateString.FromISO8601String(); }
             set { this.ScheduledDateString = value.ToISO8601String(); }
-        } 
-
-        #endregion
+        }
     }
 }

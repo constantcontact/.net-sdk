@@ -47,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Settings\ActivitiesColumns.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>ActivitiesColumns.settings</DependentUpon>
+    </Compile>
     <Compile Include="Authentication\WebPage\AuthenticationWebForm.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -82,7 +87,24 @@
     <Compile Include="Components\EventSpot\EventSpotAddress.cs" />
     <Compile Include="Components\EventSpot\Attribute.cs" />
     <Compile Include="Components\EventSpot\EventSpotContact.cs" />
+    <Compile Include="ConstantContactFactory.cs" />
+    <Compile Include="Resources\Errors1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Login.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Login.settings</DependentUpon>
+    </Compile>
     <Compile Include="Services\Interfaces\IEventSpotService.cs" />
+    <Compile Include="Settings\Endpoints.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Endpoints.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Util\HttpProcessor.cs" />
     <Compile Include="Util\PatchRequest.cs" />
     <Compile Include="Components\EventSpot\EventFee.cs" />
     <Compile Include="Components\EventSpot\EventItem.cs" />
@@ -147,9 +169,9 @@
     <Compile Include="Services\Interfaces\IMyLibraryService.cs" />
     <Compile Include="Services\ListService.cs" />
     <Compile Include="Services\MyLibraryService.cs" />
-    <Compile Include="Util\Config.cs" />
-    <Compile Include="Util\CUrlRequestError.cs" />
-    <Compile Include="Util\CUrlResponse.cs" />
+    <Compile Include="Util\ProcessorBase.cs" />
+    <Compile Include="Util\RawApiRequestError.cs" />
+    <Compile Include="Util\RawApiResponse.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\IRestClient.cs" />
     <Compile Include="Util\MultipartBuilder.cs" />
@@ -161,14 +183,30 @@
     <Compile Include="Webhooks\Model\BillingChangeNotification.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Settings\ActivitiesColumns.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>ActivitiesColumns.Designer.cs</LastGenOutput>
+    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Settings\Endpoints.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Endpoints.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Settings\Login.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Login.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Authentication\WinForms\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Errors.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

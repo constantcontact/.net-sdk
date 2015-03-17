@@ -13,8 +13,6 @@ namespace CTCT.Components.Contacts
     [Serializable]
     public class Note : Component
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -35,7 +33,5 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "modified_date", EmitDefaultValue = false)]
         public string ModifiedDate { get; set; } 
-
-        #endregion
     }
 }

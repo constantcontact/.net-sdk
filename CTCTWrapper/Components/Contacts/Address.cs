@@ -13,8 +13,6 @@ namespace CTCT.Components.Contacts
     [Serializable]
     public class Address : Component
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -70,8 +68,6 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "sub_postal_code", EmitDefaultValue = false)]
         public string SubPostalCode { get; set; } 
-
-        #endregion
     }
 
     /// <summary>
@@ -79,8 +75,6 @@ namespace CTCT.Components.Contacts
     /// </summary>
     public struct AddressType
     {
-        #region Constants
-
         /// <summary>
         /// Personal.
         /// </summary>
@@ -93,7 +87,5 @@ namespace CTCT.Components.Contacts
         /// Unknown.
         /// </summary>
         public const string Unknown = "UNKNOWN"; 
-
-        #endregion
     }
 }

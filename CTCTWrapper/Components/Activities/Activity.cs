@@ -14,17 +14,11 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class Activity : Component
     {
-        #region Fields
-
         [DataMember(Name = "warnings")]
         private List<ActivityError> _Warnings = new List<ActivityError>();
 
         [DataMember(Name = "errors")]
         private List<ActivityError> _Errors = new List<ActivityError>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Activity id.
@@ -118,7 +112,7 @@ namespace CTCT.Components.Activities
             }
             set
             {
-                _Errors = value.ToList();
+                _Errors = value == null ? null : value.ToList();
             }
         }
 
@@ -133,10 +127,8 @@ namespace CTCT.Components.Activities
             }
             set
             {
-                _Warnings = value.ToList();
+                _Warnings = value == null ? null : value.ToList();
             }
         }
-
-        #endregion
     }
 }

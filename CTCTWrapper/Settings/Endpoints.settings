@@ -1,0 +1,168 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CTCT" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="BaseUrl" Description="API access URL." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.constantcontact.com/v2/</Value>
+    </Setting>
+    <Setting Name="Activity" Description="Access an activity." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">activities/{0}</Value>
+    </Setting>
+    <Setting Name="Activities" Description="List activities." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">activities</Value>
+    </Setting>
+    <Setting Name="ExportContactsActivity" Description="Export contacts linked to an activity." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">activities/exportcontacts</Value>
+    </Setting>
+    <Setting Name="ClearListsActivity" Description="Clear the list of activities." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">activities/clearlists</Value>
+    </Setting>
+    <Setting Name="RemoveFromListsActivity" Description="Remove from list." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">activities/removefromlists</Value>
+    </Setting>
+    <Setting Name="AddContactsActivity" Description="Add contacts to activities." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">activities/addcontacts</Value>
+    </Setting>
+    <Setting Name="Contact" Description="Access a contact." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}</Value>
+    </Setting>
+    <Setting Name="Contacts" Description="Get all contacts." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts</Value>
+    </Setting>
+    <Setting Name="Lists" Description="Get all lists." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">lists</Value>
+    </Setting>
+    <Setting Name="List" Description="Access a specified list." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">lists/{0}</Value>
+    </Setting>
+    <Setting Name="ListContacts" Description="Get the list of contacts from a list." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">lists/{0}/contacts</Value>
+    </Setting>
+    <Setting Name="ContactLists" Description="Get contact lists." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/lists</Value>
+    </Setting>
+    <Setting Name="ContactList" Description="Get a list from contact lists." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/lists/{1}</Value>
+    </Setting>
+    <Setting Name="Campaigns" Description="Get campaigns." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns</Value>
+    </Setting>
+    <Setting Name="Campaign" Description="Access a campaign" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}</Value>
+    </Setting>
+    <Setting Name="CampaignSchedules" Description="Campaign schedules." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/schedules</Value>
+    </Setting>
+    <Setting Name="CampaignSchedule" Description="Campaign schedule." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/schedules/{1}</Value>
+    </Setting>
+    <Setting Name="CampaignTestSends" Description="Campaign test sends." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tests</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingSummary" Description="Campaign tracking summary." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/reports/summary</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingBounces" Description="Campaign tracking bounces." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/bounces</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingClicks" Description="Campaign tracking clicks." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/clicks</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingClicksForLink" Description="Campaign tracking clicks for a specific link." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/clicks/{1}</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingForwards" Description="Campaign tracking forwards." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/forwards</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingOpens" Description="Campaign tracking opens." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/opens</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingSends" Description="Campaign tracking sends." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/sends</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingUnsubscribes" Description="Campaign tracking unsubscribes." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/unsubscribes</Value>
+    </Setting>
+    <Setting Name="CampaignTrackingLink" Description="Campaign tracking link." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/tracking/clicks/{1}</Value>
+    </Setting>
+    <Setting Name="ContactTrackingActivities" Description="Contact tracking activities." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking</Value>
+    </Setting>
+    <Setting Name="ContactTrackingEmailCampaignActivities" Description="Contact tracking activities by email campaign." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/reports/summaryByCampaign</Value>
+    </Setting>
+    <Setting Name="ContactTrackingSummary" Description="Contact tracking summary." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/reports/summary</Value>
+    </Setting>
+    <Setting Name="ContactTrackingBounces" Description="Contact tracking bounces." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/bounces</Value>
+    </Setting>
+    <Setting Name="ContactTrackingClicks" Description="Contact tracking clicks." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/clicks</Value>
+    </Setting>
+    <Setting Name="ContactTrackingForwards" Description="Contact tracking forwards." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/forwards</Value>
+    </Setting>
+    <Setting Name="ContactTrackingOpens" Description="Contact tracking opens." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/opens</Value>
+    </Setting>
+    <Setting Name="ContactTrackingSends" Description="Contact tracking sends." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/sends</Value>
+    </Setting>
+    <Setting Name="ContactTrackingUnsubscribes" Description="Contact tracking unsubscribes." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/unsubscribes</Value>
+    </Setting>
+    <Setting Name="ContactTrackingLink" Description="Contact tracking link." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">contacts/{0}/tracking/clicks/{1}</Value>
+    </Setting>
+    <Setting Name="AccountVerifiedEmailAddressess" Description="Account verified email addresses link" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">account/verifiedemailaddresses</Value>
+    </Setting>
+    <Setting Name="AccountSummaryInformation" Description="Account Summary Information" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">account/info</Value>
+    </Setting>
+    <Setting Name="MyLibraryInfo" Description="MyLibrary information" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/info</Value>
+    </Setting>
+    <Setting Name="MyLibraryFolders" Description="MyLibrary folders" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/folders</Value>
+    </Setting>
+    <Setting Name="MyLibraryFolder" Description="Access a specified folder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/folders/{0}</Value>
+    </Setting>
+    <Setting Name="MyLibraryTrash" Description="Files in Trash folder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/folders/trash/files</Value>
+    </Setting>
+    <Setting Name="MyLibraryFiles" Description="MyLibrray files" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/files</Value>
+    </Setting>
+    <Setting Name="MyLibraryFile" Description="MyLibrary file" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/files/{0}</Value>
+    </Setting>
+    <Setting Name="MyLibraryFolderFiles" Description="MyLibrary files for a specific folder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/folders/{0}/files</Value>
+    </Setting>
+    <Setting Name="MyLibraryFileUploadStatus" Description="MyLibrary file upload status" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">library/files/uploadstatus/{0}</Value>
+    </Setting>
+    <Setting Name="EventSpots" Description="EventSpot Events Collection Endpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eventspot/events</Value>
+    </Setting>
+    <Setting Name="EventFees" Description="Individual Event Fees Endpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eventspot/events/{0}/fees/{1}</Value>
+    </Setting>
+    <Setting Name="EventPromocode" Description="Individual Promocode Endpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eventspot/events/{0}/promocodes/{1}</Value>
+    </Setting>
+    <Setting Name="EventRegistrant" Description="Individual Event Registrant Endpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eventspot/events/{0}/registrants/{1}</Value>
+    </Setting>
+    <Setting Name="EventItem" Description="Event Item Endpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eventspot/events/{0}/items/{1}</Value>
+    </Setting>
+    <Setting Name="ItemAttribute" Description="Item Attribute Endpoint" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">eventspot/events/{0}/items/{1}/attributes/{2}</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

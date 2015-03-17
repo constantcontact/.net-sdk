@@ -13,8 +13,6 @@ namespace CTCT.Components.MyLibrary
     [Serializable]
 	public class UsageSummary : Component
 	{
-        #region Properties
-
         /// <summary>
         /// Gets or sets the total amount of storage space currently being consumed by document files (in bytes)
         /// </summary>
@@ -60,7 +58,5 @@ namespace CTCT.Components.MyLibrary
         /// </summary>
         [DataMember(Name = "total_bytes_used", EmitDefaultValue = false)]
         public int TotalBytesUsed { get; set; }
-        
-        #endregion
 	}
 }

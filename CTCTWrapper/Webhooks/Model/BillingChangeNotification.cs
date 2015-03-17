@@ -18,8 +18,6 @@ namespace CTCT.Webhooks.Model
     [Serializable]
     public class BillingChangeNotification : Component
     {
-        #region Properties
-
         /// <summary>
         /// Notification url
         /// </summary>
@@ -47,10 +45,6 @@ namespace CTCT.Webhooks.Model
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// ToString override
         /// </summary>
@@ -67,8 +61,6 @@ namespace CTCT.Webhooks.Model
 
             return builder.ToString();
         }
-
-        #endregion
     }
 
     /// <summary>
@@ -76,9 +68,15 @@ namespace CTCT.Webhooks.Model
     /// </summary>
     public enum BillingChangeNotificationType
     {
+        /// <summary>
+        /// Tier increase
+        /// </summary>
         [StringValue("tier.increase")]
         TierIncrease,
 
+        /// <summary>
+        /// Tier decrease
+        /// </summary>
         [StringValue("tier.decrease")]
         TierDecrease
     }

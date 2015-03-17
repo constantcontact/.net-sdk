@@ -14,8 +14,6 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Fee : Component
     {
-        #region Properties
-
         /// <summary>
         /// Id
         /// </summary>
@@ -57,7 +55,5 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "promo_type", EmitDefaultValue = false)]
         public string PromoType { get; set; } 
-
-        #endregion
     }
 }

@@ -13,17 +13,11 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class ExportContacts : Component
     {
-        #region Fields
-
         [DataMember(Name = "lists")]
         private List<string> _Lists = new List<string>();
 
         [DataMember(Name = "column_names")]
         private List<string> _ColumnNames;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the field type.
@@ -55,7 +49,7 @@ namespace CTCT.Components.Activities
         public IList<string> Lists 
         {
             get { return _Lists; }
-            set { _Lists = value.ToList(); }
+            set { _Lists = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -64,12 +58,8 @@ namespace CTCT.Components.Activities
         public IList<string> ColumnNames
         {
             get { return _ColumnNames; }
-            set { _ColumnNames = value.ToList(); }
+            set { _ColumnNames = value == null ? null : value.ToList(); }
         }
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Class constructor.
@@ -82,7 +72,5 @@ namespace CTCT.Components.Activities
             this.ExportAddedBy = true;
             this._ColumnNames = new List<string>() { "Email Address", "First Name", "Last Name" };
         }
-
-        #endregion
     }
 }

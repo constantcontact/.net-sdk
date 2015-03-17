@@ -12,8 +12,6 @@ namespace CTCT.Components.Contacts
     [DataContract]
     public class SentContactList : Component
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -24,7 +22,5 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "status", EmitDefaultValue = false)]
         public string Status { get; set; }
-
-        #endregion
     }
 }

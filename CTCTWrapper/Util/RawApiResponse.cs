@@ -11,7 +11,7 @@ namespace CTCT.Util
     /// <summary>
     /// URL response class.
     /// </summary>
-    public class CUrlResponse
+    public class RawApiResponse
     {
         /// <summary>
         /// Requests body.
@@ -24,7 +24,7 @@ namespace CTCT.Util
         /// <summary>
         /// List of errors.
         /// </summary>
-        public IList<CUrlRequestError> Info { get; set; }
+        public IList<RawApiRequestError> Info { get; set; }
         /// <summary>
         /// Returns true if valid data exists.
         /// </summary>
@@ -41,7 +41,7 @@ namespace CTCT.Util
         /// <summary>
         /// Class constructor.
         /// </summary>
-        public CUrlResponse()
+        public RawApiResponse()
         {
             IsError = false;
             Headers = new Dictionary<string, string>();
@@ -57,7 +57,7 @@ namespace CTCT.Util
             if (this.Info != null)
             {
                 StringBuilder sb = new StringBuilder();
-                foreach (CUrlRequestError error in this.Info)
+                foreach (RawApiRequestError error in this.Info)
                 {
                     sb.AppendLine(String.Format("{0}:{1}", error.Key, error.Message));
                 }
@@ -78,6 +78,11 @@ namespace CTCT.Util
         /// <returns>Returns the object from its JSON representation.</returns>
         public T Get<T>() where T : class
         {
+            if (IsError)
+            {
+                throw new Exception(GetErrorMessage());
+            }
+
             T t = default(T);
             if (this.HasData && !String.IsNullOrEmpty(this.Body))
             {

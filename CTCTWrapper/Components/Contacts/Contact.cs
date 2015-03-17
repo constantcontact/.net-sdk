@@ -14,8 +14,6 @@ namespace CTCT.Components.Contacts
     [Serializable]
     public class Contact : Component
     {
-        #region Fields
-
         [DataMember(Name = "email_addresses")]
         private List<EmailAddress> _EmailAddresses = new List<EmailAddress>();
 
@@ -30,10 +28,6 @@ namespace CTCT.Components.Contacts
 
         [DataMember(Name = "lists")]
         private List<ContactList> _Lists = new List<ContactList>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the id.
@@ -83,7 +77,7 @@ namespace CTCT.Components.Contacts
         public IList<EmailAddress> EmailAddresses 
         {
             get { return _EmailAddresses; }
-            set { _EmailAddresses = value.ToList(); }
+            set { _EmailAddresses = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -104,7 +98,7 @@ namespace CTCT.Components.Contacts
         public IList<Address> Addresses 
         {
             get { return _Addresses; }
-            set { _Addresses = value.ToList(); }
+            set { _Addresses = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -113,7 +107,7 @@ namespace CTCT.Components.Contacts
         public IList<Note> Notes 
         {
             get { return _Notes; }
-            set { _Notes = value.ToList(); }
+            set { _Notes = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -164,7 +158,7 @@ namespace CTCT.Components.Contacts
         public IList<CustomField> CustomFields
         {
             get { return _CustomFields; }
-            set { _CustomFields = value.ToList(); }
+            set { _CustomFields = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -173,7 +167,7 @@ namespace CTCT.Components.Contacts
         public List<ContactList> Lists 
         {
             get { return _Lists; }
-            set { _Lists = value.ToList(); }
+            set { _Lists = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -181,8 +175,6 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "source_details", EmitDefaultValue = false)]
         public string SourceDetails { get; set; }
-
-        #endregion
     }
 
 	/// <summary>

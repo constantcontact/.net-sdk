@@ -10,8 +10,6 @@ namespace CTCT.Components.Tracking
     /// </summary>
     public class TrackingActivity
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the list of activities.
         /// </summary>
@@ -20,7 +18,5 @@ namespace CTCT.Components.Tracking
         /// Gets or sets the pagination array returned from a tracking endpoint.
         /// </summary>
         public int Next { get; set; }
-
-        #endregion
     }
 }

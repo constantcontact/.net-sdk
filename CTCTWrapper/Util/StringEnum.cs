@@ -15,8 +15,6 @@ namespace CTCT.Util
     /// </summary>
     public class StringEnum
     {
-        #region Instance implementation
-
         private Type _enumType;
         private static Hashtable _stringValues = new Hashtable();
 
@@ -27,8 +25,9 @@ namespace CTCT.Util
         public StringEnum(Type enumType)
         {
             if (!enumType.IsEnum)
+            {
                 throw new ArgumentException(String.Format("Supplied type must be an Enum.  Type was {0}", enumType.ToString()));
-
+            }
             _enumType = enumType;
         }
 
@@ -64,8 +63,9 @@ namespace CTCT.Util
                 //Check for our custom attribute
                 StringValueAttribute[] attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
                 if (attrs.Length > 0)
+                {
                     values.Add(attrs[0].Value);
-
+                }
             }
 
             return values.ToArray();
@@ -85,8 +85,9 @@ namespace CTCT.Util
                 //Check for our custom attribute
                 StringValueAttribute[] attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
                 if (attrs.Length > 0)
+                {
                     values.Add(new DictionaryEntry(Convert.ChangeType(Enum.Parse(_enumType, fi.Name), underlyingType), attrs[0].Value));
-
+                }
             }
 
             return values;
@@ -123,10 +124,6 @@ namespace CTCT.Util
             get { return _enumType; }
         }
 
-        #endregion
-
-        #region Static implementation
-
         /// <summary>
         /// Gets a string value for a particular enum value.
         /// </summary>
@@ -138,7 +135,9 @@ namespace CTCT.Util
             Type type = value.GetType();
 
             if (_stringValues.ContainsKey(value))
+            {
                 output = (_stringValues[value] as StringValueAttribute).Value;
+            }
             else
             {
                 //Look for our 'StringValueAttribute' in the field's custom attributes
@@ -151,8 +150,8 @@ namespace CTCT.Util
                 }
 
             }
-            return output;
 
+            return output;
         }
 
         /// <summary>
@@ -179,16 +178,18 @@ namespace CTCT.Util
             string enumStringValue = null;
 
             if (!type.IsEnum)
+            {
                 throw new ArgumentException(String.Format("Supplied type must be an Enum.  Type was {0}", type.ToString()));
-
+            }
             //Look for our string value associated with fields in this enum
             foreach (FieldInfo fi in type.GetFields())
             {
                 //Check for our custom attribute
                 StringValueAttribute[] attrs = fi.GetCustomAttributes(typeof(StringValueAttribute), false) as StringValueAttribute[];
                 if (attrs.Length > 0)
+                {
                     enumStringValue = attrs[0].Value;
-
+                }
                 //Check for equality then select actual enum value.
                 if (string.Compare(enumStringValue, stringValue, ignoreCase) == 0)
                 {
@@ -222,7 +223,5 @@ namespace CTCT.Util
         {
             return Parse(enumType, stringValue, ignoreCase) != null;
         }
-
-        #endregion
     }
 }

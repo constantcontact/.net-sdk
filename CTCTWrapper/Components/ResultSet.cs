@@ -16,14 +16,8 @@ namespace CTCT.Components
     [Serializable]
     public class ResultSet<T> where T : Component
     {
-        #region Fields
-
         [DataMember(Name = "results")]
         private List<T> _Results;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the array of result objects returned.
@@ -31,7 +25,7 @@ namespace CTCT.Components
         public IList<T> Results 
         {
             get { return _Results; }
-            set { _Results = value.ToList(); }
+            set { _Results = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -39,8 +33,6 @@ namespace CTCT.Components
         /// </summary>
         [DataMember(Name = "meta")]
         public Meta Meta { get; set; }
-
-        #endregion
     }
 
     /// <summary>
@@ -50,15 +42,11 @@ namespace CTCT.Components
     [Serializable]
     public class Meta
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the pagination link.
         /// </summary>
         [DataMember(Name="pagination")]
         public Pagination Pagination { get; set; }
-
-        #endregion
     }
 
     /// <summary>
@@ -68,17 +56,11 @@ namespace CTCT.Components
     [Serializable]
     public class Pagination
     {
-        #region Properties
-
         /// <summary>
         /// Gets or sets the next link.
         /// </summary>
         [DataMember(Name="next_link")]
         public string Next { get; set; }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Format the URL for the next page call.
@@ -86,9 +68,7 @@ namespace CTCT.Components
         /// <returns>Returns the URL for the next page call.</returns>
         public string GetNextUrl()
         {
-            return String.Concat(Config.Endpoints.BaseUrl, this.Next.Replace("/v2/", String.Empty));
+            return String.Concat(Settings.Endpoints.Default.BaseUrl, this.Next.Replace("/v2/", String.Empty));
         }
-
-        #endregion
     }
 }

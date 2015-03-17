@@ -14,14 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class TrackInformation : Component
     {
-        #region Fields
-
         [DataMember(Name = "information_sections", EmitDefaultValue = false)]
         private List<string> _InformationSectionsArray = new List<string>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Date on which early fees end, in ISO-8601 format 
@@ -119,7 +113,7 @@ namespace CTCT.Components.EventSpot
         private IList<string> InformationSectionsArray 
         {
             get { return _InformationSectionsArray; }
-            set { _InformationSectionsArray = value.ToList(); }
+            set { _InformationSectionsArray = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -150,10 +144,6 @@ namespace CTCT.Components.EventSpot
             }
         }
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -161,8 +151,6 @@ namespace CTCT.Components.EventSpot
         {
             this.InformationSections = new List<InformationSections>();
         }
-
-        #endregion
     }
 
     /// <summary>

@@ -14,8 +14,6 @@ namespace CTCT.Components.Activities
     [DataContract]
     public class AddContactsImportData : Component
     {
-        #region Fields
-
         [DataMember(Name = "email_addresses")]
         private List<string> _EmailAddresses = new List<string>();
 
@@ -24,10 +22,6 @@ namespace CTCT.Components.Activities
 
         [DataMember(Name = "custom_fields", EmitDefaultValue = false)]
         private List<CustomField> _CustomFields = new List<CustomField>();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets or sets the first name.
@@ -77,7 +71,7 @@ namespace CTCT.Components.Activities
         public IList<string> EmailAddresses 
         {
             get { return _EmailAddresses; }
-            set { _EmailAddresses = value.ToList(); } 
+            set { _EmailAddresses = value == null ? null : value.ToList(); } 
         }
 
         /// <summary>
@@ -86,7 +80,7 @@ namespace CTCT.Components.Activities
         public IList<Address> Addresses 
         {
             get { return _Addresses; }
-            set { _Addresses = value.ToList(); }
+            set { _Addresses = value == null ? null : value.ToList(); }
         }
 
         /// <summary>
@@ -95,9 +89,7 @@ namespace CTCT.Components.Activities
         public IList<CustomField> CustomFields 
         {
             get { return _CustomFields; }
-            set { _CustomFields = value.ToList(); }
+            set { _CustomFields = value == null ? null : value.ToList(); }
         }
-
-        #endregion
     }
 }
