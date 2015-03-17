@@ -13,13 +13,8 @@ namespace CTCT.Components.AccountService
     [Serializable]
     public class AccountSummaryInformation : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public AccountSummaryInformation()
-        {
-            this.OrganizationAddresses = new List<OrganizationAddresses>();
-        }
+        [DataMember(Name = "organization_addresses", EmitDefaultValue = false)]
+        private List<OrganizationAddresses> _OrganizationAddresses = new List<OrganizationAddresses>();
 
         /// <summary>
         /// Standard 2 letter ISO 3166-1 code of the country associated with the account owner 
@@ -79,8 +74,10 @@ namespace CTCT.Components.AccountService
         /// An array of organization street addresses; currently, only a single address is supported. 
         /// This is not a required attribute, but if you include organization_addresses in a put, it must include the country_code, city, and line1 fields at minimum. 
         /// </summary>
-        [DataMember(Name = "organization_addresses", EmitDefaultValue = false)]
-        public IList<OrganizationAddresses> OrganizationAddresses { get; set; }
-         
+        public IList<OrganizationAddresses> OrganizationAddresses
+        {
+            get { return _OrganizationAddresses; }
+            set { _OrganizationAddresses = value == null ? null : value.ToList(); }
+        }
     }
 }

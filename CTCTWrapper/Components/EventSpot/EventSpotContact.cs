@@ -35,6 +35,6 @@ namespace CTCT.Components.EventSpot
         /// Event contact's phone number 
         /// </summary>
         [DataMember(Name = "phone_number")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } 
     }
 }

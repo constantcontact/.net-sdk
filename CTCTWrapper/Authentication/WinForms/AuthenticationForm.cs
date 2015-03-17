@@ -10,23 +10,13 @@ namespace CTCT
     /// </summary>
     public partial class AuthenticationForm : Form
     {
-        #region Constants
-
         private const string AccessTokenConst = "access_token";
         private const string StateConst = "state";
         private const string RequestAuthorizationUrl = "https://oauth2.constantcontact.com/oauth2/oauth/siteowner/authorize?response_type=token&client_id={0}&redirect_uri={1}&state={2}";
 
-        #endregion 
-
-        #region Private Properties
-
         private readonly string _url = string.Empty;
         private readonly string _redirectUrl = string.Empty;        
         private readonly string _apiKey = string.Empty;
-
-        #endregion
-
-        #region Public Properties
 
         /// <summary>
         /// Access token field
@@ -38,8 +28,6 @@ namespace CTCT
         /// </summary>
         public string State;
 
-        #endregion
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -49,7 +37,6 @@ namespace CTCT
 
             _apiKey = ConfigurationManager.AppSettings["APIKey"];
             _redirectUrl = ConfigurationManager.AppSettings["RedirectURL"];
-
 
             _url = String.Format(RequestAuthorizationUrl, HttpUtility.UrlEncode(_apiKey), HttpUtility.UrlEncode(_redirectUrl),HttpUtility.UrlEncode(State));
         }

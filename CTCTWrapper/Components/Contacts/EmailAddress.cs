@@ -52,12 +52,15 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the email address.
         /// </summary>
         [DataMember(Name = "email_address")]
-        public string EmailAddr { get; set; }
+        public string EmailAddr { get; set; } 
 
         /// <summary>
         /// Class constructor.
         /// </summary>
-        public EmailAddress() { }
+        public EmailAddress() 
+        {
+        
+        }
 
         /// <summary>
         /// Class constructor.
@@ -85,7 +88,7 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Unconfirmed.
         /// </summary>
-        public const string Unconfirmed = "UNCONFIRMED";
+        public const string Unconfirmed = "UNCONFIRMED"; 
     }
 
     /// <summary>
@@ -100,6 +103,6 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// ActionByOwner.
         /// </summary>
-        public const string ActionByOwner = "ACTION_BY_OWNER";
+        public const string ActionByOwner = "ACTION_BY_OWNER"; 
     }
 }

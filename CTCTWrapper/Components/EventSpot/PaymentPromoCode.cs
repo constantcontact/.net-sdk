@@ -33,6 +33,5 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "promo_code_info", EmitDefaultValue = false)]
         public PromoCodeInfo PromoCodeInfo { get; set; }
-
     }
 }

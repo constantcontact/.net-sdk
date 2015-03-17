@@ -11,7 +11,7 @@ namespace CTCT.Webhooks.Helper
     /// </summary>
     public class WebHookValidator
     {
-        #region Properties
+
 
         /// <summary>
         /// HTTP header hash
@@ -28,9 +28,9 @@ namespace CTCT.Webhooks.Helper
         /// </summary>
         public string SharedSecret { get; private set; }
 
-        #endregion
 
-        #region Constructors
+
+
 
         /// <summary>
         /// Constructor
@@ -45,9 +45,9 @@ namespace CTCT.Webhooks.Helper
             SharedSecret = sharedSecret;
         }
 
-        #endregion
 
-        #region Methods
+
+
 
         /// <summary>
         /// To verify that the request came from Constant Contact, compute the HMAC digest and compare it to the value in the x-ctct-hmac-sha256 header.
@@ -80,6 +80,6 @@ namespace CTCT.Webhooks.Helper
             }
         }
 
-        #endregion
+
     }
 }

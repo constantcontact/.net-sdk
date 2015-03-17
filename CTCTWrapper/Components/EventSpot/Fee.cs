@@ -54,7 +54,6 @@ namespace CTCT.Components.EventSpot
         /// Amount paid
         /// </summary>
         [DataMember(Name = "promo_type", EmitDefaultValue = false)]
-        public string PromoType { get; set; }
-        
+        public string PromoType { get; set; } 
     }
 }

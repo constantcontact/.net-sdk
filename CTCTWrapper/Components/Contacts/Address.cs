@@ -67,12 +67,7 @@ namespace CTCT.Components.Contacts
         /// Gets or sets the subpostal code.
         /// </summary>
         [DataMember(Name = "sub_postal_code", EmitDefaultValue = false)]
-        public string SubPostalCode { get; set; }
-
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public Address() { }
+        public string SubPostalCode { get; set; } 
     }
 
     /// <summary>
@@ -91,6 +86,6 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Unknown.
         /// </summary>
-        public const string Unknown = "UNKNOWN";
+        public const string Unknown = "UNKNOWN"; 
     }
 }

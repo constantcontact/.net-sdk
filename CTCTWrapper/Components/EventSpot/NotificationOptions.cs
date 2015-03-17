@@ -33,17 +33,17 @@ namespace CTCT.Components.EventSpot
         {
             get { return this.NotificationTypeString.ToEnum<NotificationType>(); }
             set { this.NotificationTypeString = value.ToString(); }
-        }
+        } 
     }
 
-#pragma warning disable 1591
     /// <summary>
     /// Specifies the type of notifications sent to the contact email_address
     /// </summary>
     public enum NotificationType
     {
+        /// <summary>
+        /// So registrant notification
+        /// </summary>
         SO_REGISTRATION_NOTIFICATION
     }
-#pragma warning restore 1591
-
 }

@@ -22,7 +22,7 @@ namespace CTCT.Components.EventSpot
             this.Order = new Order();
             this.PromoCode = new PaymentPromoCode();
         }
-
+ 
         /// <summary>
         /// Order
         /// </summary>

@@ -14,20 +14,11 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class IndividualEvent : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public IndividualEvent()
-        {
-            this.Address = new EventSpotAddress();
-            this.PaymentAddress = new EventSpotAddress();
-            this.PaymentOptions = new List<PaymentTypes>();
-            this.PaymentOptionsArray = new List<string>();
-            this.TrackInformation = new TrackInformation();
-            this.OnlineMeeting = new OnlineMeeting();
-            this.NotificationOptions = new List<NotificationOptions>();
-            this.Contact = new EventSpotContact();
-        }
+        [DataMember(Name = "notification_options", EmitDefaultValue = false)]
+        private List<NotificationOptions> _NotificationOptions = new List<NotificationOptions>();
+
+        [DataMember(Name = "payment_options", EmitDefaultValue = false)]
+        private List<string> _PaymentOptionsArray = new List<string>();
 
         /// <summary>
         /// String representation of date event was published or announced, in ISO-8601 format
@@ -330,8 +321,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Define whether or not event notifications are sent to the contact email_address, and which notifications. 
         /// </summary>
-        [DataMember(Name = "notification_options", EmitDefaultValue = false)]
-        public IList<NotificationOptions> NotificationOptions { get; set; }
+        public IList<NotificationOptions> NotificationOptions 
+        {
+            get { return _NotificationOptions; }
+            set { _NotificationOptions = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// Online meeting details, REQUIRED if is_virtual_event is set to true 
@@ -354,8 +348,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Specifies the payment options available to registrants 
         /// </summary>
-        [DataMember(Name = "payment_options", EmitDefaultValue = false)]
-        private IList<string> PaymentOptionsArray { get; set; }
+        private IList<string> PaymentOptionsArray 
+        {
+            get { return _PaymentOptionsArray; }
+            set { _PaymentOptionsArray = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// Specifies the payment options available to registrants 
@@ -364,7 +361,7 @@ namespace CTCT.Components.EventSpot
         {
             get
             {
-                IList<PaymentTypes> temp = new List<PaymentTypes>();
+                var temp = new List<PaymentTypes>();
                 foreach (string s in this.PaymentOptionsArray)
                 {
                     var value = s.ToEnum<PaymentTypes>();
@@ -374,7 +371,7 @@ namespace CTCT.Components.EventSpot
             }
             set
             {
-                IList<string> temp = new List<string>();
+                var temp = new List<string>();
                 foreach (PaymentTypes pt in value)
                 {
                     temp.Add(pt.ToString());
@@ -382,9 +379,20 @@ namespace CTCT.Components.EventSpot
                 this.PaymentOptionsArray = temp;
             }
         }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public IndividualEvent()
+        {
+            this.Address = new EventSpotAddress();
+            this.PaymentAddress = new EventSpotAddress();
+            this.PaymentOptions = new List<PaymentTypes>();
+            this.TrackInformation = new TrackInformation();
+            this.OnlineMeeting = new OnlineMeeting();
+            this.Contact = new EventSpotContact();
+        }
     }
-
-
 
     /// <summary>
     /// Event status
@@ -414,36 +422,130 @@ namespace CTCT.Components.EventSpot
         DELETED
     }
 
-#pragma warning disable 1591
     /// <summary>
     /// Event type
     /// </summary>
     [Serializable]
     public enum EventType
     {
+        /// <summary>
+        /// Auction
+        /// </summary>
         AUCTION,
+
+        /// <summary>
+        /// Birthday
+        /// </summary>
         BIRTHDAY,
+
+        /// <summary>
+        /// Business finance sales
+        /// </summary>
         BUSINESS_FINANCE_SALES,
+
+        /// <summary>
+        /// Classes workshops
+        /// </summary>
         CLASSES_WORKSHOPS,
+
+        /// <summary>
+        /// Competition sports
+        /// </summary>
         COMPETITION_SPORTS,
+
+        /// <summary>
+        /// Confereces seminars forum
+        /// </summary>
         CONFERENCES_SEMINARS_FORUM,
+
+        /// <summary>
+        /// Conventions tradeshows expos
+        /// </summary>
         CONVENTIONS_TRADESHOWS_EXPOS,
+
+        /// <summary>
+        /// Festivals fairs
+        /// </summary>
         FESTIVALS_FAIRS,
+
+        /// <summary>
+        /// Food wine
+        /// </summary>
         FOOD_WINE,
+
+        /// <summary>
+        /// Fundraisers charities
+        /// </summary>
         FUNDRAISERS_CHARITIES,
+
+        /// <summary>
+        /// Holiday
+        /// </summary>
         HOLIDAY,
+
+        /// <summary>
+        /// Incentive reward recognition
+        /// </summary>
         INCENTIVE_REWARD_RECOGNITION,
+
+        /// <summary>
+        /// Movies film
+        /// </summary>
         MOVIES_FILM,
+
+        /// <summary>
+        /// Music concerts
+        /// </summary>
         MUSIC_CONCERTS,
+
+        /// <summary>
+        /// Networking clubs
+        /// </summary>
         NETWORKING_CLUBS,
+
+        /// <summary>
+        /// Performing arts
+        /// </summary>
         PERFORMING_ARTS,
+
+        /// <summary>
+        /// Outdoors recreation
+        /// </summary>
         OUTDOORS_RECREATION,
+
+        /// <summary>
+        /// Religion spirituality
+        /// </summary>
         RELIGION_SPIRITUALITY,
+
+        /// <summary>
+        /// School reunions alumni
+        /// </summary>
         SCHOOLS_REUNIONS_ALUMNI,
+
+        /// <summary>
+        /// Parties social events mixers
+        /// </summary>
         PARTIES_SOCIAL_EVENTS_MIXERS,
+
+        /// <summary>
+        /// Travel
+        /// </summary>
         TRAVEL,
+
+        /// <summary>
+        /// Webinar teleseminar teleclass
+        /// </summary>
         WEBINAR_TELESEMINAR_TELECLASS,
+
+        /// <summary>
+        /// Weddings
+        /// </summary>
         WEDDINGS,
+
+        /// <summary>
+        /// Other
+        /// </summary>
         OTHER
     }
 
@@ -452,12 +554,30 @@ namespace CTCT.Components.EventSpot
     /// </summary>
     public enum PaymentTypes
     {
+        /// <summary>
+        /// Online credit card processor
+        /// </summary>
         [Obsolete("This type is not supported for new events starting November 2013.", false)]
         ONLINE_CREDIT_CARD_PROCESSOR,
+
+        /// <summary>
+        /// Paypal
+        /// </summary>
         PAYPAL,
+
+        /// <summary>
+        /// Google checkout
+        /// </summary>
         GOOGLE_CHECKOUT,
+
+        /// <summary>
+        /// Check
+        /// </summary>
         CHECK,
+
+        /// <summary>
+        /// Door
+        /// </summary>
         DOOR
     }
-#pragma warning restore 1591
 }
