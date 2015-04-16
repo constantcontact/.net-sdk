@@ -7,67 +7,70 @@ In order to use the Constant Contact SDK you have to follow these steps:
 
 1) Download and build the project so that CTCT.dll is generated. Add the CTCT.dll library to your references project.
 
-2) Place your credentials in app.config file under the appSettings tag.
+2) Place your credentials in the *app.config* or *web.config* file under the `appSettings` tag.
 
-`<add key="APIKey" value="APIkey"/>`
-<br>
-`<add key="RedirectURL" value="RedirectURL"/>`
+```xml
+<appSettings>
+    <add key="APIKey" value="APIkey"/>
+    <add key="RedirectURL" value="RedirectURL"/>
+</appSettings>
+```
 
 ## Usage
 
-1) In the file you wish to use the SDK include the following code in your file:
+### 1) Include namespaces
 
- `using CTCT; `
-<br>
- `using CTCT.Components;` 
-<br>
-`using CTCT.Components.Contacts;`
-<br>
-`using CTCT.Components.EmailCampaigns;`
-<br>
-`using CTCT.Exceptions;;`  
+In the file you wish to use the SDK include the following code in your file:
 
-2) Get the access token
+```csharp
+using CTCT;
+using CTCT.Components;
+using CTCT.Components.Contacts;
+using CTCT.Components.EmailCampaigns;
+using CTCT.Exceptions;
+```
 
-2.1) For windows forms
+### 2) Get the access token
 
-`_accessToken = OAuth.AuthenticateFromWinProgram(ref state); ` 
+#### 2.1) For windows forms
 
-2.2) For web forms (this is just an example, the login actions is done at a button click)
+```csharp
+_accessToken = OAuth.AuthenticateFromWinProgram(ref state);
+```
 
-`protected void Page_Load(object sender, EventArgs e)`
-<br>
-`{`
-<br>
-`   var code = HttpContext.Current.Request.QueryString["code"];`
-<br>
-`   if (!string.IsNullOrWhiteSpace(code))`
-<br>
-`   {`
-<br>
-`       _accessToken = OAuth.GetAccessTokenByCodeForWebApplication(HttpContext.Current, code);`
-<br>
-`   }`
-<br>
-`}`
-<br>
-<br>
-`protected void ButtonLogin_Click(object sender, EventArgs e)`
-<br>
-`{`
-<br>
-`   OAuth.AuthorizeFromWebApplication(HttpContext.Current, "ok");`
-<br>
-`}`
+#### 2.2) For web forms
 
+(This is just an example, the login actions is done at a button click)
 
+```csharp
+protected void Page_Load(object sender, EventArgs e)
+{
+    var code = HttpContext.Current.Request.QueryString["code"];
+    if (!string.IsNullOrWhiteSpace(code))
+    {
+        _accessToken = OAuth.GetAccessTokenByCodeForWebApplication(HttpContext.Current, code);
+    }
+}
+```
 
-3) Create a ConstantContact object
+```csharp
+protected void ButtonLogin_Click(object sender, EventArgs e)
+{
+   OAuth.AuthorizeFromWebApplication(HttpContext.Current, "ok");
+}
+```
 
-`ConstantContact constantContact = new ConstantContact(_apiKey, _accessToken); `                                                                                     
-                  
-4) Use the functions of the SDK using the created object.   
+### 3) Create a `ConstantContact` object
+
+```csharp
+ConstantContact constantContact = new ConstantContact(_apiKey, _accessToken);
+```
+
+### 4) Use the SDK via the created object 
              
-######Example for getting an contact
+Example of getting a contact:
 
-`Contact contact = constantContact.GetContact(int contactId);`                                                      
+```csharp
+int contactId = 12345;
+Contact contact = constantContact.GetContact(contactId);
+```
