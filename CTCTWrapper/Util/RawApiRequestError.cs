@@ -12,7 +12,7 @@ namespace CTCT.Util
     /// </summary>
     [DataContract]
     [Serializable]
-    public class CUrlRequestError : Component
+    public class RawApiRequestError : Component
     {
         /// <summary>
         /// Gets or sets the error key.
@@ -28,6 +28,6 @@ namespace CTCT.Util
         /// <summary>
         /// Class constructor.
         /// </summary>
-        public CUrlRequestError() { }
+        public RawApiRequestError() { }
     }
 }

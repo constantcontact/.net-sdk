@@ -23,12 +23,5 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "status", EmitDefaultValue = false)]
         public string Status { get; set; }
-
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        public VerifiedEmailAddress()
-        { 
-        }
     }
 }

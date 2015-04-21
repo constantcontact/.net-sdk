@@ -36,6 +36,6 @@ namespace CTCT.Components.EventSpot
         /// Number of attributes offered for sale 
         /// </summary>
         [DataMember(Name = "quantity_total", EmitDefaultValue = true)]
-        public int QuantityTotal { get; set; }
+        public int QuantityTotal { get; set; } 
     }
 }

@@ -14,13 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Section : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Section()
-        {
-            this.Fields = new List<Field>();
-        }
+        [DataMember(Name = "fields", EmitDefaultValue = false)]
+        private List<Field> _Fields = new List<Field>();
 
         /// <summary>
         /// Field label displayed to viewers 
@@ -31,8 +26,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         ///  An array of the fields displayed in a section: field_type, name, label, value, values
         /// </summary>
-        [DataMember(Name = "fields", EmitDefaultValue = false)]
-        public IList<Field> Fields { get; set; }
+        public IList<Field> Fields 
+        {
+            get { return _Fields; }
+            set { _Fields = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// String representation of field type

@@ -14,13 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Order : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Order()
-        {
-            this.Fees = new List<Fee>();
-        }
+        [DataMember(Name = "fees", EmitDefaultValue = false)]
+        private List<Fee> _Fees = new List<Fee>();
 
         /// <summary>
         /// Total
@@ -31,8 +26,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Fees list
         /// </summary>
-        [DataMember(Name = "fees", EmitDefaultValue = false)]
-        public IList<Fee> Fees { get; set; }
+        public IList<Fee> Fees
+        {
+            get { return _Fees; }
+            set { _Fees = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// Order id

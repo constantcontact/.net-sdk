@@ -13,16 +13,16 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class ClearContactList: Component
     {
+        [DataMember(Name = "lists", EmitDefaultValue = false)]
+        private List<string> _Lists = new List<string>();
+
         /// <summary>
         /// Gets or sets the list of id's to add.
         /// </summary>
-        [DataMember(Name = "lists", EmitDefaultValue = false)]
-        public IList<string> Lists { get; set; }
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-        public ClearContactList() { 
+        public IList<string> Lists
+        {
+            get { return _Lists; }
+            set { _Lists = value == null ? null : value.ToList(); }
         }
     }
 }

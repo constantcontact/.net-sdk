@@ -15,159 +15,164 @@ namespace CTCT.Services
     public class CampaignScheduleService : BaseService, ICampaignScheduleService
     {
         /// <summary>
+        /// Campaign schedule service constructor
+        /// </summary>
+        /// <param name="userServiceContext">User service context</param>
+        public CampaignScheduleService(IUserServiceContext userServiceContext)
+            : base(userServiceContext)
+        {
+        }
+
+        /// <summary>
         /// Create a new schedule for a campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Campaign id to be scheduled.</param>
         /// <param name="schedule">Schedule to be created.</param>
         /// <returns>Returns the schedule added.</returns>
-        public Schedule AddSchedule(string accessToken, string apiKey, string campaignId, Schedule schedule)
+        public Schedule AddSchedule(string campaignId, Schedule schedule)
         {
-            Schedule sch = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.CampaignSchedules, campaignId));
-            string json = schedule.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            if (string.IsNullOrEmpty(campaignId) || schedule == null)
             {
-                sch = Component.FromJSON<Schedule>(response.Body);
-            }
-            else if (response.IsError)
-            {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ScheduleOrId);
             }
 
-            return sch;
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.CampaignSchedules, campaignId));
+            string json = schedule.ToJSON();
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
+            {
+                var sch = response.Get<Schedule>();
+                return sch;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Get a list of schedules for a campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Campaign id to be scheduled.</param>
         /// <returns>Returns the list of schedules for the specified campaign.</returns>
-        public IList<Schedule> GetSchedules(string accessToken, string apiKey, string campaignId)
+        public IList<Schedule> GetSchedules(string campaignId)
         {
-            IList<Schedule> list = new List<Schedule>();
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.CampaignSchedules, campaignId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(campaignId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ScheduleOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.CampaignSchedules, campaignId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                list = Component.FromJSON<IList<Schedule>>(response.Body);
+                var scheduleList = response.Get<IList<Schedule>>();
+                return scheduleList;
             }
-
-            return list;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Get a specific schedule for a campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Campaign id to be get a schedule for.</param>
         /// <param name="scheduleId">Schedule id to retrieve.</param>
         /// <returns>Returns the requested schedule object.</returns>
-        public Schedule GetSchedule(string accessToken, string apiKey, string campaignId, string scheduleId)
+        public Schedule GetSchedule(string campaignId, string scheduleId)
         {
-            Schedule schedule = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.CampaignSchedule, campaignId, scheduleId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(campaignId) || string.IsNullOrEmpty(scheduleId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ScheduleOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.CampaignSchedule, campaignId, scheduleId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                schedule = Component.FromJSON<Schedule>(response.Body);
+                var schedule = response.Get<Schedule>();
+                return schedule;
             }
-
-            return schedule;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Update a specific schedule for a campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Campaign id to be scheduled.</param>
         /// <param name="schedule">Schedule to retrieve.</param>
         /// <returns>Returns the updated schedule object.</returns>
-        public Schedule UpdateSchedule(string accessToken, string apiKey, string campaignId, Schedule schedule)
+        public Schedule UpdateSchedule(string campaignId, Schedule schedule)
         {
-            Schedule upd = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.CampaignSchedule, campaignId, schedule.Id));
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.CampaignSchedule, campaignId, schedule.Id));
             string json = schedule.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var upd = response.Get<Schedule>();
+                return upd;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                upd = Component.FromJSON<Schedule>(response.Body);
+                throw new CtctException(ex.Message, ex);
             }
-
-            return upd;
         }
 
         /// <summary>
         /// Get a specific schedule for a campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Campaign id.</param>
         /// <param name="scheduleId">Schedule id to delete.</param>
         /// <returns>Returns true if shcedule was successfully deleted.</returns>
-        public bool DeleteSchedule(string accessToken, string apiKey, string campaignId, string scheduleId)
+        public bool DeleteSchedule(string campaignId, string scheduleId)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.CampaignSchedule, campaignId, scheduleId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(campaignId) || string.IsNullOrEmpty(scheduleId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ScheduleOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.CampaignSchedule, campaignId, scheduleId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Send a test send of a campaign.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="campaignId">Id of campaign to send test of.</param>
         /// <param name="testSend">Test send details.</param>
         /// <returns>Returns the sent test object.</returns>
-        public TestSend SendTest(string accessToken, string apiKey, string campaignId, TestSend testSend)
+        public TestSend SendTest(string campaignId, TestSend testSend)
         {
-            TestSend test = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.CampaignTestSends, campaignId));
+            if (string.IsNullOrEmpty(campaignId) || testSend == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ScheduleOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.CampaignTestSends, campaignId));
             string json = testSend.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var test = response.Get<TestSend>();
+                return test;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                test = Component.FromJSON<TestSend>(response.Body);
+                throw new CtctException(ex.Message, ex);
             }
-
-            return test;
         }
     }
 }

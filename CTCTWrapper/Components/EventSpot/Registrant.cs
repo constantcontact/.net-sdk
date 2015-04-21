@@ -14,15 +14,11 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Registrant : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Registrant()
-        {
-            this.Sections = new List<Section>();
-            this.PaymentSummary = new PaymentSummary();
-            this.GuestSections = new List<Guest>();
-        }
+        [DataMember(Name = "sections", EmitDefaultValue = false)]
+        private List<Section> _Sections = new List<Section>();
+
+        [DataMember(Name = "guest_sections", EmitDefaultValue = false)]
+        private List<Guest> _GuestSections = new List<Guest>();
 
         /// <summary>
         /// Id
@@ -33,8 +29,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Sections
         /// </summary>
-        [DataMember(Name = "sections", EmitDefaultValue = false)]
-        public IList<Section> Sections { get; set; }
+        public IList<Section> Sections 
+        {
+            get { return _Sections; }
+            set { _Sections = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// Ticket id
@@ -117,7 +116,18 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// An array of guest properties 
         /// </summary>
-        [DataMember(Name = "guest_sections", EmitDefaultValue = false)]
-        public IList<Guest> GuestSections { get; set; }
+        public IList<Guest> GuestSections 
+        {
+            get { return _GuestSections; }
+            set { _GuestSections = value == null ? null : value.ToList(); }
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public Registrant()
+        {
+            this.PaymentSummary = new PaymentSummary();
+        }
     }
 }

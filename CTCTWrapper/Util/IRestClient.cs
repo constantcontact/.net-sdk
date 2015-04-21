@@ -18,7 +18,7 @@ namespace CTCT.Util
         /// <param name="accessToken">Constant Contact OAuth2 access token</param>
         /// <param name="apiKey">The API key for the application</param>
         /// <returns>The response body, http info, and error (if one exists).</returns>
-        CUrlResponse Get(string url, string accessToken, string apiKey);
+        RawApiResponse Get(string url, string accessToken, string apiKey);
 
         /// <summary>
         /// Make an Http POST request.
@@ -28,7 +28,7 @@ namespace CTCT.Util
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="data">Data to send with request.</param>
         /// <returns>The response body, http info, and error (if one exists).</returns>
-        CUrlResponse Post(string url, string accessToken, string apiKey, string data);
+        RawApiResponse Post(string url, string accessToken, string apiKey, string data);
 
         /// <summary>
         /// Make an Http PATCH request.
@@ -38,7 +38,7 @@ namespace CTCT.Util
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="data">Data to send with request.</param>
         /// <returns>The response body, http info, and error (if one exists).</returns>
-        CUrlResponse Patch(string url, string accessToken, string apiKey, string data);
+        RawApiResponse Patch(string url, string accessToken, string apiKey, string data);
 
 		/// <summary>
         /// Make an Http POST Multipart request.
@@ -48,7 +48,7 @@ namespace CTCT.Util
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="data">Data to send with request.</param>
         /// <returns>The response body, http info, and error (if one exists).</returns>
-		CUrlResponse PostMultipart(string url, string accessToken, string apiKey, byte[] data);
+		RawApiResponse PostMultipart(string url, string accessToken, string apiKey, byte[] data);
 
         /// <summary>
         /// Make an Http PUT request.
@@ -58,7 +58,7 @@ namespace CTCT.Util
         /// <param name="apiKey">The API key for the application</param>
         /// <param name="data">Data to send with request.</param>
         /// <returns>The response body, http info, and error (if one exists).</returns>
-        CUrlResponse Put(string url, string accessToken, string apiKey, string data);
+        RawApiResponse Put(string url, string accessToken, string apiKey, string data);
 
         /// <summary>
         /// Make an Http DELETE request.
@@ -67,6 +67,6 @@ namespace CTCT.Util
         /// <param name="accessToken">Constant Contact OAuth2 access token</param>
         /// <param name="apiKey">The API key for the application</param>
         /// <returns>The response body, http info, and error (if one exists).</returns>
-        CUrlResponse Delete(string url, string accessToken, string apiKey);
+        RawApiResponse Delete(string url, string accessToken, string apiKey);
     }
 }

@@ -16,25 +16,15 @@ namespace CTCT.Webhooks
     /// </summary>
     public class CTCTWebhookUtil
     {
-        #region Properties
-
         /// <summary>
         /// The client secret associated with the api key
         /// </summary>
         public string ClientSecret { get; private set; }
 
-        #endregion
-
-        #region Constants
-
         /// <summary>
         /// Header name of the HmacSha256 hash
         /// </summary>
         public const string HmacHeaderName = "x-ctct-hmac-sha256";
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Class constructor
@@ -44,10 +34,6 @@ namespace CTCT.Webhooks
         {
             this.ClientSecret = clientSecret;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Validates and parses the bodyMessage into BillingChangeNotification
@@ -63,7 +49,7 @@ namespace CTCT.Webhooks
             } 
             else 
             {
-                throw new CtctException(Config.Errors.InvalidWebhook);
+                throw new CtctException(CTCT.Resources.Errors.InvalidWebhook);
             }
         }
 
@@ -77,11 +63,9 @@ namespace CTCT.Webhooks
         {
             if (ClientSecret == null) 
             {
-                throw new CtctException(Config.Errors.NoClientSecret);
+                throw new CtctException(CTCT.Resources.Errors.NoClientSecret);
             }
             return new WebHookValidator(xCtctHmacSHA256, bodyMessage, ClientSecret).IsValid();
         }
-
-        #endregion
     }
 }

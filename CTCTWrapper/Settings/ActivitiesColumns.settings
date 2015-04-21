@@ -1,0 +1,102 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CTCT.Settings" GeneratedClassName="ActivitiesColumns">
+  <Profiles />
+  <Settings>
+    <Setting Name="Email" Description="Email address." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">EMAIL</Value>
+    </Setting>
+    <Setting Name="FirstName" Description="First name." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">FIRST NAME</Value>
+    </Setting>
+    <Setting Name="MiddleName" Description="Middle name." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">MIDDLE NAME</Value>
+    </Setting>
+    <Setting Name="LastName" Description="Last name." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">LAST NAME</Value>
+    </Setting>
+    <Setting Name="JobTitle" Description="Job title." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">JOB TITLE</Value>
+    </Setting>
+    <Setting Name="CompanyName" Description="Company name." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">COMPANY NAME</Value>
+    </Setting>
+    <Setting Name="WorkPhone" Description="Work phone." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">WORK PHONE</Value>
+    </Setting>
+    <Setting Name="HomePhone" Description="Home phone." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">HOME PHONE</Value>
+    </Setting>
+    <Setting Name="Address1" Description="Address line 1." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ADDRESS LINE 1</Value>
+    </Setting>
+    <Setting Name="Address2" Description="Address line 2." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ADDRESS LINE 2</Value>
+    </Setting>
+    <Setting Name="Address3" Description=" Address line 3." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ADDRESS LINE 3</Value>
+    </Setting>
+    <Setting Name="City" Description="City." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CITY</Value>
+    </Setting>
+    <Setting Name="State" Description="State." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">STATE</Value>
+    </Setting>
+    <Setting Name="StateProvince" Description="US state or province." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">US STATE/CA PROVINCE</Value>
+    </Setting>
+    <Setting Name="Country" Description="Country." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">COUNTRY</Value>
+    </Setting>
+    <Setting Name="PostalCode" Description="Postal code." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">ZIP/POSTAL CODE</Value>
+    </Setting>
+    <Setting Name="SubPostalCode" Description="Sub-postal code." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SUB ZIP/POSTAL CODE</Value>
+    </Setting>
+    <Setting Name="CustomField1" Description="Custom field 1." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 1</Value>
+    </Setting>
+    <Setting Name="CustomField2" Description="Custom field 2." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 2</Value>
+    </Setting>
+    <Setting Name="CustomField3" Description="Custom field 3." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 3</Value>
+    </Setting>
+    <Setting Name="CustomField4" Description="Custom field 4." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 4</Value>
+    </Setting>
+    <Setting Name="CustomField5" Description="Custom field 5." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 5</Value>
+    </Setting>
+    <Setting Name="CustomField6" Description="Custom field 6." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 6</Value>
+    </Setting>
+    <Setting Name="CustomField7" Description="Custom field 7." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 7</Value>
+    </Setting>
+    <Setting Name="CustomField8" Description="Custom field 8." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 8</Value>
+    </Setting>
+    <Setting Name="CustomField9" Description="Custom field 9." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 9</Value>
+    </Setting>
+    <Setting Name="CustomField10" Description="Custom field 10." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 10</Value>
+    </Setting>
+    <Setting Name="CustomField11" Description="Custom field 11." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 11</Value>
+    </Setting>
+    <Setting Name="CustomField12" Description="Custom field 12." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 12</Value>
+    </Setting>
+    <Setting Name="CustomField13" Description="Custom field 13." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 13</Value>
+    </Setting>
+    <Setting Name="CustomField14" Description="Custom field 14." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 14</Value>
+    </Setting>
+    <Setting Name="CustomField15" Description="Custom field 15." Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CUSTOM FIELD 15</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

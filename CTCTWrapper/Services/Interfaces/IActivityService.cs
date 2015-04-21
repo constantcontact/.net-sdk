@@ -16,77 +16,61 @@ namespace CTCT.Services
         /// <summary>
         /// Get a list of activities.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <returns>Returns the list of activities.</returns>
-        IList<Activity> GetActivities(string accessToken, string apiKey);
+        IList<Activity> GetActivities();
 
         /// <summary>
         /// Get an activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="activityId">The activity identification.</param>
         /// <returns>Returns the activity identified by its id.</returns>
-        Activity GetActivity(string accessToken, string apiKey, string activityId);
+        Activity GetActivity(string activityId);
 
         /// <summary>
         /// Create an Add Contacts Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="addContacts">AddContacts object.</param>
         /// <returns>Returns an Activity object.</returns>
-        Activity CreateAddContactsActivity(string accessToken, string apiKey, AddContacts addContacts);
+        Activity CreateAddContactsActivity(AddContacts addContacts);
 
         /// <summary>
         /// Create a Clear Lists Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="lists">Array of list id's to be cleared.</param>
         /// <returns>Returns an Activity object.</returns>
-        Activity AddClearListsActivity(string accessToken, string apiKey, IList<string> lists);
+        Activity AddClearListsActivity(IList<string> lists);
 
         /// <summary>
         /// Create an Export Contacts Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="exportContacts">Export contacts object.</param>
         /// <returns>Returns an Activity object.</returns>
-        Activity AddExportContactsActivity(string accessToken, string apiKey, ExportContacts exportContacts);
+        Activity AddExportContactsActivity(ExportContacts exportContacts);
 
         /// <summary>
         /// Create a Remove Contacts From Lists Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="emailAddresses">List of email addresses.</param>
         /// <param name="lists">List of id's.</param>
         /// <returns>Returns an Activity object.</returns>
-        Activity AddRemoveContactsFromListsActivity(string accessToken, string apiKey, IList<string> emailAddresses, IList<string> lists);
+        Activity AddRemoveContactsFromListsActivity(IList<string> emailAddresses, IList<string> lists);
 
 		/// <summary>
 		/// Create an Add Contacts Multipart Activity.
 		/// </summary>
-		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="fileName">The file name to be imported</param>
 		/// <param name="fileContent">The file content to be imported</param>
 		/// <param name="lists">Array of list's id</param>
 		/// <returns>Returns an Activity object.</returns>
-		Activity AddContactstMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists);
+		Activity AddContactstMultipartActivity(string fileName, byte[] fileContent, IList<string> lists);
 
 		/// <summary>
 		/// Create a Remove Contacts Multipart Activity.
 		/// </summary>
-		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
 		/// <param name="fileName">The file name to be imported</param>
 		/// <param name="fileContent">The file content to be imported</param>
 		/// <param name="lists">Array of list's id</param>
 		/// <returns>Returns an Activity object.</returns>
-		Activity RemoveContactsMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists);
+		Activity RemoveContactsMultipartActivity(string fileName, byte[] fileContent, IList<string> lists);
     }
 }

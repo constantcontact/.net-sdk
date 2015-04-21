@@ -14,14 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class TrackInformation : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public TrackInformation()
-        {
-            this.InformationSectionsArray = new List<string>();
-            this.InformationSections = new List<InformationSections>();
-        }
+        [DataMember(Name = "information_sections", EmitDefaultValue = false)]
+        private List<string> _InformationSectionsArray = new List<string>();
 
         /// <summary>
         /// Date on which early fees end, in ISO-8601 format 
@@ -116,8 +110,11 @@ namespace CTCT.Components.EventSpot
         ///  valid values are: CONTACT - displays the event contact informationTIME - displays the event date and time
         ///  LOCATION - displays the event location
         /// </summary>
-        [DataMember(Name = "information_sections", EmitDefaultValue = false)]
-        private IList<string> InformationSectionsArray { get; set; }
+        private IList<string> InformationSectionsArray 
+        {
+            get { return _InformationSectionsArray; }
+            set { _InformationSectionsArray = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         ///  Determines if the Who (CONTACT), When (TIME), or Where (LOCATION) information is shown on the Event page. Default settings are CONTACT, TIME, and LOCATION 
@@ -128,7 +125,7 @@ namespace CTCT.Components.EventSpot
         {
             get
             {
-                IList<InformationSections> temp = new List<InformationSections>();
+                var temp = new List<InformationSections>();
                 foreach (string s in this.InformationSectionsArray)
                 {
                     var value = s.ToEnum<InformationSections>();
@@ -138,13 +135,21 @@ namespace CTCT.Components.EventSpot
             }
             set
             {
-                IList<string> temp = new List<string>();
+                var temp = new List<string>();
                 foreach (InformationSections pt in value.Distinct())
                 {
                     temp.Add(pt.ToString());
                 }
                 this.InformationSectionsArray = temp;
             }
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public TrackInformation()
+        {
+            this.InformationSections = new List<InformationSections>();
         }
     }
 

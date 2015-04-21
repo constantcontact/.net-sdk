@@ -98,15 +98,15 @@ namespace CTCT.Components.MyLibrary
 		/// </summary>
 		[DataMember(Name = "thumbnail", EmitDefaultValue = false)]
         public Thumbnail Thumbnail { get; set; }
-
-		/// <summary>
+ 
+        /// <summary>
 		/// Class contructor
 		/// </summary>
 		public MyLibraryFile()
 		{
 			this.Thumbnail = new Thumbnail();
-		}
-	}
+        }
+    }
 
 	/// <summary>
 	/// File type enum

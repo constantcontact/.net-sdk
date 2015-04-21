@@ -9,6 +9,7 @@ using CTCT.Components;
 using System.Globalization;
 using CTCT.Exceptions;
 using System.Configuration;
+using CTCT.Services;
 
 namespace CTCTWrapper_Contact
 {
@@ -16,7 +17,7 @@ namespace CTCTWrapper_Contact
     {
         #region Properties
 
-        ConstantContact _constantContact = null;
+        private ConstantContactFactory _constantContactFactory = null;
         private string _apiKey = string.Empty;
         private string _accessToken = string.Empty;
 
@@ -42,7 +43,8 @@ namespace CTCTWrapper_Contact
                 }
 
                 //initialize ConstantContact member
-                _constantContact = new ConstantContact(_apiKey, _accessToken);
+                IUserServiceContext userServiceContext = new UserServiceContext(_accessToken, _apiKey);
+                _constantContactFactory = new ConstantContactFactory(userServiceContext);
             }
             catch (OAuth2Exception oauthEx)
             {
@@ -136,13 +138,15 @@ namespace CTCTWrapper_Contact
 
                     Contact result = null;
 
+                    var contactService = _constantContactFactory.CreateContactService();
+
                     if (alreadyExists)
                     {
-                        result = _constantContact.UpdateContact(contact, false);
+                        result = contactService.UpdateContact(contact, false);
                     }
                     else
                     {
-                        result = _constantContact.AddContact(contact, false);
+                        result = contactService.AddContact(contact, false);
                     }
 
                     if (result != null)
@@ -207,7 +211,8 @@ namespace CTCTWrapper_Contact
         /// <returns></returns>
         private Contact GetContactByEmailAddress(string emailAddress)
         {
-            ResultSet<Contact> contacts = _constantContact.GetContacts(emailAddress, 1, null, null);
+            var contactService = _constantContactFactory.CreateContactService();
+            ResultSet<Contact> contacts = contactService.GetContacts(emailAddress, 1, null, null);
 
             if (contacts != null)
             {

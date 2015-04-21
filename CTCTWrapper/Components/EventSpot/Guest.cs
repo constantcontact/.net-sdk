@@ -24,6 +24,6 @@ namespace CTCT.Components.EventSpot
         /// Field sections displayed 
         /// </summary>
         [DataMember(Name = "guests_info", EmitDefaultValue = false)]
-        public string GuestsInfo { get; set; }
+        public string GuestsInfo { get; set; } 
     }
 }

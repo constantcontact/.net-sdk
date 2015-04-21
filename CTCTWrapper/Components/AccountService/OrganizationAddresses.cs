@@ -61,6 +61,6 @@ namespace CTCT.Components.AccountService
         /// NOTE: A data validation error occurs if state_code is populated and country_code does not = US or CA. 
         /// </summary>
         [DataMember(Name = "state_code", EmitDefaultValue = false)]
-        public string StateCode { get; set; }  
+        public string StateCode { get; set; }   
     }
 }

@@ -15,113 +15,134 @@ namespace CTCT.Services
     /// </summary>
     public class EventSpotService : BaseService, IEventSpotService
     {
-        #region EventSpot
+        /// <summary>
+        /// EventSspot service constructor
+        /// </summary>
+        /// <param name="userServiceContext">User service context</param>
+        public EventSpotService(IUserServiceContext userServiceContext)
+            : base(userServiceContext)
+        {
+        }
 
         /// <summary>
         /// View all existing events
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 50</param>
         /// <param name="pag">Pagination object</param>
         /// <returns>ResultSet containing a results array of IndividualEvents</returns>
-        public ResultSet<IndividualEvent> GetAllEventSpots(string accessToken, string apiKey, int? limit, Pagination pag)
+        public ResultSet<IndividualEvent> GetAllEventSpots(int? limit, Pagination pag)
         {
-            string url = (pag == null) ? String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventSpots, GetQueryParameters(new object[] { "limit", limit })) : pag.GetNextUrl();
+            string url = (pag == null) ? String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventSpots, GetQueryParameters(new object[] { "limit", limit })) : pag.GetNextUrl();
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<ResultSet<IndividualEvent>>();
+                var individualEventSet = response.Get<ResultSet<IndividualEvent>>();
+                return individualEventSet;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new ResultSet<IndividualEvent>();
         }
 
         /// <summary>
         /// Retrieve an event specified by the event_id
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <returns>The event</returns>
-        public IndividualEvent GetEventSpot(string accessToken, string apiKey, string eventId)
+        public IndividualEvent GetEventSpot(string eventId)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventSpots , "/", eventId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventSpots, "/", eventId);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<IndividualEvent>();
+                var individualEvent = response.Get<IndividualEvent>();
+                return individualEvent;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new IndividualEvent();
         }
 
         /// <summary>
         /// Publish an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventSpot">The event to publish</param>
         /// <returns>The published event</returns>
-        public IndividualEvent PostEventSpot(string accessToken, string apiKey, IndividualEvent eventSpot)
+        public IndividualEvent PostEventSpot(IndividualEvent eventSpot)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventSpots);
+            if (eventSpot == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventSpots);
             string json = eventSpot.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<IndividualEvent>();
+                var individualEvent = response.Get<IndividualEvent>();
+                return individualEvent;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new IndividualEvent();
         }
 
         /// <summary>
         /// Update an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id to be updated</param>
         /// <param name="eventSpot">The new values for event</param>
         /// <returns>The updated event</returns>
-        public IndividualEvent PutEventSpot(string accessToken, string apiKey, string eventId, IndividualEvent eventSpot)
+        public IndividualEvent PutEventSpot(string eventId, IndividualEvent eventSpot)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventSpots, "/", eventId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (eventSpot == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventSpots, "/", eventId);
             string json = eventSpot.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<IndividualEvent>();
+                var individualEvent = response.Get<IndividualEvent>();
+                return individualEvent;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new IndividualEvent();
         }
 
         /// <summary>
         /// Publish or cancel an event by changing the status of the event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="eventStatus">New status of the event. ACTIVE" and "CANCELLED are allowed</param>
         /// <returns>The updated event</returns>
-        public IndividualEvent PatchEventSpotStatus(string accessToken, string apiKey, string eventId, EventStatus eventStatus)
+        public IndividualEvent PatchEventSpotStatus(string eventId, EventStatus eventStatus)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventSpots, "/", eventId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventSpots, "/", eventId);
 
             var patchRequests = new List<PatchRequest>();
             var patchRequest = new PatchRequest("REPLACE", "#/status", eventStatus.ToString());
@@ -129,566 +150,726 @@ namespace CTCT.Services
 
             string json = patchRequests.ToJSON();
 
-            CUrlResponse response = RestClient.Patch(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Patch(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<IndividualEvent>();
+                var individualEvent = response.Get<IndividualEvent>();
+                return individualEvent;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new IndividualEvent();
         }
-
-        #endregion
-
-        #region EventFees
 
         /// <summary>
         /// Retrieve all existing fees for an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <returns>A list of event fees for the specified event</returns>
-        public List<EventFee> GetAllEventFees(string accessToken, string apiKey, string eventId)
+        public List<EventFee> GetAllEventFees(string eventId)
         {
-            string url =  String.Format( String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventFees), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventFees), eventId, null);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<List<EventFee>>();
+                var eventFeesList = response.Get<List<EventFee>>();
+                return eventFeesList;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new List<EventFee>();
         }
 
         /// <summary>
         /// Retrieve an individual event fee
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="feeId">EventFee id</param>
         /// <returns>An EventFee object</returns>
-        public EventFee GetEventFee(string accessToken, string apiKey, string eventId, string feeId)
+        public EventFee GetEventFee(string eventId, string feeId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventFees), eventId, feeId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(feeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventFees), eventId, feeId);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<EventFee>();
+                var eventFee = response.Get<EventFee>();
+                return eventFee;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new EventFee();
         }
 
         /// <summary>
         /// Update an individual event fee
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="feeId">EventFee id</param>
         /// <param name="eventFee">The new values of EventFee</param>
         /// <returns>The updated EventFee</returns>
-        public EventFee PutEventFee(string accessToken, string apiKey, string eventId, string feeId, EventFee eventFee)
+        public EventFee PutEventFee(string eventId, string feeId, EventFee eventFee)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventFees), eventId, feeId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(feeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (eventFee == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventFees), eventId, feeId);
 
             string json = eventFee.ToJSON();
 
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<EventFee>();
+                var evFee = response.Get<EventFee>();
+                return evFee;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new EventFee();
         }
 
         /// <summary>
         ///  Delete an individual event fee
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="feeId">EventFee id</param>
         /// <returns>True if successfuly deleted</returns>
-        public bool DeleteEventFee(string accessToken, string apiKey, string eventId, string feeId)
+        public bool DeleteEventFee(string eventId, string feeId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventFees), eventId, feeId);
-
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-            if (response.IsError)
+            if (string.IsNullOrWhiteSpace(eventId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
             }
-            return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            if (string.IsNullOrWhiteSpace(feeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventFees), eventId, feeId);
+
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Create an individual event fee
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="eventFee">EventFee object</param>
         /// <returns>The newly created EventFee</returns>
-        public EventFee PostEventFee(string accessToken, string apiKey, string eventId, EventFee eventFee)
+        public EventFee PostEventFee(string eventId, EventFee eventFee)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventFees), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (eventFee == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventFees), eventId, null);
 
             string json = eventFee.ToJSON();
 
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<EventFee>();
+                var evFee = response.Get<EventFee>();
+                return evFee;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new EventFee();
         }
-
-        #endregion
-
-        #region Promocodes
 
         /// <summary>
         /// Retrieve all existing promo codes for an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <returns>A list of Promocode</returns>
-        public List<Promocode> GetAllPromocodes(string accessToken, string apiKey, string eventId)
+        public List<Promocode> GetAllPromocodes(string eventId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventPromocode), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventPromocode), eventId, null);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<List<Promocode>>();
+                var promocodeList = response.Get<List<Promocode>>();
+                return promocodeList;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new List<Promocode>();
         }
 
         /// <summary>
         /// Retrieve an existing promo codes for an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="promocodeId">Promocode id</param>
         /// <returns>The Promocode object</returns>
-        public Promocode GetPromocode(string accessToken, string apiKey, string eventId, string promocodeId)
+        public Promocode GetPromocode(string eventId, string promocodeId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventPromocode), eventId, promocodeId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(promocodeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventPromocode), eventId, promocodeId);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<Promocode>();
+                var promocode = response.Get<Promocode>();
+                return promocode;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new Promocode();
         }
 
         /// <summary>
         /// Create a new promo code for an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="promocode">Promocode object to be created</param>
         /// <returns>The newly created Promocode</returns>
-        public Promocode PostPromocode(string accessToken, string apiKey, string eventId, Promocode promocode)
+        public Promocode PostPromocode(string eventId, Promocode promocode)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventPromocode), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (promocode == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventPromocode), eventId, null);
 
             string json = promocode.ToJSON();
 
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<Promocode>();
+                var promoc = response.Get<Promocode>();
+                return promoc;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new Promocode();
         }
 
         /// <summary>
         /// Update a promo code for an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="promocodeId">Promocode id</param>
         /// <param name="promocode">The new Promocode values</param>
         /// <returns>The newly updated Promocode</returns>
-        public Promocode PutPromocode(string accessToken, string apiKey, string eventId, string promocodeId, Promocode promocode)
+        public Promocode PutPromocode(string eventId, string promocodeId, Promocode promocode)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventPromocode), eventId, promocodeId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(promocodeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (promocode == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventPromocode), eventId, promocodeId);
 
             string json = promocode.ToJSON();
 
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<Promocode>();
+                var promoc = response.Get<Promocode>();
+                return promoc;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new Promocode();
         }
 
         /// <summary>
         /// Delete a promo code for an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="promocodeId">Promocode id</param>
         /// <returns>True if successfuly deleted</returns>
-        public bool DeletePromocode(string accessToken, string apiKey, string eventId, string promocodeId)
+        public bool DeletePromocode(string eventId, string promocodeId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventPromocode), eventId, promocodeId);
-
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-            if (response.IsError)
+            if (string.IsNullOrWhiteSpace(eventId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
             }
-            return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            if (string.IsNullOrWhiteSpace(promocodeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventPromocode), eventId, promocodeId);
+
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
-
-        #endregion
-
-        #region Registrants
 
         /// <summary>
         /// Retrieve detailed information for a specific event registrant
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="registrantId">Redistrant id</param>
         /// <returns>Registrant details</returns>
-        public Registrant GetRegistrant(string accessToken, string apiKey, string eventId, string registrantId)
+        public Registrant GetRegistrant(string eventId, string registrantId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventRegistrant), eventId, registrantId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(registrantId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventRegistrant), eventId, registrantId);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<Registrant>();
+                var registrant = response.Get<Registrant>();
+                return registrant;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new Registrant();
         }
 
         /// <summary>
         /// Retrieve a list of registrants for the specified event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <returns>ResultSet containing a results array of Registrant</returns>
-        public ResultSet<Registrant> GetAllRegistrants(string accessToken, string apiKey, string eventId)
+        public ResultSet<Registrant> GetAllRegistrants(string eventId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventRegistrant), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventRegistrant), eventId, null);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<ResultSet<Registrant>>();
+                var registrantSet = response.Get<ResultSet<Registrant>>();
+                return registrantSet;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new ResultSet<Registrant>();
         }
-
-        #endregion
-
-        #region EventItems
 
         /// <summary>
         /// Retrieve all existing items associated with an event
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <returns>A list of EventItem</returns>
-        public List<EventItem> GetAllEventItems(string accessToken, string apiKey, string eventId)
+        public List<EventItem> GetAllEventItems(string eventId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventItem), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventItem), eventId, null);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<List<EventItem>>();
+                var eventItemList = response.Get<List<EventItem>>();
+                return eventItemList;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new List<EventItem>();
         }
 
         /// <summary>
         ///  Retrieve specific event item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">Eventitem id</param>
         /// <returns>EventItem object</returns>
-        public EventItem GetEventItem(string accessToken, string apiKey, string eventId, string itemId)
+        public EventItem GetEventItem(string eventId, string itemId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventItem), eventId, itemId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventItem), eventId, itemId);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<EventItem>();
+                var eventItem = response.Get<EventItem>();
+                return eventItem;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new EventItem();
         }
 
         /// <summary>
         ///  Update a specific event item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <param name="eventItem">The newly values for EventItem</param>
         /// <returns>The updated EventItem</returns>
-        public EventItem PutEventItem(string accessToken, string apiKey, string eventId, string itemId, EventItem eventItem)
+        public EventItem PutEventItem(string eventId, string itemId, EventItem eventItem)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventItem), eventId, itemId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (eventItem == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventItem), eventId, itemId);
             string json = eventItem.ToJSON();
 
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<EventItem>();
+                var eventIt = response.Get<EventItem>();
+                return eventIt;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new EventItem();
         }
 
         /// <summary>
         ///  Create a specific event item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="eventItem">EventItem id</param>
         /// <returns>The newly created EventItem</returns>
-        public EventItem PostEventItem(string accessToken, string apiKey, string eventId, EventItem eventItem)
+        public EventItem PostEventItem(string eventId, EventItem eventItem)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventItem), eventId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (eventItem == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventItem), eventId, null);
             string json = eventItem.ToJSON();
 
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<EventItem>();
+                var eventIt = response.Get<EventItem>();
+                return eventIt;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new EventItem();
         }
 
         /// <summary>
         /// Delete a specific event item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <returns>True if successfuly deleted</returns>
-        public bool DeleteEventItem(string accessToken, string apiKey, string eventId, string itemId)
+        public bool DeleteEventItem(string eventId, string itemId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.EventItem), eventId, itemId);
-
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-            if (response.IsError)
+            if (string.IsNullOrWhiteSpace(eventId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
             }
-            return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventItem), eventId, itemId);
+
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
-
-        #endregion
-
-        #region Attribute
 
         /// <summary>
         /// Create an attributes for an item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <param name="attribute">The Attribute object</param>
         /// <returns>The newly created attribure</returns>
-        public CTCT.Components.EventSpot.Attribute PostEventItemAttribute(string accessToken, string apiKey, string eventId, string itemId, CTCT.Components.EventSpot.Attribute attribute)
+        public CTCT.Components.EventSpot.Attribute PostEventItemAttribute(string eventId, string itemId, CTCT.Components.EventSpot.Attribute attribute)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ItemAttribute), eventId, itemId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (attribute == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ItemAttribute), eventId, itemId, null);
             string json = attribute.ToJSON();
 
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<CTCT.Components.EventSpot.Attribute>();
+                var attrib = response.Get<CTCT.Components.EventSpot.Attribute>();
+                return attrib;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new CTCT.Components.EventSpot.Attribute();
         }
 
         /// <summary>
         /// Updates an existing attributes for an item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <param name="attributeId">Attribute id</param>
         /// <param name="attribute">Attribute new values</param>
         /// <returns>The newly updated attribute</returns>
-        public CTCT.Components.EventSpot.Attribute PutEventItemAttribute(string accessToken, string apiKey, string eventId, string itemId, string attributeId,  CTCT.Components.EventSpot.Attribute attribute)
+        public CTCT.Components.EventSpot.Attribute PutEventItemAttribute(string eventId, string itemId, string attributeId, CTCT.Components.EventSpot.Attribute attribute)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ItemAttribute), eventId, itemId, attributeId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(attributeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (attribute == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ObjectNull);
+            }
+
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ItemAttribute), eventId, itemId, attributeId);
             string json = attribute.ToJSON();
 
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                return response.Get<CTCT.Components.EventSpot.Attribute>();
+                var attrib = response.Get<CTCT.Components.EventSpot.Attribute>();
+                return attrib;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new CTCT.Components.EventSpot.Attribute();
         }
 
         /// <summary>
         /// Retrieve an existing attributes for an item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <param name="attributeId">Attribute id</param>
         /// <returns>Attribute object</returns>
-        public CTCT.Components.EventSpot.Attribute GetEventItemAttribute(string accessToken, string apiKey, string eventId, string itemId, string attributeId)
+        public CTCT.Components.EventSpot.Attribute GetEventItemAttribute(string eventId, string itemId, string attributeId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ItemAttribute), eventId, itemId, attributeId);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(attributeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ItemAttribute), eventId, itemId, attributeId);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<CTCT.Components.EventSpot.Attribute>();
+                var attrib =  response.Get<CTCT.Components.EventSpot.Attribute>();
+                return attrib;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new CTCT.Components.EventSpot.Attribute();
         }
 
         /// <summary>
         /// Retrieve all existing attributes for an item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <returns>A list of Attributes</returns>
-        public List<CTCT.Components.EventSpot.Attribute> GetAllEventItemAttributes(string accessToken, string apiKey, string eventId, string itemId)
+        public List<CTCT.Components.EventSpot.Attribute> GetAllEventItemAttributes(string eventId, string itemId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ItemAttribute), eventId, itemId, null);
+            if (string.IsNullOrWhiteSpace(eventId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            if (response.HasData)
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ItemAttribute), eventId, itemId, null);
+
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                return response.Get<List<CTCT.Components.EventSpot.Attribute>>();
+                var attrib =  response.Get<List<CTCT.Components.EventSpot.Attribute>>();
+                return attrib;
             }
-            else if (response.IsError)
+            catch (Exception ex)
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new CtctException(ex.Message, ex);
             }
-            return new List<CTCT.Components.EventSpot.Attribute>();
         }
 
         /// <summary>
         /// Delete an existing attributes for an item
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="eventId">Event id</param>
         /// <param name="itemId">EventItem id</param>
         /// <param name="attributeId">Attribute id</param>
         /// <returns>True if successfuly deleted</returns>
-        public bool DeleteEventItemAttribute(string accessToken, string apiKey, string eventId, string itemId, string attributeId)
+        public bool DeleteEventItemAttribute(string eventId, string itemId, string attributeId)
         {
-            string url = String.Format(String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ItemAttribute), eventId, itemId, attributeId);
-
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-            if (response.IsError)
+            if (string.IsNullOrWhiteSpace(eventId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
             }
-            return response.StatusCode == System.Net.HttpStatusCode.NoContent;
-        }
+            if (string.IsNullOrWhiteSpace(itemId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
+            if (string.IsNullOrWhiteSpace(attributeId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
+            }
 
-        #endregion
+            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ItemAttribute), eventId, itemId, attributeId);
+
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return response.StatusCode == System.Net.HttpStatusCode.NoContent;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
+        }
     }
 }

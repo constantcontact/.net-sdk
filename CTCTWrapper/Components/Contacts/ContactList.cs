@@ -42,10 +42,5 @@ namespace CTCT.Components.Contacts
         /// </summary>
         [DataMember(Name = "modified_date", EmitDefaultValue = false)]
         public string DateModified { get; set; }
-
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public ContactList() { }
     }
 }

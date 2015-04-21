@@ -29,11 +29,6 @@ namespace CTCT.Components.EmailCampaigns
         /// Gets or sets the number of times the url was clicked on.
         /// </summary>
         [DataMember(Name = "click_count")]
-        public int ClickCount { get; set; }
-
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public ClickThroughDetails() { }
+        public int ClickCount { get; set; } 
     }
 }

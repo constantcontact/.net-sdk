@@ -18,7 +18,7 @@ namespace CTCT.Util
 		/// <summary>
 		/// Boundary used for Multipart activities
 		/// </summary>
-		public static  string MULTIPART_BOUNDARY = DateTime.Now.Ticks.ToString("x");	
+		public static string MULTIPART_BOUNDARY = ProcessorBase.MULTIPART_BOUNDARY;
 
 		/// <summary>
 		/// Create multipart content in binary format
