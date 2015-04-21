@@ -12,208 +12,282 @@ namespace CTCT.Services
     public class ContactService : BaseService, IContactService
     {
         /// <summary>
-        /// Get an array of contacts.
+        /// Contact service constructor
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
-        /// <param name="email">Match the exact email address.</param>
-        /// <param name="limit">Limit the number of returned values.</param>
-        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
-		/// <param name="status">Filter results by contact status</param>
-        /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince, ContactStatus? status)
+        /// <param name="userServiceContext">User service context</param>
+        public ContactService(IUserServiceContext userServiceContext)
+            : base(userServiceContext)
         {
-            return GetContacts(accessToken, apiKey, email, limit, modifiedSince, status, null);
         }
 
         /// <summary>
         /// Get an array of contacts.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
+        /// <param name="email">Match the exact email address.</param>
+        /// <param name="limit">Limit the number of returned values.</param>
+        /// <param name="modifiedSince">limit contacts retrieved to contacts modified since the supplied date</param>
+		/// <param name="status">Filter results by contact status</param>
+        /// <returns>Returns a list of contacts.</returns>
+        public ResultSet<Contact> GetContacts(string email, int? limit, DateTime? modifiedSince, ContactStatus? status)
+        {
+            return GetContacts(email, limit, modifiedSince, status, null);
+        }
+
+        /// <summary>
+        /// Get an array of contacts.
+        /// </summary>
         /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        public ResultSet<Contact> GetContacts(string accessToken, string apiKey, DateTime? modifiedSince, Pagination pag)
+        public ResultSet<Contact> GetContacts(DateTime? modifiedSince, Pagination pag)
         {
-            return GetContacts(accessToken, apiKey, null, null, modifiedSince, null, pag);
+            return GetContacts(null, null, modifiedSince, null, pag);
+        }
+
+        /// <summary>
+        /// Get an array of contacts.
+        /// </summary>
+        /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
+        /// <returns>Returns a list of contacts.</returns>
+        public ResultSet<Contact> GetContacts(DateTime? modifiedSince)
+        {
+            return GetContacts(null, null, modifiedSince, null, null);
         }
 
 		/// <summary>
         /// Get an array of contacts.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="email">Match the exact email address.</param>
         /// <param name="limit">Limit the number of returned values.</param>
         /// <param name="modifiedSince">limit contact to contacts modified since the supplied date</param>
 		/// <param name="status">Match the exact contact status.</param>
         /// <param name="pag">Pagination object.</param>
         /// <returns>Returns a list of contacts.</returns>
-        private ResultSet<Contact> GetContacts(string accessToken, string apiKey, string email, int? limit, DateTime? modifiedSince, ContactStatus? status, Pagination pag)
+        private ResultSet<Contact> GetContacts(string email, int? limit, DateTime? modifiedSince, ContactStatus? status, Pagination pag)
         {
-            ResultSet<Contact> results = null;
             // Construct access URL
-            string url = (pag == null) ? Config.ConstructUrl(Config.Endpoints.Contacts, null, new object[] { "email", email, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince), "status", status }) : pag.GetNextUrl();
+            string url = (pag == null) ? ConstructUrl(Settings.Endpoints.Default.Contacts, null, new object[] { "email", email, "limit", limit, "modified_since", Extensions.ToISO8601String(modifiedSince), "status", status }) : pag.GetNextUrl();
             // Get REST response
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-            
-            if (response.IsError)
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var results = response.Get<ResultSet<Contact>>();
+                return results;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                // Convert from JSON
-                results = response.Get<ResultSet<Contact>>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return results;
         }
 
         /// <summary>
         /// Get contact details for a specific contact.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="contactId">Unique contact id.</param>
         /// <returns>Returns a contact.</returns>
-        public Contact GetContact(string accessToken, string apiKey, string contactId)
+        public Contact GetContact(string contactId)
         {
-            Contact contact = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Contact, contactId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(contactId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Contact, contactId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                contact = Component.FromJSON<Contact>(response.Body);
+                var contact = response.Get<Contact>();
+                return contact;
             }
-
-            return contact;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Add a new contact to the Constant Contact account
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="contact">Contact to add.</param>
         /// <param name="actionByVisitor">Set to true if action by visitor.</param>
         /// <returns>Returns the newly created contact.</returns>
-        public Contact AddContact(string accessToken, string apiKey, Contact contact, bool actionByVisitor)
+        public Contact AddContact(Contact contact, bool actionByVisitor)
         {
-            Contact newContact = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Contacts, actionByVisitor ? String.Format("?action_by={0}", ActionBy.ActionByVisitor) : null);
-            string json = contact.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-            if (response.HasData)
+            if (contact == null)
             {
-                newContact = Component.FromJSON<Contact>(response.Body);
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
             }
-            else
-                if (response.IsError)
-                {
-                    throw new CtctException(response.GetErrorMessage());
-                }
 
-            return newContact;
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.Contacts, actionByVisitor ? String.Format("?action_by={0}", ActionBy.ActionByVisitor) : null);
+            string json = contact.ToJSON();
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
+            {
+                var newContact = response.Get<Contact>();
+                return newContact;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Unsubscribe a specific contact.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="contactId">Unique contact id.</param>
         /// <returns>Returns true if operation succeeded.</returns>
-        public bool DeleteContact(string accessToken, string apiKey, string contactId)
+        public bool DeleteContact(string contactId)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Contact, contactId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(contactId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Contact, contactId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// Unsubscribe a specific contact.
+        /// </summary>
+        /// <param name="contact">The Contact</param>
+        /// <returns>Returns true if operation succeeded.</returns>
+        public bool DeleteContact(Contact contact)
+        {
+            if (contact == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
+            }
+
+            return DeleteContact(contact.Id);
         }
 
         /// <summary>
         /// Delete a contact from all contact lists.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="contactId">Contact id to be removed from lists.</param>
         /// <returns>Returns true if operation succeeded.</returns>
-        public bool DeleteContactFromLists(string accessToken, string apiKey, string contactId)
+        public bool DeleteContactFromLists(string contactId)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.ContactLists, contactId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(contactId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.ContactLists, contactId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
+        }
+
+        /// <summary>
+        /// Delete a contact from all contact lists.
+        /// </summary>
+        /// <param name="contact">The Contact</param>
+        /// <returns>Returns true if operation succeeded.</returns>
+        public bool DeleteContactFromLists(Contact contact)
+        {
+            if (contact == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
+            }
+
+            return DeleteContactFromLists(contact.Id);
         }
 
         /// <summary>
         /// Delete a contact from a specific contact list.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="contactId">Contact id to be removed</param>
         /// <param name="listId">ContactList to remove the contact from</param>
         /// <returns>Returns true if operation succeeded.</returns>
-        public bool DeleteContactFromList(string accessToken, string apiKey, string contactId, string listId)
+        public bool DeleteContactFromList(string contactId, string listId)
         {
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.ContactList, contactId, listId));
-            CUrlResponse response = RestClient.Delete(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(contactId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
+            }
+            if (string.IsNullOrEmpty(contactId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ListOrId);
             }
 
-            return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.ContactList, contactId, listId));
+            RawApiResponse response = RestClient.Delete(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                return (!response.IsError && response.StatusCode == System.Net.HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }   
+        }
+
+        /// <summary>
+        /// Delete a contact from a specific contact list.
+        /// </summary>
+        /// <param name="contact">The Contact to be removed</param>
+        /// <param name="list">The ContactList to remove the contact from</param>
+        /// <returns>Returns true if operation succeeded.</returns>
+        public bool DeleteContactFromList(Contact contact, ContactList list)
+        {
+            if (contact == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
+            }
+            if (list == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ListOrId);
+            }
+
+            return DeleteContactFromList(contact.Id, list.Id);
         }
 
         /// <summary>
         /// Update contact details for a specific contact.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="contact">Contact to be updated.</param>
         /// <param name="actionByVisitor">Set to true if action by visitor.</param>
         /// <returns>Returns the updated contact.</returns>
-        public Contact UpdateContact(string accessToken, string apiKey, Contact contact, bool actionByVisitor)
+        public Contact UpdateContact(Contact contact, bool actionByVisitor)
         {
-            Contact updateContact = null;
+            if (contact == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ContactOrId);
+            }
+
             if (contact.Id == null)
             {
-                throw new CtctException(Config.Errors.UpdateId);
+                throw new CtctException(CTCT.Resources.Errors.UpdateId);
             }
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Contact, contact.Id), actionByVisitor ? String.Format("?action_by={0}", ActionBy.ActionByVisitor) : null);
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Contact, contact.Id), actionByVisitor ? String.Format("?action_by={0}", ActionBy.ActionByVisitor) : null);
             string json = contact.ToJSON();
-            CUrlResponse response = RestClient.Put(url, accessToken, apiKey, json);
-            if (response.HasData)
+            RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                updateContact = Component.FromJSON<Contact>(response.Body);
+                var updateContact = response.Get<Contact>();
+                return updateContact;
             }
-            else
-                if (response.IsError) {
-                    throw new CtctException(response.GetErrorMessage());
-                }
-
-            return updateContact;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }  
         }
     }
 }

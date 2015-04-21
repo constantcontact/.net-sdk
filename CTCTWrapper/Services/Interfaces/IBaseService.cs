@@ -9,6 +9,11 @@ namespace CTCT.Services
     public interface IBaseService
     {
         /// <summary>
+        /// User service context
+        /// </summary>
+        IUserServiceContext UserServiceContext { get; }
+
+        /// <summary>
         /// Returns the REST client object.
         /// </summary>
         IRestClient RestClient { get; }

@@ -45,6 +45,6 @@ namespace CTCT.Components.EventSpot
         /// The value
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
-        public string Value { get; set; }
+        public string Value { get; set; } 
     }
 }

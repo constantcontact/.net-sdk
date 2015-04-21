@@ -16,229 +16,261 @@ namespace CTCT.Services
     public class ActivityService : BaseService, IActivityService
     {
         /// <summary>
+        /// Activity service constructor
+        /// </summary>
+        /// <param name="userServiceContext">User service context</param>
+        public ActivityService(IUserServiceContext userServiceContext)
+            : base(userServiceContext)
+        {
+        }
+
+        /// <summary>
         /// Get a list of activities.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <returns>Returns the list of activities.</returns>
-        public IList<Activity> GetActivities(string accessToken, string apiKey)
+        public IList<Activity> GetActivities()
         {
-            IList<Activity> activities = new List<Activity>();
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.Activities);
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.Activities);
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var activities = response.Get<IList<Activity>>();
+                return activities;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                activities = response.Get<IList<Activity>>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return activities;
         }
 
         /// <summary>
         /// Get an activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="activityId">The activity identification.</param>
         /// <returns>Returns the activity identified by its id.</returns>
-        public Activity GetActivity(string accessToken, string apiKey, string activityId)
+        public Activity GetActivity(string activityId)
         {
-            Activity activity = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, String.Format(Config.Endpoints.Activity, activityId));
-            CUrlResponse response = RestClient.Get(url, accessToken, apiKey);
-
-            if (response.IsError)
+            if (string.IsNullOrEmpty(activityId))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
             }
 
-            if (response.HasData)
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Activity, activityId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
             {
-                activity = response.Get<Activity>();
+                var activity = response.Get<Activity>();
+                return activity;
             }
-
-            return activity;
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
         }
 
         /// <summary>
         /// Create an Add Contacts Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="addContacts">AddContacts object.</param>
         /// <returns>Returns an Activity object.</returns>
-        public Activity CreateAddContactsActivity(string accessToken, string apiKey, AddContacts addContacts)
+        public Activity CreateAddContactsActivity(AddContacts addContacts)
         {
-            Activity activity = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.AddContactsActivity);
+            if (addContacts == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.AddContactsActivity);
             string json = addContacts.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var activity = response.Get<Activity>();
+                return activity;
             }
-
-            if(response.HasData)
+            catch (Exception ex)
             {
-                activity = response.Get<Activity>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return activity;
         }
 
         /// <summary>
         /// Create a Clear Lists Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="lists">Array of list id's to be cleared.</param>
         /// <returns>Returns an Activity object.</returns>
-        public Activity AddClearListsActivity(string accessToken, string apiKey, IList<string> lists)
+        public Activity AddClearListsActivity(IList<string> lists)
         {
-            Activity activity = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ClearListsActivity);
+            if (lists == null || lists.Count.Equals(0))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ClearListsActivity);
 
             ClearContactList clearContact = new ClearContactList() { Lists = lists };
             string json = clearContact.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var activity = response.Get<Activity>();
+                return activity;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                activity = response.Get<Activity>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return activity;
         }
 
         /// <summary>
         /// Create an Export Contacts Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="exportContacts">Export contacts object.</param>
         /// <returns>Returns an Activity object.</returns>
-        public Activity AddExportContactsActivity(string accessToken, string apiKey, ExportContacts exportContacts)
+        public Activity AddExportContactsActivity(ExportContacts exportContacts)
         {
-            Activity activity = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.ExportContactsActivity);
+            if (exportContacts == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.ExportContactsActivity);
             string json = exportContacts.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var activity = response.Get<Activity>();
+                return activity;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                activity = response.Get<Activity>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return activity;
         }
 
         /// <summary>
         /// Create a Remove Contacts From Lists Activity.
         /// </summary>
-        /// <param name="accessToken">Constant Contact OAuth2 access token.</param>
-        /// <param name="apiKey">The API key for the application</param>
         /// <param name="emailAddresses">List of email addresses.</param>
         /// <param name="lists">List of id's.</param>
         /// <returns>Returns an Activity object.</returns>
-        public Activity AddRemoveContactsFromListsActivity(string accessToken, string apiKey, IList<string> emailAddresses, IList<string> lists)
+        public Activity AddRemoveContactsFromListsActivity(IList<string> emailAddresses, IList<string> lists)
         {
-            Activity activity = null;
-            string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.RemoveFromListsActivity);
+            if (emailAddresses == null || lists == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.RemoveFromListsActivity);
             RemoveContact removeContact = new RemoveContact()
             {
-                ImportData = new List<ImportEmailAddress>() { new ImportEmailAddress() { EmailAddresses = emailAddresses } }, 
+                ImportData = new List<ImportEmailAddress>() { new ImportEmailAddress() { EmailAddresses = emailAddresses } },
                 Lists = lists
             };
 
             string json = removeContact.ToJSON();
-            CUrlResponse response = RestClient.Post(url, accessToken, apiKey, json);
-
-            if (response.IsError)
+            RawApiResponse response = RestClient.Post(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
+            try
             {
-                throw new CtctException(response.GetErrorMessage());
+                var activity = response.Get<Activity>();
+                return activity;
             }
-
-            if (response.HasData)
+            catch (Exception ex)
             {
-                activity = response.Get<Activity>();
+                throw new CtctException(ex.Message, ex);
             }
-
-            return activity;
         }
 
-		/// <summary>
-		///  Create an Add Contacts Multipart Activity
-		/// </summary>
-		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>>
-		/// <param name="fileName">The file name to be imported</param>
-		/// <param name="fileContent">The file content to be imported</param>
-		/// <param name="lists">Array of list's id</param>
-		/// <returns>Returns an Activity object.</returns>
-		public Activity AddContactstMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists)
-		{
-			Activity activity = null;
-			string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.AddContactsActivity);
-			byte[] data = MultipartBuilder.CreateMultipartContent(fileName, fileContent, lists);
-			CUrlResponse response = RestClient.PostMultipart(url, accessToken, apiKey, data);
-
-            if (response.IsError)
+        /// <summary>
+        ///  Create an Add Contacts Multipart Activity
+        /// </summary>
+        /// <param name="fileName">The file name to be imported</param>
+        /// <param name="fileContent">The file content to be imported</param>
+        /// <param name="lists">Array of list's id</param>
+        /// <returns>Returns an Activity object.</returns>
+        public Activity AddContactstMultipartActivity(string fileName, byte[] fileContent, IList<string> lists)
+        {
+            if (string.IsNullOrEmpty(fileName))
             {
-                throw new CtctException(response.GetErrorMessage());
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileNameNull);
             }
 
-            if(response.HasData)
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            string[] fileTypes = new string[4] { ".txt", ".csv", ".xls", ".xlsx" };
+
+            if (!((IList<string>)fileTypes).Contains(extension))
             {
-                activity = response.Get<Activity>();
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileTypeInvalid);
             }
 
-            return activity;
-		}
+            if (fileContent == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileNull);
+            }
 
-		/// <summary>
-		///  Create a Remove Contacts Multipart Activity
-		/// </summary>
-		/// <param name="accessToken">Constant Contact OAuth2 access token</param>
-        /// <param name="apiKey">The API key for the application</param>>
-		/// <param name="fileName">The file name to be imported</param>
-		/// <param name="fileContent">The file content to be imported</param>
-		/// <param name="lists">Array of list's id</param>
-		/// <returns>Returns an Activity object.</returns>
-		public Activity RemoveContactsMultipartActivity(string accessToken, string apiKey, string fileName, byte[] fileContent, IList<string> lists)
-		{
-			Activity activity = null;
-			string url = String.Concat(Config.Endpoints.BaseUrl, Config.Endpoints.RemoveFromListsActivity);
-			byte[] data = MultipartBuilder.CreateMultipartContent(fileName, fileContent, lists);
-			CUrlResponse response = RestClient.PostMultipart(url, accessToken, apiKey, data);
+            if (lists == null || lists.Count.Equals(0))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
+            }
 
-			if (response.IsError)
-			{
-			    throw new CtctException(response.GetErrorMessage());
-			}
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.AddContactsActivity);
+            byte[] data = MultipartBuilder.CreateMultipartContent(fileName, fileContent, lists);
+            RawApiResponse response = RestClient.PostMultipart(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, data);
+            try
+            {
+                var activity = response.Get<Activity>();
+                return activity;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
+        }
 
-			if(response.HasData)
-			{
-			    activity = response.Get<Activity>();
-			}
+        /// <summary>
+        ///  Create a Remove Contacts Multipart Activity
+        /// </summary>
+        /// <param name="fileName">The file name to be imported</param>
+        /// <param name="fileContent">The file content to be imported</param>
+        /// <param name="lists">Array of list's id</param>
+        /// <returns>Returns an Activity object.</returns>
+        public Activity RemoveContactsMultipartActivity(string fileName, byte[] fileContent, IList<string> lists)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileNameNull);
+            }
 
-			return activity;
-		}
+            var extension = Path.GetExtension(fileName).ToLowerInvariant();
+            string[] fileTypes = new string[4] { ".txt", ".csv", ".xls", ".xlsx" };
+
+            if (!((IList<string>)fileTypes).Contains(extension))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileTypeInvalid);
+            }
+
+            if (fileContent == null)
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.FileNull);
+            }
+
+            if (lists == null || lists.Count.Equals(0))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.ActivityOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.RemoveFromListsActivity);
+            byte[] data = MultipartBuilder.CreateMultipartContent(fileName, fileContent, lists);
+            RawApiResponse response = RestClient.PostMultipart(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, data);
+            try
+            {
+                var activity = response.Get<Activity>();
+                return activity;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            }
+        }
     }
 }

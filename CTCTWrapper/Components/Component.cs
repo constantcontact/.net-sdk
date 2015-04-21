@@ -21,8 +21,7 @@ namespace CTCT.Components
         /// <typeparam name="T">The class type to be deserialized.</typeparam>
         /// <param name="json">The serialization string.</param>
         /// <returns>Returns the object deserialized from the JSON string.</returns>
-        public static T FromJSON<T>(string json)
-            where T : class
+        public static T FromJSON<T>(string json) where T : class
         {
             T obj = null;
             using (MemoryStream ms = new MemoryStream())

@@ -18,10 +18,5 @@ namespace CTCT.Components.Tracking
         /// Gets or sets the pagination array returned from a tracking endpoint.
         /// </summary>
         public int Next { get; set; }
-
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        public TrackingActivity() { }
     }
 }

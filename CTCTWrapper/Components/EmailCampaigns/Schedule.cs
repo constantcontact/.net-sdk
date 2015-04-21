@@ -32,10 +32,5 @@ namespace CTCT.Components.EmailCampaigns
             get { return this.ScheduledDateString.FromISO8601String(); }
             set { this.ScheduledDateString = value.ToISO8601String(); }
         }
-
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public Schedule() { }
     }
 }

@@ -22,7 +22,7 @@ namespace CTCT.Components.Contacts
         /// Value of the custom field.
         /// </summary>
         [DataMember(Name = "value", EmitDefaultValue = false)]
-        public string Value { get; set; }
+        public string Value { get; set; } 
     }
 
     /// <summary>
@@ -89,6 +89,6 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Custom field 15.
         /// </summary>
-        public const string CustomField15 = "CustomField15";
+        public const string CustomField15 = "CustomField15"; 
     }
 }

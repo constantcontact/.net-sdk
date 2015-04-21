@@ -72,6 +72,6 @@ namespace CTCT.Components.EventSpot
         /// Discount scope
         /// </summary>
         [DataMember(Name = "discount_scope", EmitDefaultValue = false)]
-        public string DiscountScope { get; set; }
+        public string DiscountScope { get; set; } 
     }
 }

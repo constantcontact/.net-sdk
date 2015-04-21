@@ -15,36 +15,60 @@ namespace CTCT.Components.Activities
     [Serializable]
     public class AddContacts : Component
     {
+        [DataMember(Name = "import_data", EmitDefaultValue = false)]
+        private List<AddContactsImportData> _ImportData = new List<AddContactsImportData>();
+
+        [DataMember(Name = "lists", EmitDefaultValue = false)]
+        private List<string> _Lists = new List<string>();
+
+        [DataMember(Name = "column_names")]
+        private List<string> _ColumnNames = new List<string>();
+
         /// <summary>
         /// Activity id.
         /// </summary>
         [DataMember(Name = "id", EmitDefaultValue = false)]
         public string Id { get; set; }
+
         /// <summary>
         /// Gets or sets the list of imported data.
         /// </summary>
-        [DataMember(Name = "import_data", EmitDefaultValue = false)]
-        public IList<AddContactsImportData> ImportData { get; set; }
+        public IList<AddContactsImportData> ImportData
+        {
+            get { return _ImportData; }
+            set { _ImportData = value == null ? null : value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the list of id's to add.
         /// </summary>
-        [DataMember(Name = "lists", EmitDefaultValue = false)]
-        public IList<string> Lists { get; set; }
+        public IList<string> Lists
+        {
+            get { return _Lists; }
+            set { _Lists = value == null ? null : value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the list of column names.
         /// </summary>
-        [DataMember(Name = "column_names")]
-        public IList<string> ColumnNames { get; set; }
+        public IList<string> ColumnNames
+        {
+            get { return _ColumnNames; }
+            set { _ColumnNames = value == null ? null : value.ToList(); }
+        }
+
         /// <summary>
         /// Gets or sets the contact count that were processed by this activity.
         /// </summary>
         [DataMember(Name = "contact_count", EmitDefaultValue = false)]
         public string ContactCount { get; set; }
+
         /// <summary>
         /// Gets or sets the activity process error count.
         /// </summary>
         [DataMember(Name = "error_count", EmitDefaultValue = false)]
         public string ErrorCount { get; set; }
+
         /// <summary>
         /// Activity type.
         /// </summary>
@@ -68,34 +92,34 @@ namespace CTCT.Components.Activities
                 {
                     this.ColumnNames = new List<string>();
                     // Attempt to determine the column names being used if they are not provided
-                    this.ColumnNames.Add(Config.ActivitiesColumns.Email);
+                    this.ColumnNames.Add(Settings.ActivitiesColumns.Default.Email);
                     if (!String.IsNullOrEmpty(contacts[0].FirstName))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.FirstName);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.FirstName);
                     }
                     if (!String.IsNullOrEmpty(contacts[0].MiddleName))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.MiddleName);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.MiddleName);
                     }
                     if (!String.IsNullOrEmpty(contacts[0].LastName))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.LastName);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.LastName);
                     }
                     if (!String.IsNullOrEmpty(contacts[0].JobTitle))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.JobTitle);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.JobTitle);
                     }
                     if (!String.IsNullOrEmpty(contacts[0].CompanyName))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.CompanyName);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.CompanyName);
                     }
                     if (!String.IsNullOrEmpty(contacts[0].WorkPhone))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.WorkPhone);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.WorkPhone);
                     }
                     if (!String.IsNullOrEmpty(contacts[0].HomePhone))
                     {
-                        this.ColumnNames.Add(Config.ActivitiesColumns.HomePhone);
+                        this.ColumnNames.Add(Settings.ActivitiesColumns.Default.HomePhone);
                     }
 
                     // Addresses
@@ -104,35 +128,35 @@ namespace CTCT.Components.Activities
                     {
                         if (!String.IsNullOrEmpty(addr.Line1))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.Address1);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.Address1);
                         }
                         if (!String.IsNullOrEmpty(addr.Line2))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.Address2);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.Address2);
                         }
                         if (!String.IsNullOrEmpty(addr.Line3))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.Address3);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.Address3);
                         }
                         if (!String.IsNullOrEmpty(addr.City))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.City);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.City);
                         }
                         if (!String.IsNullOrEmpty(addr.StateCode))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.State);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.State);
                         }
                         if (!String.IsNullOrEmpty(addr.CountryCode))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.Country);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.Country);
                         }
                         if (!String.IsNullOrEmpty(addr.PostalCode))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.PostalCode);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.PostalCode);
                         }
                         if (!String.IsNullOrEmpty(addr.SubPostalCode))
                         {
-                            this.ColumnNames.Add(Config.ActivitiesColumns.SubPostalCode);
+                            this.ColumnNames.Add(Settings.ActivitiesColumns.Default.SubPostalCode);
                         }
                     }
 

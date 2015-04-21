@@ -77,11 +77,6 @@ namespace CTCT.Components.EmailCampaigns
         /// Gets or sets the subscribe link text.
         /// </summary>
         [DataMember(Name = "subscribe_link_text", EmitDefaultValue = false)]
-        public string SubscribeLinkText { get; set; }
-
-        /// <summary>
-        /// Class constructor.
-        /// </summary>
-        public MessageFooter() { }
+        public string SubscribeLinkText { get; set; } 
     }
 }

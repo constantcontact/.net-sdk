@@ -63,7 +63,7 @@ namespace CTCT.Components.EventSpot
         /// Has restricted access
         /// </summary>
         [DataMember(Name = "has_restricted_access", EmitDefaultValue = true)]
-        public bool HasRestrictedAccess { get; set; }
+        public bool HasRestrictedAccess { get; set; } 
     }
 
     /// <summary>

@@ -14,19 +14,17 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class EventItem : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public EventItem()
-        {
-            this.Attributes = new List<Attribute>();
-        }
+        [DataMember(Name = "attributes", EmitDefaultValue = false)]
+        private List<Attribute> _Attributes = new List<Attribute>();
 
         /// <summary>
         /// An array of item attributes and options 
         /// </summary>
-        [DataMember(Name = "attributes", EmitDefaultValue = false)]
-        public IList<Attribute> Attributes { get; private set; }
+        public IList<Attribute> Attributes 
+        {
+            get { return _Attributes; }
+            private set { _Attributes = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// Number of items available for sale, displayed on the registration page if show_quantity_available = true. 

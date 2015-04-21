@@ -14,13 +14,8 @@ namespace CTCT.Components.EventSpot
     [Serializable]
     public class Promocode : Component
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public Promocode()
-        {
-            this.FeeIds = new List<string>();
-        }
+        [DataMember(Name = "fee_ids", EmitDefaultValue = false)]
+        private List<string> _FeeIds = new List<string>();
 
         /// <summary>
         /// Name of the promotional code visible to registrants, between 4 - 12 characters, cannot contain spaces or special character (_ is OK); each code_name must be unique 
@@ -94,8 +89,11 @@ namespace CTCT.Components.EventSpot
         /// <summary>
         /// Identifies the fees to which the promocode applies; 
         /// </summary>
-        [DataMember(Name = "fee_ids", EmitDefaultValue = false)]
-        public IList<string> FeeIds { get; set; }
+        public IList<string> FeeIds
+        {
+            get { return _FeeIds; }
+            set { _FeeIds = value == null ? null : value.ToList(); }
+        }
 
         /// <summary>
         /// Unique ID for the event promotional code 
