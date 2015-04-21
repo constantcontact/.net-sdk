@@ -142,7 +142,6 @@
     <Compile Include="Components\Tracking\SendActivity.cs" />
     <Compile Include="Components\Tracking\TrackingActivity.cs" />
     <Compile Include="Components\Tracking\TrackingSummary.cs" />
-    <Compile Include="ConstantContact.cs" />
     <Compile Include="Exceptions\CtctException.cs" />
     <Compile Include="Exceptions\IllegalArgumentException.cs" />
     <Compile Include="Exceptions\OAuth2Exception.cs" />
