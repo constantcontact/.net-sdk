@@ -17,6 +17,13 @@ namespace CTCT.Components.AccountService
         private List<OrganizationAddresses> _OrganizationAddresses = new List<OrganizationAddresses>();
 
         /// <summary>
+        /// URL to the logo associated with the account if the account owner has provided one. 
+        /// No value is returned if user has not added a logo. 
+        /// </summary>
+        [DataMember(Name = "company_logo", EmitDefaultValue = false)]
+        public string CompanyLogo { get; set; }
+
+        /// <summary>
         /// Standard 2 letter ISO 3166-1 code of the country associated with the account owner 
         /// </summary>
         [DataMember(Name = "country_code", EmitDefaultValue = false)]
