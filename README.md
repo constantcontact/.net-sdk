@@ -59,15 +59,16 @@ protected void ButtonLogin_Click(object sender, EventArgs e)
    OAuth.AuthorizeFromWebApplication(HttpContext.Current, "ok");
 }
 ```
+### 3) Create a service object, for example create a `ContactService` object
 
-### 3a) Create a service object directly, for example create a `ContactService` object
+#### 3.1) Create a service object directly
 
 ```csharp
 IUserServiceContext userServiceContext = new UserServiceContext(_apiKey, _accessToken);
 ContactService contactService = new ContactService(userServiceContext);
 ```
 
-### 3b) Create a service object using the `ConstantContactFactory`, for example create a `ContactService` object
+#### 3.2) Create a service object using the `ConstantContactFactory`
 
 ```csharp
 IUserServiceContext userServiceContext = new UserServiceContext(_apiKey, _accessToken);
