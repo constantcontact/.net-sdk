@@ -60,10 +60,19 @@ protected void ButtonLogin_Click(object sender, EventArgs e)
 }
 ```
 
-### 3) Create a `ConstantContact` object
+### 3a) Create a service object directly, for example create a `ContactService` object
 
 ```csharp
-ConstantContact constantContact = new ConstantContact(_apiKey, _accessToken);
+IUserServiceContext userServiceContext = new UserServiceContext(_apiKey, _accessToken);
+ContactService contactService = new ContactService(userServiceContext);
+```
+
+### 3b) Create a service object using the `ConstantContactFactory`, for example create a `ContactService` object
+
+```csharp
+IUserServiceContext userServiceContext = new UserServiceContext(_apiKey, _accessToken);
+ConstantContactFactory serviceFactory = new ConstantContactFactory(userServiceContext);
+ContactService contactService = serviceFactory.CreateContactService();
 ```
 
 ### 4) Use the SDK via the created object 
@@ -72,5 +81,5 @@ Example of getting a contact:
 
 ```csharp
 int contactId = 12345;
-Contact contact = constantContact.GetContact(contactId);
+Contact contact = contactService.GetContact(contactId);
 ```
