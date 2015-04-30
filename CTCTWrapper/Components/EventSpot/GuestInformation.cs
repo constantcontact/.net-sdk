@@ -3,27 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
-using CTCT.Util;
 
 namespace CTCT.Components.EventSpot
 {
     /// <summary>
-    /// Guest class
+    /// Guest information
     /// </summary>
     [DataContract]
     [Serializable]
-    public class Guest : Component
+    public class GuestInformation : Component
     {
         /// <summary>
-        /// Unique ID assigned to a guest 
+        /// Guest Id
         /// </summary>
         [DataMember(Name = "guest_id", EmitDefaultValue = false)]
         public string GuestId { get; set; }
 
         /// <summary>
-        /// Field sections displayed 
+        /// Guest section
         /// </summary>
-        [DataMember(Name = "guests_info", EmitDefaultValue = false)]
-        public string GuestsInfo { get; set; } 
+        [DataMember(Name = "guest_section", EmitDefaultValue = false)]
+        public Section GuestSection { get; set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public GuestInformation()
+        {
+            this.GuestSection = new Section();
+        }
     }
 }
