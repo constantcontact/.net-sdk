@@ -16,6 +16,12 @@ In order to use the Constant Contact SDK you have to follow these steps:
 </appSettings>
 ```
 
+## Documentation
+
+SDK Documentation is hosted at http://constantcontact.github.io/.net-sdk
+
+API Documentation is located at http://developer.constantcontact.com/docs/developer-guides/api-documentation-index.html
+
 ## Usage
 
 ### 1) Include namespaces
