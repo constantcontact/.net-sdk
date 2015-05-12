@@ -17,7 +17,8 @@ namespace CTCT.Components.AccountService
         private List<OrganizationAddresses> _OrganizationAddresses = new List<OrganizationAddresses>();
 
         /// <summary>
-        /// Company logo
+        /// URL to the logo associated with the account if the account owner has provided one. 
+        /// No value is returned if user has not added a logo. 
         /// </summary>
         [DataMember(Name = "company_logo", EmitDefaultValue = false)]
         public string CompanyLogo { get; set; }

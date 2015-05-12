@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\EventSpot\GuestInformation.cs" />
     <Compile Include="Settings\ActivitiesColumns.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -111,7 +110,7 @@
     <Compile Include="Components\EventSpot\EventItem.cs" />
     <Compile Include="Components\EventSpot\Fee.cs" />
     <Compile Include="Components\EventSpot\Field.cs" />
-    <Compile Include="Components\EventSpot\Guests.cs" />
+    <Compile Include="Components\EventSpot\Guest.cs" />
     <Compile Include="Components\EventSpot\Order.cs" />
     <Compile Include="Components\EventSpot\PaymentPromoCode.cs" />
     <Compile Include="Components\EventSpot\PaymentSummary.cs" />
@@ -143,7 +142,6 @@
     <Compile Include="Components\Tracking\SendActivity.cs" />
     <Compile Include="Components\Tracking\TrackingActivity.cs" />
     <Compile Include="Components\Tracking\TrackingSummary.cs" />
-    <Compile Include="ConstantContact.cs" />
     <Compile Include="Exceptions\CtctException.cs" />
     <Compile Include="Exceptions\IllegalArgumentException.cs" />
     <Compile Include="Exceptions\OAuth2Exception.cs" />

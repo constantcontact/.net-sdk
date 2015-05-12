@@ -47,9 +47,6 @@ namespace CTCT.Services
         /// <returns>The updated event</returns>
         IndividualEvent PatchEventSpotStatus(string eventId, EventStatus eventStatus);
 
-
-
-
         /// <summary>
         /// Retrieve all existing fees for an event
         /// </summary>
@@ -89,11 +86,6 @@ namespace CTCT.Services
         /// <param name="eventFee">EventFee object</param>
         /// <returns>The newly created EventFee</returns>
         EventFee PostEventFee(string eventId, EventFee eventFee);
-
-
-
-
-
 
         /// <summary>
         /// Retrieve all existing promo codes for an event
@@ -135,11 +127,6 @@ namespace CTCT.Services
         /// <returns>True if successfuly deleted</returns>
         bool DeletePromocode(string eventId, string promocodeId);
 
-
-
-
-
-
         /// <summary>
         /// Retrieve detailed information for a specific event registrant
         /// </summary>
@@ -155,12 +142,6 @@ namespace CTCT.Services
         /// <returns>ResultSet containing a results array of Registrant</returns>
         ResultSet<Registrant> GetAllRegistrants(string eventId);
 
-
-
-
-
-
-
         /// <summary>
         /// Retrieve all existing items associated with an event
         /// </summary>
@@ -175,7 +156,6 @@ namespace CTCT.Services
         /// <param name="itemId">Eventitem id</param>
         /// <returns>EventItem object</returns>
         EventItem GetEventItem(string eventId, string itemId);
-
 
         /// <summary>
         ///  Update a specific event item
@@ -201,12 +181,6 @@ namespace CTCT.Services
         /// <param name="itemId">EventItem id</param>
         /// <returns>True if successfuly deleted</returns>
         bool DeleteEventItem(string eventId, string itemId);
-
-
-
-
-
-
 
         /// <summary>
         /// Create an attributes for an item

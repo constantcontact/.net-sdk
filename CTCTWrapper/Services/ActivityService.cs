@@ -162,9 +162,16 @@ namespace CTCT.Services
             }
 
             string url = String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.RemoveFromListsActivity);
+
+            IList<ImportEmailAddress> emails = new List<ImportEmailAddress>();
+            foreach (string email in emailAddresses)
+            {
+                emails.Add(new ImportEmailAddress() { EmailAddresses = new List<String>() { email } });
+            }
+
             RemoveContact removeContact = new RemoveContact()
             {
-                ImportData = new List<ImportEmailAddress>() { new ImportEmailAddress() { EmailAddresses = emailAddresses } },
+                ImportData = emails,
                 Lists = lists
             };
 

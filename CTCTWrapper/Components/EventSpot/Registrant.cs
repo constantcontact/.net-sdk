@@ -103,6 +103,12 @@ namespace CTCT.Components.EventSpot
         public string RegistrationStatus { get; set; }
 
         /// <summary>
+        /// Registration status
+        /// </summary>
+        [DataMember(Name = "attendance_status", EmitDefaultValue = false)]
+        public string AttendanceStatus { get; set; }
+
+        /// <summary>
         /// String representation of update date
         /// </summary>
         [DataMember(Name = "updated_date", EmitDefaultValue = false)]

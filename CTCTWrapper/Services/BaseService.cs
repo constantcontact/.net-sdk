@@ -103,29 +103,6 @@ namespace CTCT.Services
             return sb.ToString();
         }
 
-        ///// <summary>
-        ///// Creates the URL for API access.
-        ///// </summary>
-        ///// <param name="baseUrl">Base url</param>
-        ///// <param name="parts">Url parts</param>
-        ///// <returns>The composed url</returns>
-        //public static string ConstructUrl(string baseUrl, params string[] parts)
-        //{
-        //    var sb = new StringBuilder();
-        //    sb.Append(baseUrl.TrimEnd('/'));
-
-        //    foreach (var item in parts)
-        //    {
-        //        var old = sb.ToString().TrimEnd('/');
-        //        sb.Clear();
-        //        sb.Append(old);
-
-        //        var part = item.Trim('/');
-        //        sb.Append("/");
-        //        sb.Append(part);
-        //    }
-        //    return sb.ToString(); ;
-        //}
     }
 
     /// <summary>
