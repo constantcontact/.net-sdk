@@ -85,12 +85,6 @@ namespace CTCT.Components.EventSpot
         public string LastName { get; set; }
 
         /// <summary>
-        /// Guest count
-        /// </summary>
-        [DataMember(Name = "guest_count", EmitDefaultValue = true)]
-        public int GuestCount { get; set; }
-
-        /// <summary>
         /// Payment status
         /// </summary>
         [DataMember(Name = "payment_status", EmitDefaultValue = false)]
@@ -101,12 +95,6 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "registration_status", EmitDefaultValue = false)]
         public string RegistrationStatus { get; set; }
-
-        /// <summary>
-        /// Registration status
-        /// </summary>
-        [DataMember(Name = "attendance_status", EmitDefaultValue = false)]
-        public string AttendanceStatus { get; set; }
 
         /// <summary>
         /// String representation of update date
