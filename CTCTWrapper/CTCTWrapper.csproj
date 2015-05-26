@@ -47,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Activities\StatusReport.cs" />
     <Compile Include="Components\EventSpot\GuestInformation.cs" />
     <Compile Include="Components\EventSpot\Guests.cs" />
+    <Compile Include="Services\BulkStatusService.cs" />
+    <Compile Include="Services\Interfaces\IBulkStatusService.cs" />
     <Compile Include="Settings\ActivitiesColumns.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
