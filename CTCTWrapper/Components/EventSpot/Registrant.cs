@@ -17,8 +17,12 @@ namespace CTCT.Components.EventSpot
         [DataMember(Name = "sections", EmitDefaultValue = false)]
         private List<Section> _Sections = new List<Section>();
 
-        [DataMember(Name = "guest_sections", EmitDefaultValue = false)]
-        private List<Guest> _GuestSections = new List<Guest>();
+        /// <summary>
+        /// Contains all the guest information fields and values, 
+        /// entered by the registrant on the event registration page.
+        /// </summary>
+        [DataMember(Name = "guests", EmitDefaultValue = false)]
+        public Guests Guests { get; set; }
 
         /// <summary>
         /// Id
@@ -81,12 +85,6 @@ namespace CTCT.Components.EventSpot
         public string LastName { get; set; }
 
         /// <summary>
-        /// Guest count
-        /// </summary>
-        [DataMember(Name = "guest_count", EmitDefaultValue = true)]
-        public int GuestCount { get; set; }
-
-        /// <summary>
         /// Payment status
         /// </summary>
         [DataMember(Name = "payment_status", EmitDefaultValue = false)]
@@ -97,12 +95,6 @@ namespace CTCT.Components.EventSpot
         /// </summary>
         [DataMember(Name = "registration_status", EmitDefaultValue = false)]
         public string RegistrationStatus { get; set; }
-
-        /// <summary>
-        /// Registration status
-        /// </summary>
-        [DataMember(Name = "attendance_status", EmitDefaultValue = false)]
-        public string AttendanceStatus { get; set; }
 
         /// <summary>
         /// String representation of update date
@@ -120,20 +112,12 @@ namespace CTCT.Components.EventSpot
         }
 
         /// <summary>
-        /// An array of guest properties 
-        /// </summary>
-        public IList<Guest> GuestSections 
-        {
-            get { return _GuestSections; }
-            set { _GuestSections = value == null ? null : value.ToList(); }
-        }
-
-        /// <summary>
         /// Constructor
         /// </summary>
         public Registrant()
         {
             this.PaymentSummary = new PaymentSummary();
+            this.Guests = new Guests();
         }
     }
 }

@@ -31,21 +31,6 @@ namespace CTCT.Components.EventSpot
             get { return _Fields; }
             set { _Fields = value == null ? null : value.ToList(); }
         }
-
-        /// <summary>
-        /// String representation of field type
-        /// </summary>
-        [DataMember(Name = "field_type", EmitDefaultValue = false)]
-        private string FieldTypeString { get; set; }
-
-        /// <summary>
-        /// Type of the value
-        /// </summary>
-        public FieldType FieldType
-        {
-            get { return this.FieldTypeString.ToEnum<FieldType>(); }
-            set { this.FieldTypeString = value.ToString(); }
-        }
     }
 
     /// <summary>

@@ -273,18 +273,6 @@ namespace CTCT.Components.EmailCampaigns
         /// </summary>
         [DataMember(Name = "is_visible_in_ui", EmitDefaultValue = false)]
         public bool? IsVisibleInUI { get; set; }
-
-        /// <summary>
-        /// Gets or sets the archive status.
-        /// </summary>
-        [DataMember(Name = "archive_status", EmitDefaultValue = false)]
-        public string ArchiveStatus { get; set; }
-
-        /// <summary>
-        /// Gets or sets the archive URL.
-        /// </summary>
-        [DataMember(Name = "archive_url", EmitDefaultValue = false)]
-        public string ArchiveURL { get; set; }
     }
 
     /// <summary>

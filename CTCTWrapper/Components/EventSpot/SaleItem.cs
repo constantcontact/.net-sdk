@@ -18,7 +18,7 @@ namespace CTCT.Components.EventSpot
         /// Amount paid
         /// </summary>
         [DataMember(Name = "amount", EmitDefaultValue = true)]
-        public float Amount { get; set; }
+        public double Amount { get; set; }
 
         /// <summary>
         /// Fee ID 

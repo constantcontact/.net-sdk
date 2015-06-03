@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
+using CTCT.Util;
 
 namespace CTCT.Components.Contacts
 {
@@ -28,6 +29,12 @@ namespace CTCT.Components.Contacts
 
         [DataMember(Name = "lists")]
         private List<ContactList> _Lists = new List<ContactList>();
+
+        [DataMember(Name = "created_date", EmitDefaultValue = false)]
+        private string DateCreatedString { get; set; }
+
+        [DataMember(Name = "modified_date", EmitDefaultValue = false)]
+        private string DateModifiedString { get; set; }
 
         /// <summary>
         /// Gets or sets the id.
@@ -143,14 +150,20 @@ namespace CTCT.Components.Contacts
         /// <summary>
         /// Gets or sets the date and time the contact was added
         /// </summary>
-        [DataMember(Name = "created_date", EmitDefaultValue = false)]
-        public string DateCreated { get; set; }
+        public DateTime? DateCreated
+        {
+            get { return this.DateCreatedString.FromISO8601String(); }
+            set { this.DateCreatedString = value.ToISO8601String(); }
+        }
 
         /// <summary>
         /// Gets or sets the date and time contact's information was last modified
         /// </summary>
-        [DataMember(Name = "modified_date", EmitDefaultValue = false)]
-        public string DateModified { get; set; }
+        public DateTime? DateModified
+        {
+            get { return this.DateModifiedString.FromISO8601String(); }
+            set { this.DateModifiedString = value.ToISO8601String(); }
+        }
 
         /// <summary>
         /// Gets or sets the list of custom fields.

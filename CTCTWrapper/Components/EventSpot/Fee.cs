@@ -42,7 +42,7 @@ namespace CTCT.Components.EventSpot
         /// Amount
         /// </summary>
         [DataMember(Name = "amount", EmitDefaultValue = true)]
-        public float Amount { get; set; }
+        public double Amount { get; set; }
 
         /// <summary>
         /// Fee period type

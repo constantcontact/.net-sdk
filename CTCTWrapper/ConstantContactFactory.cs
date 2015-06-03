@@ -111,5 +111,14 @@ namespace CTCT
         {
             return new MyLibraryService(userServiceContext);
         }
+
+        /// <summary>
+        /// Create a bulk status service
+        /// </summary>
+        /// <returns>IBulkStatusService</returns>
+        public IBulkStatusService CreateBulkStatusService()
+        {
+            return new BulkStatusService(userServiceContext);
+        }
     }
 }
