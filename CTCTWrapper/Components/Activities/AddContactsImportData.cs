@@ -66,6 +66,26 @@ namespace CTCT.Components.Activities
         public string HomePhone { get; set; }
 
         /// <summary>
+        /// Birthday day
+        /// </summary>
+        [DataMember(Name = "birthday_day", EmitDefaultValue = false)]
+        public string BirthdayDay { get; set; }
+
+        /// <summary>
+        /// Birthday month
+        /// </summary>
+        [DataMember(Name = "birthday_month", EmitDefaultValue = false)]
+        public string BirthdayMonth { get; set; }
+
+        /// <summary>
+        /// Anniversary
+        /// Accepts the following formats MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, M-DD-YYYY. 
+        /// The year must be greater than 1900 and cannot be more than 10 years in the future (with respect to the current year
+        /// </summary>
+        [DataMember(Name = "anniversary", EmitDefaultValue = false)]
+        public string Anniversary { get; set; }
+
+        /// <summary>
         /// Gets or sets the email addresses list.
         /// </summary>
         public IList<string> EmailAddresses 
