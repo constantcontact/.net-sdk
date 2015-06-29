@@ -38,6 +38,13 @@ using CTCT.Exceptions;
 
 ### 2) Get the access token
 
+#### 2.0) If the access token was already obtained, you may set the API Key and token like this. NOT ideal if you want to access multiple/variable Constant Contact accounts.
+
+```csharp
+private string _apiKey = "xxxxxxxxx"; 
+private string _accessToken = "xxxx-xxxxx-xxxxx-xxxx"; 
+```
+
 #### 2.1) For windows forms
 
 ```csharp
@@ -46,7 +53,7 @@ _accessToken = OAuth.AuthenticateFromWinProgram(ref state);
 
 #### 2.2) For web forms
 
-(This is just an example, the login actions is done at a button click)
+(This will require the user to grant access in a browser window.)
 
 ```csharp
 protected void Page_Load(object sender, EventArgs e)
@@ -70,14 +77,14 @@ protected void ButtonLogin_Click(object sender, EventArgs e)
 #### 3.1) Create a service object directly
 
 ```csharp
-IUserServiceContext userServiceContext = new UserServiceContext(_apiKey, _accessToken);
+IUserServiceContext userServiceContext = new UserServiceContext(_accessToken, _apiKey);
 ContactService contactService = new ContactService(userServiceContext);
 ```
 
 #### 3.2) Create a service object using the `ConstantContactFactory`
 
 ```csharp
-IUserServiceContext userServiceContext = new UserServiceContext(_apiKey, _accessToken);
+IUserServiceContext userServiceContext = new UserServiceContext(_accessToken, _apiKey);
 ConstantContactFactory serviceFactory = new ConstantContactFactory(userServiceContext);
 ContactService contactService = serviceFactory.CreateContactService();
 ```
