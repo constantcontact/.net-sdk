@@ -4,9 +4,9 @@ rd /s /q packages
 
 mkdir packages\lib\net40\
 
-copy ..\CTCTWrapper\bin\Release\CTCTWrapper.dll packages\lib\net40
-copy ..\CTCTWrapper\bin\Release\CTCTWrapper.pdb packages\lib\net40
-copy ..\CTCTWrapper\bin\Release\CTCTWrapper.dll.config packages\lib\net40
+copy ..\CTCTWrapper\bin\Release\CTCT.dll packages\lib\net40
+copy ..\CTCTWrapper\bin\Release\CTCT.pdb packages\lib\net40
+copy ..\CTCTWrapper\bin\Release\CTCT.dll.config packages\lib\net40
 
 nuget.exe update -self
 nuget.exe pack CTCTWrapper.nuspec -Symbols -BasePath packages
