@@ -5,7 +5,7 @@ Constant Contact .NET SDK
 
 In order to use the Constant Contact SDK you have to follow these steps:
 
-1) Download and build the project so that CTCT.dll is generated. Add the CTCT.dll library to your references project.
+1) Download and build the CTCTWrapper project so that CTCT.dll is generated. Add the CTCT.dll library to your references project.
 
 2) Place your credentials in the *app.config* or *web.config* file under the `appSettings` tag.
 
