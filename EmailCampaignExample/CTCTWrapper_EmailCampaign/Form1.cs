@@ -9,20 +9,18 @@ using CTCT.Components.EmailCampaigns;
 using System.Globalization;
 using CTCT.Exceptions;
 using System.Configuration;
+using CTCT.Services;
 
 namespace CTCTWrapper_EmailCampaign
 {
     public partial class frmEmailCampaign : Form
     {
-        #region Properties
-
-        ConstantContact _constantContact = null;
+        private IEmailCampaignService _emailCampaignService = null;
+        private ICampaignScheduleService _emailCampaginScheduleService = null;
+        private IListService _listService = null;
+        private IAccountService _accountService = null;
         private string _apiKey = string.Empty;
         private string _accessToken = string.Empty;
-
-        #endregion Properties
-
-        #region Form/Controls Events
 
         public frmEmailCampaign()
         {
@@ -47,8 +45,13 @@ namespace CTCTWrapper_EmailCampaign
                     Application.Exit();
                 }
 
-                //initialize ConstantContact member
-                _constantContact = new ConstantContact(_apiKey, _accessToken);
+                //initialize ConstantContact members
+                IUserServiceContext userServiceContext = new UserServiceContext(_accessToken, _apiKey);
+                ConstantContactFactory _constantContactFactory = new ConstantContactFactory(userServiceContext);
+                _emailCampaignService = _constantContactFactory.CreateEmailCampaignService();
+                _emailCampaginScheduleService = _constantContactFactory.CreateCampaignScheduleService();
+                _listService = _constantContactFactory.CreateListService();
+                _accountService = _constantContactFactory.CreateAccountService();
             }
             catch (OAuth2Exception oauthEx)
             {
@@ -107,7 +110,7 @@ namespace CTCTWrapper_EmailCampaign
             {
                 EmailCampaign campaign = CreateCampaignFromInputs();
 
-                EmailCampaign savedCampaign = _constantContact.AddCampaign(campaign);
+                EmailCampaign savedCampaign = _emailCampaignService.AddCampaign(campaign);
 
                 if (savedCampaign != null)
                 {
@@ -125,7 +128,7 @@ namespace CTCTWrapper_EmailCampaign
                             schedule = new Schedule() { ScheduledDate = Convert.ToDateTime(txtScheduleDate.Text.Trim()).ToUniversalTime() };
                         }
 
-                        Schedule savedSchedule = _constantContact.AddSchedule(savedCampaign.Id, schedule);
+                        Schedule savedSchedule = _emailCampaginScheduleService.AddSchedule(savedCampaign.Id, schedule);
 
                         if (savedSchedule != null)
                         {
@@ -165,10 +168,6 @@ namespace CTCTWrapper_EmailCampaign
 
             btnSave.Enabled = true;
         }
-
-        #endregion Form/Controls Events
-
-        #region Private methods
 
         /// <summary>
         /// Populate the list of campaign templates
@@ -241,7 +240,7 @@ namespace CTCTWrapper_EmailCampaign
         {
             try
             {
-                var lists = _constantContact.GetLists(null);
+                var lists = _listService.GetLists(null);
 
                 if (lists != null)
                 {
@@ -267,7 +266,7 @@ namespace CTCTWrapper_EmailCampaign
         {
             List<ItemInfo> lstItems = new List<ItemInfo>();
             try {
-                var emails = _constantContact.GetVerifiedEmailAddress();
+                var emails = _accountService.GetVerifiedEmailAddress();
 
                 if (emails != null)
                 {
@@ -606,8 +605,6 @@ namespace CTCTWrapper_EmailCampaign
 
             return sbExceptions.ToString();
         }
-
-        #endregion Private methods    
 
         private void frmEmailCampaign_FormClosing(object sender, FormClosingEventArgs e)
         {
