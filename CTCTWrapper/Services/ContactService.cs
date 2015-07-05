@@ -265,7 +265,7 @@ namespace CTCT.Services
         /// <param name="contact">Contact to be updated.</param>
         /// <param name="actionByVisitor">Set to true if action by visitor.</param>
         /// <returns>Returns the updated contact.</returns>
-        public Contact UpdateContact(Contact contact, bool actionByVisitor)
+	public Contact UpdateContact(Contact contact, bool actionByVisitor)
         {
             if (contact == null)
             {
@@ -277,7 +277,7 @@ namespace CTCT.Services
                 throw new CtctException(CTCT.Resources.Errors.UpdateId);
             }
             string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.Contact, contact.Id), actionByVisitor ? String.Format("?action_by={0}", ActionBy.ActionByVisitor) : null);
-            string json = contact.ToJSON();
+            string json = ConvertToIso(contact.ToJSON());
             RawApiResponse response = RestClient.Put(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey, json);
             try
             {
@@ -287,7 +287,27 @@ namespace CTCT.Services
             catch (Exception ex)
             {
                 throw new CtctException(ex.Message, ex);
-            }  
+            }
+        }
+
+        //http://webcache.googleusercontent.com/search?q=cache:EOjEJzHEiYQJ:https://community.constantcontact.com/t5/Developer-Support-ask-questions/400-Bad-Request-received-when-posting-campaign/td-p/143423+&cd=1&hl=en&ct=clnk&gl=ir
+        private static string ConvertToIso(string input)
+        {
+            byte[] bytes = null;
+            string result = string.Empty;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                bytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(input[i].ToString());
+                result = Encoding.GetEncoding("ISO-8859-1").GetString(bytes);
+
+                if (!string.Equals(input[i].ToString(), result))
+                {
+                    input = input.Replace(input[i], char.Parse(result));
+                }
+            }
+
+            return input;
         }
     }
 }
