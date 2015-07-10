@@ -83,9 +83,5 @@ namespace CTCT.Components.Contacts
         /// Business.
         /// </summary>
         public const string Business = "BUSINESS";
-        /// <summary>
-        /// Unknown.
-        /// </summary>
-        public const string Unknown = "UNKNOWN"; 
     }
 }
