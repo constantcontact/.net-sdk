@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using CTCT.Util;
 
 namespace CTCT.Components.Tracking
 {
@@ -16,23 +17,51 @@ namespace CTCT.Components.Tracking
 		/// <summary>
         /// Gets or sets the open date.
         /// </summary>
-        [DataMember(Name = "open_date")]
-        public string OpenDate { get; set; }
+        [DataMember(Name = "open_date", EmitDefaultValue = false)]
+        private string OpenDateString { get; set; }
+
+        public DateTime? OpenDate
+        {
+            get { return this.OpenDateString.FromISO8601String(); }
+            set { this.OpenDateString = value.ToISO8601String(); }
+        }
+
 		/// <summary>
         /// Gets or sets the unsubscribe date
         /// </summary>
-		[DataMember(Name = "unsubscribe_date")]
-        public string UnsubscribeDate { get; set; }
+		[DataMember(Name = "unsubscribe_date", EmitDefaultValue = false)]
+        private string UnsubscribeDateString { get; set; }
+
+        public DateTime? UnsubscribeDate
+        {
+            get { return this.UnsubscribeDateString.FromISO8601String(); }
+            set { this.UnsubscribeDateString = value.ToISO8601String(); }
+        }
+
 		/// <summary>
         /// Gets or sets the send date
         /// </summary>
-		[DataMember(Name = "send_date")]
-        public string SendDate { get; set; }
+        [DataMember(Name = "send_date", EmitDefaultValue = false)]
+        private string SendDateString { get; set; }
+
+        public DateTime? SendDate
+        {
+            get { return this.SendDateString.FromISO8601String(); }
+            set { this.SendDateString = value.ToISO8601String(); }
+        }
+
 		/// <summary>
         /// Gets or sets the forward date
         /// </summary>
-		[DataMember(Name = "forward_date ")]
-        public string ForwardDate { get; set; }
+        [DataMember(Name = "forward_date", EmitDefaultValue = false)]
+        private string ForwardDateString { get; set; }
+
+        public DateTime? ForwardDate
+        {
+            get { return this.ForwardDateString.FromISO8601String(); }
+            set { this.ForwardDateString = value.ToISO8601String(); }
+        }
+
 		/// <summary>
         /// Gets or sets the opens
         /// </summary>
@@ -91,12 +120,25 @@ namespace CTCT.Components.Tracking
 		/// <summary>
         /// Gets or sets the bounce date
         /// </summary>
-		[DataMember(Name = "bounce_date")]
-        public string BounceDate { get; set; }
+        [DataMember(Name = "bounce_date", EmitDefaultValue = false)]
+        private string BounceDateString { get; set; }
+
+        public DateTime? BounceDate
+        {
+            get { return this.BounceDateString.FromISO8601String(); }
+            set { this.BounceDateString = value.ToISO8601String(); }
+        }
+
 		/// <summary>
         /// Gets or sets the click date
         /// </summary>
-		[DataMember(Name = "click_date")]
-        public string ClickDate { get; set; }
+        [DataMember(Name = "click_date", EmitDefaultValue = false)]
+        private string ClickDateString { get; set; }
+
+        public DateTime? ClickDate
+        {
+            get { return this.ClickDateString.FromISO8601String(); }
+            set { this.ClickDateString = value.ToISO8601String(); }
+        }
 	}
 }
