@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CTCT" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CTCT.Settings" GeneratedClassName="Endpoints">
   <Profiles />
   <Settings>
     <Setting Name="BaseUrl" Description="API access URL." Type="System.String" Scope="Application">
@@ -163,6 +163,9 @@
     </Setting>
     <Setting Name="ItemAttribute" Description="Item Attribute Endpoint" Type="System.String" Scope="Application">
       <Value Profile="(Default)">eventspot/events/{0}/items/{1}/attributes/{2}</Value>
+    </Setting>
+    <Setting Name="EmailCampaignPreview" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">emailmarketing/campaigns/{0}/preview</Value>
     </Setting>
   </Settings>
 </SettingsFile>
