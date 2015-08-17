@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Activities\StatusReport.cs" />
+    <Compile Include="Components\EmailCampaigns\EmailCampaignPreview.cs" />
     <Compile Include="Components\EventSpot\GuestInformation.cs" />
     <Compile Include="Components\EventSpot\Guests.cs" />
     <Compile Include="Services\BulkStatusService.cs" />

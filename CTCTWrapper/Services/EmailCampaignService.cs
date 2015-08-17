@@ -174,5 +174,30 @@ namespace CTCT.Services
                 throw new CtctException(ex.Message, ex);
             }
         }
+
+        /// <summary>
+        /// Retrieve the text and HTML content to preview an existing email campaign.
+        /// </summary>
+        /// <param name="campaignId">Campaign id.</param>
+        /// <returns>Returns a EmailCampaignPreview</returns>
+        public EmailCampaignPreview GetCampaignPreview(string campaignId)
+        {
+            if (string.IsNullOrEmpty(campaignId))
+            {
+                throw new IllegalArgumentException(CTCT.Resources.Errors.EmailCampaignOrId);
+            }
+
+            string url = String.Concat(Settings.Endpoints.Default.BaseUrl, String.Format(Settings.Endpoints.Default.EmailCampaignPreview, campaignId));
+            RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
+            try
+            {
+                var campaignPreview = response.Get<EmailCampaignPreview>();
+                return campaignPreview;
+            }
+            catch (Exception ex)
+            {
+                throw new CtctException(ex.Message, ex);
+            } 
+        }
     }
 }

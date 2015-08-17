@@ -513,15 +513,17 @@ namespace CTCT.Services
         /// Retrieve a list of registrants for the specified event
         /// </summary>
         /// <param name="eventId">Event id</param>
+        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 50</param>
+        /// <param name="pag">Pagination object</param>
         /// <returns>ResultSet containing a results array of Registrant</returns>
-        public ResultSet<Registrant> GetAllRegistrants(string eventId)
+        public ResultSet<Registrant> GetAllRegistrants(string eventId, int? limit, Pagination pag)
         {
             if (string.IsNullOrWhiteSpace(eventId))
             {
                 throw new IllegalArgumentException(CTCT.Resources.Errors.InvalidId);
             }
 
-            string url = String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventRegistrant), eventId, null);
+            string url = (pag == null) ? String.Concat(String.Format(String.Concat(Settings.Endpoints.Default.BaseUrl, Settings.Endpoints.Default.EventRegistrant), eventId, null), GetQueryParameters(new object[] { "limit", limit })) : pag.GetNextUrl();
 
             RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
             try

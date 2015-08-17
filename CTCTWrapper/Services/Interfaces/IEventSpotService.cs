@@ -139,8 +139,10 @@ namespace CTCT.Services
         /// Retrieve a list of registrants for the specified event
         /// </summary>
         /// <param name="eventId">Event id</param>
+        /// <param name="limit">Specifies the number of results per page in the output, from 1 - 500, default = 50</param>
+        /// <param name="pag">Pagination object</param>
         /// <returns>ResultSet containing a results array of Registrant</returns>
-        ResultSet<Registrant> GetAllRegistrants(string eventId);
+        ResultSet<Registrant> GetAllRegistrants(string eventId, int? limit, Pagination pag);
 
         /// <summary>
         /// Retrieve all existing items associated with an event

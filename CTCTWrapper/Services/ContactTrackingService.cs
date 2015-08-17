@@ -3,6 +3,7 @@ using CTCT.Components;
 using CTCT.Components.Tracking;
 using CTCT.Util;
 using CTCT.Exceptions;
+using System.Collections.Generic;
 
 namespace CTCT.Services
 {
@@ -70,7 +71,7 @@ namespace CTCT.Services
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <returns>ResultSet containing a results array of @link TrackingSummary</returns>
-        public ResultSet<TrackingSummary> GetEmailCampaignActivities(string contactId)
+        public IList<TrackingSummary> GetEmailCampaignActivities(string contactId)
         {
             if (string.IsNullOrEmpty(contactId))
             {
@@ -81,7 +82,7 @@ namespace CTCT.Services
             RawApiResponse response = RestClient.Get(url, UserServiceContext.AccessToken, UserServiceContext.ApiKey);
             try
             {
-                var results = response.Get<ResultSet<TrackingSummary>>();
+                var results = response.Get<IList<TrackingSummary>>();
                 return results;
             }
             catch (Exception ex)

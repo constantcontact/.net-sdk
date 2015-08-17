@@ -1,6 +1,7 @@
 ﻿using System;
 using CTCT.Components;
 using CTCT.Components.Tracking;
+using System.Collections.Generic;
 
 namespace CTCT.Services
 {
@@ -33,7 +34,7 @@ namespace CTCT.Services
         /// </summary>
         /// <param name="contactId">Contact id.</param>
         /// <returns>ResultSet containing a results array of @link TrackingSummary</returns>
-        ResultSet<TrackingSummary> GetEmailCampaignActivities(string contactId);
+        IList<TrackingSummary> GetEmailCampaignActivities(string contactId);
 
         /// <summary>
         /// Get bounces for a given contact.

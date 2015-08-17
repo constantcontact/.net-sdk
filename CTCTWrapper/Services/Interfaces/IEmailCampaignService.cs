@@ -62,5 +62,12 @@ namespace CTCT.Services
         /// <param name="campaign">Campaign to be updated.</param>
         /// <returns>Returns a campaign.</returns>
         EmailCampaign UpdateCampaign(EmailCampaign campaign);
+
+        /// <summary>
+        /// Retrieve the text and HTML content to preview an existing email campaign.
+        /// </summary>
+        /// <param name="campaignId">Campaign id.</param>
+        /// <returns>Returns a EmailCampaignPreview</returns>
+        EmailCampaignPreview GetCampaignPreview(string campaignId);
     }
 }
