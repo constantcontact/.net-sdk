@@ -18,10 +18,10 @@ namespace CTCT.Components.BulkStatus
     public class StatusReport : Component
     {
         [DataMember(Name = "warnings", EmitDefaultValue = false)]
-        private List<ActivityError> _Warnings = new List<ActivityError>();
+        private List<string> _Warnings = new List<string>();
 
         [DataMember(Name = "errors", EmitDefaultValue = false)]
-        private List<ActivityError> _Errors = new List<ActivityError>();
+        private List<string> _Errors = new List<string>();
 
         [DataMember(Name = "created_date", EmitDefaultValue = false)]
         private string CreatedDateString { get; set; }
@@ -155,7 +155,7 @@ namespace CTCT.Components.BulkStatus
         /// <summary>
         /// Gets or sets the list of imported data.
         /// </summary>
-        public IList<ActivityError> Warnings
+        public IList<string> Warnings
         {
             get { return _Warnings; }
             set { _Warnings = value == null ? null : value.ToList(); }
@@ -164,7 +164,7 @@ namespace CTCT.Components.BulkStatus
         /// <summary>
         /// Gets or sets a lists errors that occurred (up to the first 100) when the activity ran 
         /// </summary>
-        public IList<ActivityError> Errors
+        public IList<string> Errors
         {
             get { return _Errors; }
             set { _Errors = value == null ? null : value.ToList(); }

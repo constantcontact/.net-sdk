@@ -15,10 +15,10 @@ namespace CTCT.Components.Activities
     public class Activity : Component
     {
         [DataMember(Name = "warnings")]
-        private List<ActivityError> _Warnings = new List<ActivityError>();
+        private List<string> _Warnings = new List<string>();
 
         [DataMember(Name = "errors")]
-        private List<ActivityError> _Errors = new List<ActivityError>();
+        private List<string> _Errors = new List<string>();
 
         /// <summary>
         /// Activity id.
@@ -104,7 +104,7 @@ namespace CTCT.Components.Activities
         /// <summary>
         /// Gets or sets the error list.
         /// </summary>
-        public IList<ActivityError> Errors
+        public IList<string> Errors
         {
             get
             {
@@ -119,7 +119,7 @@ namespace CTCT.Components.Activities
         /// <summary>
         /// Gets or sets the warning list.
         /// </summary>
-        public IList<ActivityError> Warnings
+        public IList<string> Warnings
         {
             get
             {

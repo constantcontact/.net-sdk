@@ -70,7 +70,6 @@
     <Compile Include="Components\AccountService\OrganizationAddresses.cs" />
     <Compile Include="Components\AccountService\AccountSummaryInformation.cs" />
     <Compile Include="Components\Activities\Activity.cs" />
-    <Compile Include="Components\Activities\ActivityError.cs" />
     <Compile Include="Components\Activities\AddContacts.cs" />
     <Compile Include="Components\Activities\AddContactsImportData.cs" />
     <Compile Include="Components\Activities\ClearContactList.cs" />
