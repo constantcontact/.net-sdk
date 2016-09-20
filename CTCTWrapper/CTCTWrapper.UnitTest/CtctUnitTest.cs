@@ -1299,7 +1299,7 @@ namespace CTCTWrapper.UnitTest
             Assert.IsNotNull(contacts.Results);
             Assert.IsTrue(contacts.Results.Count > 0);
 
-            ResultSet<TrackingSummary> result = contactTrackingService.GetEmailCampaignActivities(contacts.Results[0].Id);
+            var result = contactTrackingService.GetEmailCampaignActivities(contacts.Results[0].Id);
             Assert.IsNotNull(result);
         }
 
